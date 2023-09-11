@@ -4,10 +4,12 @@
 # Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
 
 #import pandas
-#import pdfplumber
+import pdfplumber
+import shutil
 import re
 import os
 import glob
+import datetime
 
 
 def get_purchase_order_first_page_text(file_name):
@@ -15,7 +17,9 @@ def get_purchase_order_first_page_text(file_name):
     first_page = pdf_object.pages[1]
     return first_page.extract_text_simple()
 
-##def get_file_validation(file_path,file_format):
+
+def get_file_validation(file_path,file_format):
+    return
 
 
 def split_lines(text):
@@ -63,9 +67,25 @@ def get_date_of_order(text):
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     #get PurchaseOrder files list
-    file_path= '/Users/Kristd/TJ/Nutstore Files/Project/python/pdf2excel/In/*_PurchaseOrder*'
-    f = os.lisdir(file_path)
-    print(f)
+    base_path = '/Users/Kristd/TJ/Nutstore Files/Project/python/pdf2excel/In/'
+    formatted_today = datetime.date.today().strftime('%Y%m%d')
+    file_path= '/Users/Kristd/TJ/Nutstore Files/Project/python/pdf2excel/In/' + formatted_today +'/'
+    print(file_path)
+    f = glob.glob(file_path+'*PurchaseOrder*')
+    for i in f:  #PurchaseOrder loop, the outer loop
+        file_name = os.path.basename(i)
+        orderNum = file_name.split('_',1)[0]
+        print(orderNum)
+
+
+    #logic to move the folder which is older than 1 year to Archive folder
+    archive_path = '/Users/Kristd/TJ/Nutstore Files/Project/python/pdf2excel/Archive'
+    dirs = next(os.walk(base_path))[1]
+    last_year_date = (datetime.date.today()+datetime.timedelta(days=-365)).strftime('%Y%m%d')
+    for i_dirs in dirs:
+        if i_dirs < last_year_date:
+            shutil.move(base_path+i_dirs,archive_path)
+            print('have move ' + i_dirs + ' to Archive folder')
 
     '''
     order_text = get_purchase_order_first_page_text('/Users/kristd/Downloads/2PDF/667098_PurchaseOrder_20230627_144321.pdf')
