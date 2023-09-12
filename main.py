@@ -119,6 +119,26 @@ if __name__ == '__main__':
                     no_of_pieces  = get_no_of_pieces(order_info_array[12])#Column J
 
 
+                    ### create the price/country mapping information
+                    terms_1st_position = 0
+                    terms_last_position = 0
+                    time_delivery_1st_position = 0
+                    time_delivery_last_position = 0
+                    price_1st_position = 0
+                    price_last_position = 0
+                    for p in range(0,len(order_info_array)):
+                        if re.search(r'Terms of Delivery',order_info_array[p]) is not None:
+                            terms_1st_position = p
+                        if re.search(r'Time of Delivery Planning Markets',order_info_array[p]) is not None:
+                            terms_last_position = p-1
+                            time_delivery_1st_position = p
+                        if re.search(r'Total: \d+',order_info_array[p]) is not None:
+                            time_delivery_last_position = p-1
+                        if re.search(r'Invoice Average Price',order_info_array[p]) is not None:
+                            price_1st_position = p
+                        if re.search(r'By accepting',order_info_array[p]) is not None:
+                            price_last_position = p-1
+
                     print('')
                     print('-----------')
 
