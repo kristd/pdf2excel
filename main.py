@@ -104,6 +104,7 @@ if __name__ == '__main__':
                 if get_file_validation(file_path, orderNum, formatted_today,1):
                     # get the PurchaseOrder info and go down to the detail loop!!!!!!!!!!
                     ####New Order Scenario
+                    print(orderNum)
                     print('NEW Order Scenario')
                     order_text = get_purchase_order_first_page_text(i)
                     order_info_array = split_lines(order_text)
@@ -136,9 +137,37 @@ if __name__ == '__main__':
                             time_delivery_last_position = p-1
                         if re.search(r'Invoice Average Price',order_info_array[p]) is not None:
                             price_1st_position = p
-                        if re.search(r'By accepting',order_info_array[p]) is not None:
+                        if (re.search(r'By accepting',order_info_array[p]) is not None) or (re.search(r'License Order - Pool Party',order_info_array[p]) is not None):
                             price_last_position = p-1
 
+                    ##create the time delivery mapping
+                    time_delivery_dict = {}
+                    time_delivery_dict.clear()
+                    ##print(orderNum)
+                    for p in range(time_delivery_1st_position+1, time_delivery_last_position+1):
+                        if re.search(r'\d+',order_info_array[p]) is not None:
+                            if re.search(r'\d+',order_info_array[p+1]) is not None:
+                                l_day = order_info_array[p][0:2]
+                                l_mon = list(calendar.month_abbr).index(order_info_array[p][3:6])
+                                l_year = order_info_array[p][8:12]
+                                time_delivery_dict[order_info_array[p].replace('\xa0', '')[13:].replace(re.findall(r'\d+ .*%', order_info_array[p].replace('\xa0', '')[13:])[0], '').strip()] =str(l_year) + '-' + str(l_mon) + '-' + str(l_day)
+                        else:
+                            l_day = order_info_array[p-1][0:2]
+                            l_mon = list(calendar.month_abbr).index(order_info_array[p-1][3:6])
+                            l_year = order_info_array[p-1][8:12]
+                            time_delivery_dict[order_info_array[p-1].replace('\xa0', '')[13:].replace(re.findall(r'\d+ .*%', order_info_array[p-1].replace('\xa0', '')[13:])[0], '').strip()+order_info_array[p].replace('\xa0', '').strip()] =str(l_year) + '-' + str(l_mon) + '-' + str(l_day)
+
+                    ##create price mapping
+                    price_dict = {}
+                    price_dict.clear()
+                    for p in range(price_1st_position+1,price_last_position+1):
+                        l_price = order_info_array[p].split(' ')[0]
+                        l_currency = order_info_array[p].split(' ')[1]
+                        l_countries = order_info_array[p].replace(order_info_array[p].split(' ')[0],'').replace(order_info_array[p].split(' ')[1],'').strip()
+                        price_dict[l_countries] = str(l_price) +'-'+str(l_currency)
+
+
+                    print(price_dict)
                     print('')
                     print('-----------')
 
