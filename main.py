@@ -80,6 +80,41 @@ def get_development_no(text):
 def get_no_of_pieces(text):
     return re.findall(r'\d+',text)[0]
 
+
+def get_delivery_dates_dicts(text,p1, p2):
+    time_delivery_dict = {}
+    time_delivery_dict.clear()
+    for p in range(p1,  p2):
+        if re.search(r'\d+', text[p]) is not None:
+            if re.search(r'\d+', text[p + 1]) is not None:
+                l_day = text[p][0:2]
+                l_mon = list(calendar.month_abbr).index(text[p][3:6])
+                l_year = text[p][8:12]
+                time_delivery_dict[text[p].replace('\xa0', '')[13:].replace(
+                    re.findall(r'\d+ .*%', text[p].replace('\xa0', '')[13:])[0], '').strip()] = str(
+                    l_year) + '-' + str(l_mon) + '-' + str(l_day)
+        else:
+            l_day = text[p - 1][0:2]
+            l_mon = list(calendar.month_abbr).index(text[p - 1][3:6])
+            l_year = text[p - 1][8:12]
+            time_delivery_dict[text[p - 1].replace('\xa0', '')[13:].replace(
+                re.findall(r'\d+ .*%', text[p - 1].replace('\xa0', '')[13:])[0], '').strip() +
+                               text[p].replace('\xa0', '').strip()] = str(l_year) + '-' + str(
+                l_mon) + '-' + str(l_day)
+    return time_delivery_dict
+
+def get_price_dicts(text,p1,p2):
+    price_dict = {}
+    price_dict.clear()
+    for p in range( p1, p2):
+        l_price = text[p].split(' ')[0]
+        l_currency = text[p].split(' ')[1]
+        l_countries = text[p].replace(text[p].split(' ')[0], '').replace(
+            text[p].split(' ')[1], '').strip()
+        price_dict[l_countries] = str(l_price) + '-' + str(l_currency)
+    return price_dict
+
+
 # with pdfplumber.open('/Users/kristd/Downloads/2PDF/667098_PurchaseOrder_20230627_144321.pdf') as pdf:
 #     for page in pdf.pages:
 #         print(page.extract_text_simple())
@@ -143,31 +178,13 @@ if __name__ == '__main__':
                     ##create the time delivery mapping
                     time_delivery_dict = {}
                     time_delivery_dict.clear()
-                    ##print(orderNum)
-                    for p in range(time_delivery_1st_position+1, time_delivery_last_position+1):
-                        if re.search(r'\d+',order_info_array[p]) is not None:
-                            if re.search(r'\d+',order_info_array[p+1]) is not None:
-                                l_day = order_info_array[p][0:2]
-                                l_mon = list(calendar.month_abbr).index(order_info_array[p][3:6])
-                                l_year = order_info_array[p][8:12]
-                                time_delivery_dict[order_info_array[p].replace('\xa0', '')[13:].replace(re.findall(r'\d+ .*%', order_info_array[p].replace('\xa0', '')[13:])[0], '').strip()] =str(l_year) + '-' + str(l_mon) + '-' + str(l_day)
-                        else:
-                            l_day = order_info_array[p-1][0:2]
-                            l_mon = list(calendar.month_abbr).index(order_info_array[p-1][3:6])
-                            l_year = order_info_array[p-1][8:12]
-                            time_delivery_dict[order_info_array[p-1].replace('\xa0', '')[13:].replace(re.findall(r'\d+ .*%', order_info_array[p-1].replace('\xa0', '')[13:])[0], '').strip()+order_info_array[p].replace('\xa0', '').strip()] =str(l_year) + '-' + str(l_mon) + '-' + str(l_day)
+                    time_delivery_dict = get_delivery_dates_dicts(order_info_array,time_delivery_1st_position+1,time_delivery_last_position+1)
 
                     ##create price mapping
                     price_dict = {}
                     price_dict.clear()
-                    for p in range(price_1st_position+1,price_last_position+1):
-                        l_price = order_info_array[p].split(' ')[0]
-                        l_currency = order_info_array[p].split(' ')[1]
-                        l_countries = order_info_array[p].replace(order_info_array[p].split(' ')[0],'').replace(order_info_array[p].split(' ')[1],'').strip()
-                        price_dict[l_countries] = str(l_price) +'-'+str(l_currency)
+                    price_dict = get_price_dicts(order_info_array,price_1st_position+1,price_last_position+1)
 
-
-                    print(price_dict)
                     print('')
                     print('-----------')
 
