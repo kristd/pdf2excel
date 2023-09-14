@@ -88,7 +88,7 @@ def get_delivery_dates_dicts(text,p1, p2):
         if re.search(r'\d+', text[p]) is not None:
             if re.search(r'\d+', text[p + 1]) is not None:
                 l_day = text[p][0:2]
-                l_mon = list(calendar.month_abbr).index(text[p][3:6])
+                l_mon = list(calendar.month_abbr).index(text[p][3:6])              
                 l_year = text[p][8:12]
                 time_delivery_dict[text[p].replace('\xa0', '')[13:].replace(
                     re.findall(r'\d+ .*%', text[p].replace('\xa0', '')[13:])[0], '').strip()] = str(
@@ -113,6 +113,9 @@ def get_price_dicts(text,p1,p2):
             text[p].split(' ')[1], '').strip()
         price_dict[l_countries] = str(l_price) + '-' + str(l_currency)
     return price_dict
+
+def get_term_dicts(text, p1,p2):
+
 
 
 # with pdfplumber.open('/Users/kristd/Downloads/2PDF/667098_PurchaseOrder_20230627_144321.pdf') as pdf:
@@ -153,6 +156,9 @@ if __name__ == '__main__':
                     product_name = get_product_name(order_info_array[4]) #Column H
                     development_no = get_development_no(order_info_array[9])  #Column I
                     no_of_pieces  = get_no_of_pieces(order_info_array[12])#Column J
+
+
+                    ### create the country/term mapping
 
 
                     ### create the price/country mapping information
