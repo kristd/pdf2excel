@@ -5,7 +5,7 @@
 
 
 import pdfplumber
-import pandas
+import pandas as pd
 import os
 import glob
 import datetime
@@ -17,6 +17,10 @@ def get_purchase_order_first_page_text(i):
     pdf_object = pdfplumber.open(i)
     first_page = pdf_object.pages[0]
     return first_page.extract_text_simple()
+
+def get_sizecolourbreakdown_pages_text(i):
+    pdf_object = pdfplumber.open(i)
+    return pdf_object.pages
 
 
 def get_file_validation(file_path,orderNum,formatted_today,flag):
@@ -80,7 +84,9 @@ def get_development_no(text):
 def get_no_of_pieces(text):
     return re.findall(r'\d+',text)[0]
 
-
+def get_detail_country_code(text):
+    country_code = re.findall(r' [a-zA-Z]{2} \(',text)[0].replace(')','').replace('(','').strip()
+    return country_code
 def get_delivery_dates_dicts(text,p1, p2):
     time_delivery_dict = {}
     time_delivery_dict.clear()
@@ -88,7 +94,7 @@ def get_delivery_dates_dicts(text,p1, p2):
         if re.search(r'\d+', text[p]) is not None:
             if re.search(r'\d+', text[p + 1]) is not None:
                 l_day = text[p][0:2]
-                l_mon = list(calendar.month_abbr).index(text[p][3:6])              
+                l_mon = list(calendar.month_abbr).index(text[p][3:6])
                 l_year = text[p][8:12]
                 time_delivery_dict[text[p].replace('\xa0', '')[13:].replace(
                     re.findall(r'\d+ .*%', text[p].replace('\xa0', '')[13:])[0], '').strip()] = str(
@@ -114,9 +120,36 @@ def get_price_dicts(text,p1,p2):
         price_dict[l_countries] = str(l_price) + '-' + str(l_currency)
     return price_dict
 
-def get_term_dicts(text, p1,p2):
+def get_term_dicts(text,p1,p2):
+    term_dicts={}
+    term_dicts.clear()
+    df = pd.read_excel("/Users/Kristd/Documents/github/pdf2excel/country_code.xlsx")
+    df_li = df.values.tolist()
+    country_codes=[]
+    for s_li in df_li:
+        country_codes.append(s_li[0] + '-' + s_li[1])
 
+    for p in range(p1,p2):
+        country_list = text[p].split(',')
+        for cl in country_list:
+            if re.search(r'/', cl.strip()) is not None:
+                for c in country_codes:
+                    if  re.search(cl.strip(),c) is not None:
+                        term_dicts[c[3:]] = text[p + 1].split(' ')[2]
+                        break
+            else:
+                for c in country_codes:
+                    if re.search(cl.strip(),c) is not None:
+                        term_dicts[c] = text[p + 1].split(' ')[2]
+                        break
+    return term_dicts
 
+def get_colourname_dicts(text, p1, p2):
+    colourname_dicts = {}
+    colourname_dicts.clear()
+    for p in range(p1,p2):
+        colourname_dicts[text[p].split(' ')[0]] = re.findall(r'[a-zA-Z]+.*[a-zA-Z]+',text[p].replace('Solid','').replace('USD','').replace('All over pattern',''))[0]
+    return colourname_dicts
 
 # with pdfplumber.open('/Users/kristd/Downloads/2PDF/667098_PurchaseOrder_20230627_144321.pdf') as pdf:
 #     for page in pdf.pages:
@@ -156,9 +189,7 @@ if __name__ == '__main__':
                     product_name = get_product_name(order_info_array[4]) #Column H
                     development_no = get_development_no(order_info_array[9])  #Column I
                     no_of_pieces  = get_no_of_pieces(order_info_array[12])#Column J
-
-
-                    ### create the country/term mapping
+                    download_date = datetime.date.today().strftime('%Y-%m-%d') #Column V
 
 
                     ### create the price/country mapping information
@@ -168,6 +199,8 @@ if __name__ == '__main__':
                     time_delivery_last_position = 0
                     price_1st_position = 0
                     price_last_position = 0
+                    colourname_1st_position = 0
+                    colourname_last_position = 0
                     for p in range(0,len(order_info_array)):
                         if re.search(r'Terms of Delivery',order_info_array[p]) is not None:
                             terms_1st_position = p
@@ -180,6 +213,17 @@ if __name__ == '__main__':
                             price_1st_position = p
                         if (re.search(r'By accepting',order_info_array[p]) is not None) or (re.search(r'License Order - Pool Party',order_info_array[p]) is not None):
                             price_last_position = p-1
+                        if (re.search(r'Article No H&M Colour Code',order_info_array[p])):
+                            colourname_1st_position = p
+                        if (re.search(r'Total Quantity:',order_info_array[p])):
+                            colourname_last_position = p-1
+
+                    ### create the country/term mapping
+                    term_dict = {}
+                    term_dict.clear()
+                    term_dict = get_term_dicts(order_info_array, terms_1st_position+1,terms_last_position+1)
+
+
 
                     ##create the time delivery mapping
                     time_delivery_dict = {}
@@ -191,17 +235,118 @@ if __name__ == '__main__':
                     price_dict.clear()
                     price_dict = get_price_dicts(order_info_array,price_1st_position+1,price_last_position+1)
 
+                    ##create colourname mapping
+                    colourname_dict = {}
+                    colourname_dict.clear()
+                    colourname_dict = get_colourname_dicts(order_info_array, colourname_1st_position+1,colourname_last_position+1)
+
+                    ###detail loop start here
+                    detail_pages = []
+                    detail_pages = get_sizecolourbreakdown_pages_text(
+                        i.replace('PurchaseOrder', 'SizePerColourBreakdown'))
+                    for dp in range(0,len(detail_pages)):
+                        country_name = ''  # Column K
+                        fright_term = ''  # Column L
+                        cost = ''  #Column Q
+                        currency = '' # Column R
+                        page_text = detail_pages[dp].extract_text_simple()
+                        order_detail_array = split_lines(page_text)
+
+                        assortment_1st_position = 0
+                        assortment_last_position = 0
+                        solid_1st_position = 0
+                        solid_last_position = 0
+
+                        for p in range(0,len(order_detail_array)):
+                            if (re.search(r'Assortment', order_detail_array[p])):
+                                assortment_1st_position = p
+                            if (re.search(r'Solid', order_detail_array[p])):
+                                solid_1st_position = p
+                                assortment_last_position = p - 1
+                            if (re.search(r'Total', order_detail_array[p])):
+                                solid_last_position = p - 1
+
+                        country_code = get_detail_country_code(order_detail_array[11])
+                        ## get term
+
+                        for k in term_dict.keys():
+                            if re.search(country_code,str(k)) is not None:
+                                country_name = k
+                                fright_term = term_dict[k]
+                                break
+                        ## get cost and currency
+                        for k in price_dict.keys():
+                            if re.search(country_code,str(k)) is not None:
+                                cost = price_dict[k].split('-')[0]
+                                currency = price_dict[k].split('-')[1]
+
+                        ##get artical NO & colourcode+colourname
+                        artical_list = re.findall(r'\d+.*\d+',order_detail_array[12])[0].split(' ')
+                        colourcode_list = re.findall(r'\d+-.*',order_detail_array[13])[0].split(' ')
+                        print(country_name)
+                        for a in artical_list:
+                            artical_no = ''  # Column U
+                            colourcode_colourname = ''# Column M
+                            size = ''#Column N
+                            packing_type = ''# Column O
+                            qty_artical = '' # Column P
+                            artical_no = a
+                            for k in colourname_dict.keys():
+                                if a == k:
+                                    colourcode_colourname =  colourcode_list[artical_list.index(a)]+' ' + str(colourname_dict[a])
+                                    break
+                            ## assorment/solid qty information
+                            if assortment_1st_position > 0:
+                                packing_type = 'Assortment'
+                                print(packing_type)
+                                no_of_asst_list = []
+                                for ap in range(assortment_1st_position+1,assortment_last_position+1):
+                                    if re.search(r'No of Asst:',order_detail_array[ap]) is not None:
+                                        no_of_asst_list = order_detail_array[ap].replace('No of Asst: ', '').split(' ')
+                                        break
+                                for ap in range(assortment_1st_position+1,assortment_last_position+1):
+                                    if re.search(r'\(.*\)\*', order_detail_array[ap]) is not None:
+                                        size = re.findall(r'\(.*\)\*', order_detail_array[ap])[0].replace(')*', '').replace('(','')
+                                        if re.findall(r'\* \d+.*', order_detail_array[ap]) == []:
+                                            next
+                                        else:
+                                            if re.findall(r'\* \d+.*', order_detail_array[ap]) is not []:
+                                                qty_artical = int(
+                                                    re.findall(r'\* \d+.*', order_detail_array[ap])[0].replace('* ',
+                                                                                                               '').split(
+                                                        ' ')[artical_list.index(a)])
+                                                print(size + ': ' + str(qty_artical))
+                                                #######write data into excel sheet
+                            if solid_1st_position > 0:
+                                packing_type = 'Solid'
+                                print(packing_type)
+                                for sp in range(solid_1st_position+1,solid_last_position+1):
+                                    if re.search(r'\(.*\)\*', order_detail_array[sp]) is not None:
+                                        size = re.findall(r'\(.*\)\*', order_detail_array[sp])[0].replace(')*', '').replace('(','')
+                                        #print(re.findall(r'\* \d+.*', order_detail_array[sp])[0].replace('* ',''))
+                                        if re.findall(r'\* \d+.*',order_detail_array[sp]) == []:
+                                            next
+                                        else:
+                                            if re.findall(r'\* \d+.*',order_detail_array[sp]) is not []:
+                                                qty_artical = int(re.findall(r'\* \d+.*',order_detail_array[sp])[0].replace('* ','').split(' ')[artical_list.index(a)])
+                                                print(size + ': ' + str(qty_artical))
+                                                #######write data into excel sheet
+
+                    ######end of detail loop
                     print('')
                     print('-----------')
 
                 else:
                     # throw error as the child file is not exists.
                     f = open(file_path + str(orderNum) + '_SizePerColourBreakdown*')
+
             except FileNotFoundError:
                 print('OrderNum: ' + orderNum)
                 print('')
                 print('File is not found!')
                 print('-----------')
+
+
         else:
             orderNum = file_name.split('_', 2)[1]
             ##print(orderNum)
@@ -216,6 +361,8 @@ if __name__ == '__main__':
                     f = open(file_path + str(orderNum) +'_SizePerColourBreakdown*')
             except FileNotFoundError:
                 print('File is not found!')
+
+    ##end of outer for loop
 
     #logic to remove files in Archive folder older than 1 year
     archive_path = '/Users/Kristd/TJ/Nutstore Files/Project/python/pdf2excel/Archive/'
