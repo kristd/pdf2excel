@@ -249,6 +249,7 @@ if __name__ == '__main__':
                         fright_term = ''  # Column L
                         cost = ''  #Column Q
                         currency = '' # Column R
+                        TOD = ''# Column T
                         page_text = detail_pages[dp].extract_text_simple()
                         order_detail_array = split_lines(page_text)
 
@@ -269,6 +270,7 @@ if __name__ == '__main__':
                         country_code = get_detail_country_code(order_detail_array[11])
                         ## get term
 
+
                         for k in term_dict.keys():
                             if re.search(country_code,str(k)) is not None:
                                 country_name = k
@@ -279,11 +281,17 @@ if __name__ == '__main__':
                             if re.search(country_code,str(k)) is not None:
                                 cost = price_dict[k].split('-')[0]
                                 currency = price_dict[k].split('-')[1]
+                                break
+
+                        for k in time_delivery_dict.keys():
+                            if re.search(country_code, str(k)) is not None:
+                                TOD = time_delivery_dict[k]
+                                break
 
                         ##get artical NO & colourcode+colourname
                         artical_list = re.findall(r'\d+.*\d+',order_detail_array[12])[0].split(' ')
                         colourcode_list = re.findall(r'\d+-.*',order_detail_array[13])[0].split(' ')
-                        print(country_name)
+                        #print(country_name)
                         for a in artical_list:
                             artical_no = ''  # Column U
                             colourcode_colourname = ''# Column M
@@ -298,7 +306,7 @@ if __name__ == '__main__':
                             ## assorment/solid qty information
                             if assortment_1st_position > 0:
                                 packing_type = 'Assortment'
-                                print(packing_type)
+                                #print(packing_type)
                                 no_of_asst_list = []
                                 for ap in range(assortment_1st_position+1,assortment_last_position+1):
                                     if re.search(r'No of Asst:',order_detail_array[ap]) is not None:
@@ -315,8 +323,47 @@ if __name__ == '__main__':
                                                     re.findall(r'\* \d+.*', order_detail_array[ap])[0].replace('* ',
                                                                                                                '').split(
                                                         ' ')[artical_list.index(a)])
-                                                print(size + ': ' + str(qty_artical))
+
                                                 #######write data into excel sheet
+                                                ##read excel file , if file not existed, create a new one.
+                                                if os.path.exists(file_path+formatted_today):
+                                                    os.chdir(file_path + formatted_today)
+                                                    if not os.path.exists(file_path + formatted_today + '/' + str(
+                                                            orderNum) + '_Single_Sheet.xlsx'):
+                                                        df = pd.DataFrame(columns=["品牌/Brands", "订单类型/Order Type",
+                                                                                   "季度/Season", "订单号/Order No",
+                                                                                   "部门号/Department No",
+                                                                                   "生产货号/Product No",
+                                                                                   "下单日期/Date of Order",
+                                                                                   "产品名称/Product Name",
+                                                                                   "开发货号/Development No",
+                                                                                   "双/包/No of Pieces", "国家/Country",
+                                                                                   "运输方式/Terms of Delivery",
+                                                                                   "HM色号+颜色描述/Colour Code & Colour Name",
+                                                                                   "尺码/Size", "装箱方式/Packing Type",
+                                                                                   "订单数量/Qty/Artical", "单价/Cost",
+                                                                                   "货币/Currency",
+                                                                                   "总数量/总件数/Total Pairs/pcs",
+                                                                                   "出货日期/TOD", "编号/Artical No",
+                                                                                   "下载日期/Download Date"])
+                                                        df.to_excel(file_path + formatted_today + '/' + str(
+                                                            orderNum) + '_Single_Sheet.xlsx', index=False)
+                                                    else:
+                                                        df = pd.read_excel(file_path + formatted_today + '/' + str(
+                                                            orderNum) + '_Single_Sheet.xlsx', header=None)
+                                                        print(df)
+                                                else:
+                                                    os.makedirs(file_path+formatted_today)
+                                                    os.chdir(file_path+formatted_today)
+                                                    if not os.path.exists(file_path+formatted_today+'/'+ str(orderNum)+'_Single_Sheet.xlsx'):
+                                                        df = pd.DataFrame(columns=["品牌/Brands","订单类型/Order Type","季度/Season","订单号/Order No","部门号/Department No","生产货号/Product No","下单日期/Date of Order","产品名称/Product Name","开发货号/Development No",
+                                                                                       "双/包/No of Pieces","国家/Country","运输方式/Terms of Delivery","HM色号+颜色描述/Colour Code & Colour Name","尺码/Size","装箱方式/Packing Type","订单数量/Qty/Artical","单价/Cost","货币/Currency",
+                                                                                       "总数量/总件数/Total Pairs/pcs","出货日期/TOD","编号/Artical No","下载日期/Download Date"])
+                                                        df.to_excel(file_path+formatted_today+'/'+ str(orderNum)+'_Single_Sheet.xlsx',index=False)
+                                                    else:
+                                                        df = pd.read_excel(file_path+formatted_today+'/'+ str(orderNum)+'_Single_Sheet.xlsx',header=None)
+                                                        print(df)
+
                             if solid_1st_position > 0:
                                 packing_type = 'Solid'
                                 print(packing_type)
@@ -329,8 +376,62 @@ if __name__ == '__main__':
                                         else:
                                             if re.findall(r'\* \d+.*',order_detail_array[sp]) is not []:
                                                 qty_artical = int(re.findall(r'\* \d+.*',order_detail_array[sp])[0].replace('* ','').split(' ')[artical_list.index(a)])
-                                                print(size + ': ' + str(qty_artical))
+
                                                 #######write data into excel sheet
+                                                ##read excel file , if file not existed, create a new one.
+                                                if os.path.exists(file_path + formatted_today):
+                                                    os.chdir(file_path + formatted_today)
+                                                    if not os.path.exists(file_path + formatted_today + '/' + str(
+                                                            orderNum) + '_Single_Sheet.xlsx'):
+                                                        df = pd.DataFrame(columns=["品牌/Brands", "订单类型/Order Type",
+                                                                                   "季度/Season", "订单号/Order No",
+                                                                                   "部门号/Department No",
+                                                                                   "生产货号/Product No",
+                                                                                   "下单日期/Date of Order",
+                                                                                   "产品名称/Product Name",
+                                                                                   "开发货号/Development No",
+                                                                                   "双/包/No of Pieces", "国家/Country",
+                                                                                   "运输方式/Terms of Delivery",
+                                                                                   "HM色号+颜色描述/Colour Code & Colour Name",
+                                                                                   "尺码/Size", "装箱方式/Packing Type",
+                                                                                   "订单数量/Qty/Artical", "单价/Cost",
+                                                                                   "货币/Currency",
+                                                                                   "总数量/总件数/Total Pairs/pcs",
+                                                                                   "出货日期/TOD", "编号/Artical No",
+                                                                                   "下载日期/Download Date"])
+                                                        df.to_excel(file_path + formatted_today + '/' + str(
+                                                            orderNum) + '_Single_Sheet.xlsx', index=False)
+                                                    else:
+                                                        df = pd.read_excel(file_path + formatted_today + '/' + str(
+                                                            orderNum) + '_Single_Sheet.xlsx', header=None)
+                                                        print(df)
+                                                else:
+                                                    os.makedirs(file_path + formatted_today)
+                                                    os.chdir(file_path + formatted_today)
+                                                    if not os.path.exists(file_path + formatted_today + '/' + str(
+                                                            orderNum) + '_Single_Sheet.xlsx'):
+                                                        df = pd.DataFrame(columns=["品牌/Brands", "订单类型/Order Type",
+                                                                                   "季度/Season", "订单号/Order No",
+                                                                                   "部门号/Department No",
+                                                                                   "生产货号/Product No",
+                                                                                   "下单日期/Date of Order",
+                                                                                   "产品名称/Product Name",
+                                                                                   "开发货号/Development No",
+                                                                                   "双/包/No of Pieces", "国家/Country",
+                                                                                   "运输方式/Terms of Delivery",
+                                                                                   "HM色号+颜色描述/Colour Code & Colour Name",
+                                                                                   "尺码/Size", "装箱方式/Packing Type",
+                                                                                   "订单数量/Qty/Artical", "单价/Cost",
+                                                                                   "货币/Currency",
+                                                                                   "总数量/总件数/Total Pairs/pcs",
+                                                                                   "出货日期/TOD", "编号/Artical No",
+                                                                                   "下载日期/Download Date"])
+                                                        df.to_excel(file_path + formatted_today + '/' + str(
+                                                            orderNum) + '_Single_Sheet.xlsx', index=False)
+                                                    else:
+                                                        df = pd.read_excel(file_path + formatted_today + '/' + str(
+                                                            orderNum) + '_Single_Sheet.xlsx', header=None)
+                                                        print(df)
 
                     ######end of detail loop
                     print('')
