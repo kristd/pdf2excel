@@ -1,17 +1,32 @@
 # This is a sample Python script.
-
+import openpyxl
 # Press ⌃R to execute it or replace it with your code.
 # Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
 
 
 import pdfplumber
 import pandas as pd
+import openpyxl
 import os
 import glob
 import datetime
 import re
 import calendar
+import shutil
+import yaml
+from loguru import logger
 
+
+def rename_file_from_season(folder_path,file_name_pattern):
+    for old_f in sorted(os.listdir(folder_path),reverse=True):
+        if re.search(file_name_pattern, old_f) is not None:
+            if re.search(r'_\d+.xlsx',old_f) is None:
+                logger.debug('Moving file from ' + folder_path + old_f + ' to ' + folder_path + str(orderNum) + '_Single_Sheet_1.xlsx')
+                shutil.move(folder_path+old_f, folder_path + str(orderNum) + '_Single_Sheet_1.xlsx')
+            else:
+                index = int(old_f.split('_')[3].split('.')[0]) + 1
+                logger.debug( 'Moving file from ' + folder_path + old_f + ' to ' + folder_path + str(orderNum) + '_Single_Sheet_' + str(index) + '.xlsx')
+                shutil.move(folder_path+old_f,folder_path + str(orderNum) + '_Single_Sheet_' + str(index) + '.xlsx')
 
 def get_purchase_order_first_page_text(i):
     pdf_object = pdfplumber.open(i)
@@ -23,7 +38,7 @@ def get_sizecolourbreakdown_pages_text(i):
     return pdf_object.pages
 
 
-def get_file_validation(file_path,orderNum,formatted_today,flag):
+def get_file_validation(file_path,orderNum,flag):
     if flag == 1:
         f = glob.glob(file_path + str(orderNum) +'_SizePerColourBreakdown*')
         if len(f) > 0:
@@ -31,7 +46,7 @@ def get_file_validation(file_path,orderNum,formatted_today,flag):
         else:
             return False
     else:
-        f = glob.glob(file_path + 'Updated_' + str(orderNum) +'_SizePerColourBreakdown*')
+        f = glob.glob(file_path + 'updated_' + str(orderNum) +'_SizePerColourBreakdown*')
         if len(f) > 0:
             return True
         else:
@@ -91,33 +106,43 @@ def get_delivery_dates_dicts(text,p1, p2):
     time_delivery_dict = {}
     time_delivery_dict.clear()
     for p in range(p1,  p2):
+        print(text[p])
+        print(text[p][3:6])
         if re.search(r'\d+', text[p]) is not None:
-            if re.search(r'\d+', text[p + 1]) is not None:
+            if (p+1) <= p2 and re.search(r'\d+', text[p + 1]) is not None:
                 l_day = text[p][0:2]
                 l_mon = list(calendar.month_abbr).index(text[p][3:6])
                 l_year = text[p][8:12]
-                time_delivery_dict[text[p].replace('\xa0', '')[13:].replace(
-                    re.findall(r'\d+ .*%', text[p].replace('\xa0', '')[13:])[0], '').strip()] = str(
+                time_delivery_dict[re.sub(u"\\(.*?\\)",'',text[p].replace('\xa0', '')[13:].replace(
+                    re.findall(r'\d+ .*%', text[p].replace('\xa0', '')[13:])[0], '').strip())] = str(
                     l_year) + '-' + str(l_mon) + '-' + str(l_day)
-        else:
-            l_day = text[p - 1][0:2]
-            l_mon = list(calendar.month_abbr).index(text[p - 1][3:6])
-            l_year = text[p - 1][8:12]
-            time_delivery_dict[text[p - 1].replace('\xa0', '')[13:].replace(
-                re.findall(r'\d+ .*%', text[p - 1].replace('\xa0', '')[13:])[0], '').strip() +
-                               text[p].replace('\xa0', '').strip()] = str(l_year) + '-' + str(
-                l_mon) + '-' + str(l_day)
+            else:
+                l_day = text[p][0:2]
+                l_mon = list(calendar.month_abbr).index(text[p][3:6])
+                l_year = text[p][8:12]
+                time_delivery_dict[re.sub(u"\\(.*?\\)",'',(text[p].replace('\xa0', '')[13:].replace(
+                    re.findall(r'\d+ .*%', text[p].replace('\xa0', '')[13:])[0], '').strip() +
+                                text[p+1].replace('\xa0', '').strip()))] = str(l_year) + '-' + str(
+                    l_mon) + '-' + str(l_day)
     return time_delivery_dict
 
 def get_price_dicts(text,p1,p2):
     price_dict = {}
     price_dict.clear()
     for p in range( p1, p2):
-        l_price = text[p].split(' ')[0]
-        l_currency = text[p].split(' ')[1]
-        l_countries = text[p].replace(text[p].split(' ')[0], '').replace(
-            text[p].split(' ')[1], '').strip()
-        price_dict[l_countries] = str(l_price) + '-' + str(l_currency)
+        if re.search(r'\d+', text[p]) is not None:
+            if (p + 1) <= p2 and re.search(r'\d+', text[p + 1]) is not None:
+                l_price = text[p].split(' ')[0]
+                l_currency = text[p].split(' ')[1]
+                l_countries = text[p].replace(text[p].split(' ')[0], '').replace(
+                text[p].split(' ')[1], '').strip()
+                price_dict[l_countries] = str(l_price) + '-' + str(l_currency)
+            else:
+                l_price = text[p].split(' ')[0]
+                l_currency = text[p].split(' ')[1]
+                l_countries = text[p].replace(text[p].split(' ')[0], '').replace(
+                    text[p].split(' ')[1], '').strip() + text[p+1].strip()
+                price_dict[l_countries] = str(l_price)+'-' + str(l_currency)
     return price_dict
 
 def get_term_dicts(text,p1,p2):
@@ -151,6 +176,92 @@ def get_colourname_dicts(text, p1, p2):
         colourname_dicts[text[p].split(' ')[0]] = re.findall(r'[a-zA-Z]+.*[a-zA-Z]+',text[p].replace('Solid','').replace('USD','').replace('All over pattern',''))[0]
     return colourname_dicts
 
+def write_data_into_summary_excel(file_path,data,season):
+    file_name = 'Orders_Summary_' + season + '.xlsx'
+    if not os.path.exists(file_path + file_name):
+        workbook = openpyxl.Workbook()
+        sheet = workbook.create_sheet('Summary', index=0)
+        header = ["品牌/Brands", "订单类型/Order Type", "季度/Season", "订单号/Order No", "部门号/Department No",
+                  "生产货号/Product No", "下单日期/Date of Order", "产品名称/Product Name",
+                  "开发货号/Development No",
+                  "双/包/No of Pieces", "国家/Country", "运输方式/Terms of Delivery",
+                  "HM色号+颜色描述/Colour Code & Colour Name", "尺码/Size", "装箱方式/Packing Type",
+                  "订单数量/Qty/Artical", "单价/Cost", "货币/Currency",
+                  "总数量/总件数/Total Pairs/pcs", "出货日期/TOD", "编号/Artical No", "下载日期/Download Date"]
+        sheet.append(header)
+        sheet.append(data)
+        workbook.save(file_path + file_name)
+        workbook.close()
+    else:
+        wb = openpyxl.load_workbook(file_path + file_name)
+        wb_sheet_name = wb.get_sheet_by_name(wb.get_sheet_names()[0])
+        wb_sheet_name.append(data)
+        wb.save(file_path + file_name)
+        wb.close()
+
+
+def write_data_into_excel(file_path,season,orderNum,data):
+    #######write data into excel sheet
+    ##read excel file , if file not existed, create a new one.
+    if os.path.exists(file_path + season):
+        os.chdir(file_path + season)
+        if not os.path.exists(file_path + season + '/' + str(
+                orderNum) + '_Single_Sheet.xlsx'):
+            workbook = openpyxl.Workbook()
+            sheet = workbook.create_sheet(orderNum,index=0)
+            header = ["品牌/Brands", "订单类型/Order Type", "季度/Season", "订单号/Order No", "部门号/Department No",
+         "生产货号/Product No", "下单日期/Date of Order", "产品名称/Product Name",
+         "开发货号/Development No",
+         "双/包/No of Pieces", "国家/Country", "运输方式/Terms of Delivery",
+         "HM色号+颜色描述/Colour Code & Colour Name", "尺码/Size", "装箱方式/Packing Type",
+         "订单数量/Qty/Artical", "单价/Cost", "货币/Currency",
+         "总数量/总件数/Total Pairs/pcs", "出货日期/TOD", "编号/Artical No", "下载日期/Download Date"]
+            sheet.append(header)
+            sheet.append(data)
+            workbook.save(file_path + season + '/' + str(
+                orderNum) + '_Single_Sheet.xlsx')
+            workbook.close()
+            write_data_into_summary_excel(file_path,data,season)
+        else:
+            ##append data
+            wb = openpyxl.load_workbook(file_path + season + '/' + str(orderNum) + '_Single_Sheet.xlsx')
+            wb_sheet_name = wb.get_sheet_by_name(wb.get_sheet_names()[0])
+            wb_sheet_name.append(data)
+            wb.save(file_path + season + '/' + str(orderNum) + '_Single_Sheet.xlsx')
+            wb.close()
+        ###Summary Sheet
+            write_data_into_summary_excel(file_path,data,season)
+    else:
+        os.makedirs(file_path + season)
+        os.chdir(file_path + season)
+        if not os.path.exists(file_path + season + '/' + str(orderNum) + '_Single_Sheet.xlsx'):
+            workbook = openpyxl.Workbook()
+            sheet = workbook.create_sheet(orderNum, index=0)
+            header = ["品牌/Brands", "订单类型/Order Type", "季度/Season", "订单号/Order No", "部门号/Department No",
+                      "生产货号/Product No", "下单日期/Date of Order", "产品名称/Product Name",
+                      "开发货号/Development No",
+                      "双/包/No of Pieces", "国家/Country", "运输方式/Terms of Delivery",
+                      "HM色号+颜色描述/Colour Code & Colour Name", "尺码/Size", "装箱方式/Packing Type",
+                      "订单数量/Qty/Artical", "单价/Cost", "货币/Currency",
+                      "总数量/总件数/Total Pairs/pcs", "出货日期/TOD", "编号/Artical No", "下载日期/Download Date"]
+            sheet.append(header)
+            sheet.append(data)
+            workbook.save(file_path + season + '/' + str(
+                orderNum) + '_Single_Sheet.xlsx')
+            workbook.close()
+            write_data_into_summary_excel(file_path,data,season)
+
+        else:
+            ##append data
+            wb = openpyxl.load_workbook(file_path + season + '/' + str(orderNum) + '_Single_Sheet.xlsx')
+            wb_sheet_name = wb.get_sheet_by_name(wb.get_sheet_names()[0])
+            wb_sheet_name.append(data)
+            wb.save(file_path + season + '/' + str(orderNum) + '_Single_Sheet.xlsx')
+            wb.close()
+            ###Summary Sheet
+            write_data_into_summary_excel(file_path,data,season)
+
+
 # with pdfplumber.open('/Users/kristd/Downloads/2PDF/667098_PurchaseOrder_20230627_144321.pdf') as pdf:
 #     for page in pdf.pages:
 #         print(page.extract_text_simple())
@@ -160,23 +271,25 @@ def get_colourname_dicts(text, p1, p2):
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
+    log_path = '/Users/Kristd/Documents/github/pdf2excel/'
+    ###initial log file
+    os.remove(log_path+'pdf2excel.log')
+    log_file = logger.add(log_path+'pdf2excel.log')
     #get PurchaseOrder files list
     formatted_today = datetime.date.today().strftime('%Y%m%d')
     file_path= '/Users/Kristd/Documents/github/pdf2excel/In/'
     f = glob.glob(file_path+'*PurchaseOrder*')
-    pattern = 'UPDATE_*'
+    pattern = 'UPDATED_*'
     for i in f:  #PurchaseOrder loop, the outer loop
         file_name = os.path.basename(i)
         if re.search(pattern,file_name.upper()) is None:
             orderNum = file_name.split('_',1)[0]
-            ##print(orderNum)
+            logger.debug('Current Order Number: ' + str(orderNum))
             try:
-                #print(get_file_validation(file_path, orderNum, formatted_today,1))
-                if get_file_validation(file_path, orderNum, formatted_today,1):
+                if get_file_validation(file_path, orderNum,1):
                     # get the PurchaseOrder info and go down to the detail loop!!!!!!!!!!
+                    logger.debug('----------------------- New Order Scenario -----------------------')
                     ####New Order Scenario
-                    print(orderNum)
-                    print('NEW Order Scenario')
                     order_text = get_purchase_order_first_page_text(i)
                     order_info_array = split_lines(order_text)
                     brand = get_brand(order_info_array[1]) #Column A
@@ -211,8 +324,11 @@ if __name__ == '__main__':
                             time_delivery_last_position = p-1
                         if re.search(r'Invoice Average Price',order_info_array[p]) is not None:
                             price_1st_position = p
-                        if (re.search(r'By accepting',order_info_array[p]) is not None) or (re.search(r'License Order - Pool Party',order_info_array[p]) is not None):
-                            price_last_position = p-1
+                        if (re.search(r'By accepting',order_info_array[p]) is not None) or (re.search(r'License Order',order_info_array[p]) is not None):
+                            if price_last_position == 0:
+                                price_last_position = p-1
+                            elif price_last_position > p:
+                                price_last_position = p-1
                         if (re.search(r'Article No H&M Colour Code',order_info_array[p])):
                             colourname_1st_position = p
                         if (re.search(r'Total Quantity:',order_info_array[p])):
@@ -229,16 +345,22 @@ if __name__ == '__main__':
                     time_delivery_dict = {}
                     time_delivery_dict.clear()
                     time_delivery_dict = get_delivery_dates_dicts(order_info_array,time_delivery_1st_position+1,time_delivery_last_position+1)
+                    logger.debug('Print time Delivery Dict: ')
+                    logger.debug(time_delivery_dict)
 
                     ##create price mapping
                     price_dict = {}
-                    price_dict.clear()
                     price_dict = get_price_dicts(order_info_array,price_1st_position+1,price_last_position+1)
+                    logger.debug('Print price dict: ')
+                    logger.debug(price_dict)
+
 
                     ##create colourname mapping
                     colourname_dict = {}
                     colourname_dict.clear()
                     colourname_dict = get_colourname_dicts(order_info_array, colourname_1st_position+1,colourname_last_position+1)
+                    logger.debug('Print Colourname dict: ')
+                    logger.debug(colourname_dict)
 
                     ###detail loop start here
                     detail_pages = []
@@ -257,6 +379,8 @@ if __name__ == '__main__':
                         assortment_last_position = 0
                         solid_1st_position = 0
                         solid_last_position = 0
+
+
 
                         for p in range(0,len(order_detail_array)):
                             if (re.search(r'Assortment', order_detail_array[p])):
@@ -304,185 +428,373 @@ if __name__ == '__main__':
                                     colourcode_colourname =  colourcode_list[artical_list.index(a)]+' ' + str(colourname_dict[a])
                                     break
                             ## assorment/solid qty information
+
+
                             if assortment_1st_position > 0:
                                 packing_type = 'Assortment'
                                 #print(packing_type)
                                 no_of_asst_list = []
-                                for ap in range(assortment_1st_position+1,assortment_last_position+1):
-                                    if re.search(r'No of Asst:',order_detail_array[ap]) is not None:
+                                for ap in range(assortment_1st_position + 1, assortment_last_position + 1):
+                                    if re.search(r'No of Asst:', order_detail_array[ap]) is not None:
                                         no_of_asst_list = order_detail_array[ap].replace('No of Asst: ', '').split(' ')
                                         break
-                                for ap in range(assortment_1st_position+1,assortment_last_position+1):
+                                for ap in range(assortment_1st_position + 1, assortment_last_position + 1):
                                     if re.search(r'\(.*\)\*', order_detail_array[ap]) is not None:
-                                        size = re.findall(r'\(.*\)\*', order_detail_array[ap])[0].replace(')*', '').replace('(','')
+                                        size = re.findall(r'\(.*\)\*', order_detail_array[ap])[0].replace(')*',
+                                                                                                          '').replace(
+                                            '(', '')
                                         if re.findall(r'\* \d+.*', order_detail_array[ap]) == []:
                                             next
                                         else:
-                                            if re.findall(r'\* \d+.*', order_detail_array[ap]) is not []:
+                                            if re.findall(r'\* \d+.*', order_detail_array[ap]) is not [] and int(
+                                                    re.findall(r'\* \d+.*', order_detail_array[ap])[0].replace('* ',
+                                                                                                               '').split(
+                                                        ' ')[artical_list.index(a)])> 0:
                                                 qty_artical = int(
                                                     re.findall(r'\* \d+.*', order_detail_array[ap])[0].replace('* ',
                                                                                                                '').split(
-                                                        ' ')[artical_list.index(a)])
-
-                                                #######write data into excel sheet
-                                                ##read excel file , if file not existed, create a new one.
-                                                if os.path.exists(file_path+formatted_today):
-                                                    os.chdir(file_path + formatted_today)
-                                                    if not os.path.exists(file_path + formatted_today + '/' + str(
-                                                            orderNum) + '_Single_Sheet.xlsx'):
-                                                        df = pd.DataFrame(columns=["品牌/Brands", "订单类型/Order Type",
-                                                                                   "季度/Season", "订单号/Order No",
-                                                                                   "部门号/Department No",
-                                                                                   "生产货号/Product No",
-                                                                                   "下单日期/Date of Order",
-                                                                                   "产品名称/Product Name",
-                                                                                   "开发货号/Development No",
-                                                                                   "双/包/No of Pieces", "国家/Country",
-                                                                                   "运输方式/Terms of Delivery",
-                                                                                   "HM色号+颜色描述/Colour Code & Colour Name",
-                                                                                   "尺码/Size", "装箱方式/Packing Type",
-                                                                                   "订单数量/Qty/Artical", "单价/Cost",
-                                                                                   "货币/Currency",
-                                                                                   "总数量/总件数/Total Pairs/pcs",
-                                                                                   "出货日期/TOD", "编号/Artical No",
-                                                                                   "下载日期/Download Date"])
-                                                        df.to_excel(file_path + formatted_today + '/' + str(
-                                                            orderNum) + '_Single_Sheet.xlsx', index=False)
-                                                    else:
-                                                        df = pd.read_excel(file_path + formatted_today + '/' + str(
-                                                            orderNum) + '_Single_Sheet.xlsx', header=None)
-                                                        print(df)
-                                                else:
-                                                    os.makedirs(file_path+formatted_today)
-                                                    os.chdir(file_path+formatted_today)
-                                                    if not os.path.exists(file_path+formatted_today+'/'+ str(orderNum)+'_Single_Sheet.xlsx'):
-                                                        df = pd.DataFrame(columns=["品牌/Brands","订单类型/Order Type","季度/Season","订单号/Order No","部门号/Department No","生产货号/Product No","下单日期/Date of Order","产品名称/Product Name","开发货号/Development No",
-                                                                                       "双/包/No of Pieces","国家/Country","运输方式/Terms of Delivery","HM色号+颜色描述/Colour Code & Colour Name","尺码/Size","装箱方式/Packing Type","订单数量/Qty/Artical","单价/Cost","货币/Currency",
-                                                                                       "总数量/总件数/Total Pairs/pcs","出货日期/TOD","编号/Artical No","下载日期/Download Date"])
-                                                        df.to_excel(file_path+formatted_today+'/'+ str(orderNum)+'_Single_Sheet.xlsx',index=False)
-                                                    else:
-                                                        df = pd.read_excel(file_path+formatted_today+'/'+ str(orderNum)+'_Single_Sheet.xlsx',header=None)
-                                                        print(df)
+                                                        ' ')[artical_list.index(a)]) * int(
+                                                    no_of_asst_list[artical_list.index(a)])
+                                                ####call write_data_into_excel()
+                                                ##prepare dataset
+                                                data = [brand, order_type, season, order_no, department_no, product_no,
+                                                        date_of_order, product_name, development_no, no_of_pieces,
+                                                        country_name, fright_term.replace(',','')
+                                                    , colourcode_colourname, size, packing_type, qty_artical, cost,
+                                                        currency, int(no_of_pieces) * int(qty_artical), TOD, artical_no,
+                                                        download_date]
+                                                logger.debug('Writing data into excel sheet: ')
+                                                logger.debug(data)
+                                                write_data_into_excel(file_path, season, orderNum, data)
 
                             if solid_1st_position > 0:
                                 packing_type = 'Solid'
-                                print(packing_type)
-                                for sp in range(solid_1st_position+1,solid_last_position+1):
+                                #print(packing_type)
+                                for sp in range(solid_1st_position + 1, solid_last_position + 1):
                                     if re.search(r'\(.*\)\*', order_detail_array[sp]) is not None:
-                                        size = re.findall(r'\(.*\)\*', order_detail_array[sp])[0].replace(')*', '').replace('(','')
-                                        #print(re.findall(r'\* \d+.*', order_detail_array[sp])[0].replace('* ',''))
-                                        if re.findall(r'\* \d+.*',order_detail_array[sp]) == []:
+                                        size = re.findall(r'\(.*\)\*', order_detail_array[sp])[0].replace(')*',
+                                                                                                          '').replace(
+                                            '(', '')
+                                        # print(re.findall(r'\* \d+.*', order_detail_array[sp])[0].replace('* ',''))
+                                        if re.findall(r'\* \d+.*', order_detail_array[sp]) == []:
                                             next
                                         else:
-                                            if re.findall(r'\* \d+.*',order_detail_array[sp]) is not []:
-                                                qty_artical = int(re.findall(r'\* \d+.*',order_detail_array[sp])[0].replace('* ','').split(' ')[artical_list.index(a)])
-
+                                            if re.findall(r'\* \d+.*', order_detail_array[sp]) is not [] and int(
+                                                    re.findall(r'\* \d+.*', order_detail_array[sp])[0].replace('* ',
+                                                                                                               '').split(
+                                                        ' ')[artical_list.index(a)]) > 0 :
+                                                qty_artical = int(
+                                                    re.findall(r'\* \d+.*', order_detail_array[sp])[0].replace('* ',
+                                                                                                               '').split(
+                                                        ' ')[artical_list.index(a)])
                                                 #######write data into excel sheet
                                                 ##read excel file , if file not existed, create a new one.
-                                                if os.path.exists(file_path + formatted_today):
-                                                    os.chdir(file_path + formatted_today)
-                                                    if not os.path.exists(file_path + formatted_today + '/' + str(
-                                                            orderNum) + '_Single_Sheet.xlsx'):
-                                                        df = pd.DataFrame(columns=["品牌/Brands", "订单类型/Order Type",
-                                                                                   "季度/Season", "订单号/Order No",
-                                                                                   "部门号/Department No",
-                                                                                   "生产货号/Product No",
-                                                                                   "下单日期/Date of Order",
-                                                                                   "产品名称/Product Name",
-                                                                                   "开发货号/Development No",
-                                                                                   "双/包/No of Pieces", "国家/Country",
-                                                                                   "运输方式/Terms of Delivery",
-                                                                                   "HM色号+颜色描述/Colour Code & Colour Name",
-                                                                                   "尺码/Size", "装箱方式/Packing Type",
-                                                                                   "订单数量/Qty/Artical", "单价/Cost",
-                                                                                   "货币/Currency",
-                                                                                   "总数量/总件数/Total Pairs/pcs",
-                                                                                   "出货日期/TOD", "编号/Artical No",
-                                                                                   "下载日期/Download Date"])
-                                                        df.to_excel(file_path + formatted_today + '/' + str(
-                                                            orderNum) + '_Single_Sheet.xlsx', index=False)
-                                                    else:
-                                                        df = pd.read_excel(file_path + formatted_today + '/' + str(
-                                                            orderNum) + '_Single_Sheet.xlsx', header=None)
-                                                        print(df)
-                                                else:
-                                                    os.makedirs(file_path + formatted_today)
-                                                    os.chdir(file_path + formatted_today)
-                                                    if not os.path.exists(file_path + formatted_today + '/' + str(
-                                                            orderNum) + '_Single_Sheet.xlsx'):
-                                                        df = pd.DataFrame(columns=["品牌/Brands", "订单类型/Order Type",
-                                                                                   "季度/Season", "订单号/Order No",
-                                                                                   "部门号/Department No",
-                                                                                   "生产货号/Product No",
-                                                                                   "下单日期/Date of Order",
-                                                                                   "产品名称/Product Name",
-                                                                                   "开发货号/Development No",
-                                                                                   "双/包/No of Pieces", "国家/Country",
-                                                                                   "运输方式/Terms of Delivery",
-                                                                                   "HM色号+颜色描述/Colour Code & Colour Name",
-                                                                                   "尺码/Size", "装箱方式/Packing Type",
-                                                                                   "订单数量/Qty/Artical", "单价/Cost",
-                                                                                   "货币/Currency",
-                                                                                   "总数量/总件数/Total Pairs/pcs",
-                                                                                   "出货日期/TOD", "编号/Artical No",
-                                                                                   "下载日期/Download Date"])
-                                                        df.to_excel(file_path + formatted_today + '/' + str(
-                                                            orderNum) + '_Single_Sheet.xlsx', index=False)
-                                                    else:
-                                                        df = pd.read_excel(file_path + formatted_today + '/' + str(
-                                                            orderNum) + '_Single_Sheet.xlsx', header=None)
-                                                        print(df)
-
+                                                #prepare dataset
+                                                data = [brand, order_type, season, order_no, department_no, product_no,
+                                                        date_of_order, product_name, development_no, no_of_pieces,
+                                                        country_name, fright_term.replace(',',''),colourcode_colourname, size, packing_type, qty_artical, cost,
+                                                        currency, int(no_of_pieces) * int(qty_artical), TOD, artical_no,
+                                                        download_date]
+                                                logger.debug('Writing data into excel sheet: ')
+                                                logger.debug(data)
+                                                write_data_into_excel(file_path, season, orderNum, data)
                     ######end of detail loop
-                    print('')
-                    print('-----------')
-
                 else:
                     # throw error as the child file is not exists.
                     f = open(file_path + str(orderNum) + '_SizePerColourBreakdown*')
-
             except FileNotFoundError:
-                print('OrderNum: ' + orderNum)
-                print('')
+                logger.error('OrderNum: ' + str(orderNum) + ', file is not found!')
+
+            ###move processed file into Archive folder.
+            try:
+                if os.path.exists(i.replace('PurchaseOrder', 'SizePerColourBreakdown')):
+                    ##get the PurchaseOrder info and go down to the detail loop!!!!!!!!!!
+                    ####Update Order Scenarios
+                    archive_path = '/Users/Kristd/Documents/github/pdf2excel/Archive/'
+                    shutil.move(i, archive_path + file_name)
+                    shutil.move(i.replace('PurchaseOrder', 'SizePerColourBreakdown'),
+                                archive_path + file_name.replace('PurchaseOrder', 'SizePerColourBreakdown'))
+                    print( i+ ' : Files have been moved to Archive folder...')
+                else:
+                    # throw error as the child file is not exists.
+                    f = open(i.replace('PurchaseOrder', 'SizePerColourBreakdown'))
+            except FileNotFoundError:
                 print('File is not found!')
-                print('-----------')
 
 
         else:
             orderNum = file_name.split('_', 2)[1]
-            ##print(orderNum)
+            logger.debug('----------------------- Update Order Scenario -----------------------')
+            logger.debug('Update Order Number: ' + str(orderNum))
             try:
-                #print(get_file_validation(file_path,orderNum,formatted_today,2))
-                if get_file_validation(file_path,orderNum,formatted_today,2):
-                    ##get the PurchaseOrder info and go down to the detail loop!!!!!!!!!!
-                    ####Update Order Scenarios
-                    print('UPDATED Order Senario')
+                if get_file_validation(file_path, orderNum,2):
+                    # get the PurchaseOrder info and go down to the detail loop!!!!!!!!!!
+                    order_text = get_purchase_order_first_page_text(i)
+                    order_info_array = split_lines(order_text)
+                    season = get_season(order_info_array[6])  # Column C
+                    logger.debug('Season Code: ' + season)
+                    folder_path = file_path + season +'/'
+                    old_sheet_pattern = str(orderNum) + '_Single_Sheet.*'
+                    ###rename all the existed single excel sheet
+                    rename_file_from_season(folder_path,old_sheet_pattern)
+
+                    ###remove the order from summary excel sheet
+                    logger.debug(file_path+'Orders_Summary_'+season+'.xlsx')
+                    remove_flag = 0
+                    df = pd.read_excel(file_path+'Orders_Summary_'+season+'.xlsx').iloc[:,3]
+                    min_row = 1000000000
+                    max_row = 0
+                    for j in range(0,len(df)):
+                        if str(df[j])==str(orderNum):
+                            if j <= min_row:
+                                min_row = j
+                            if j >= max_row:
+                                max_row = j
+                    logger.debug('min row: ' + str(min_row+2))
+                    logger.debug('max row: ' + str(max_row+2))
+                    if max_row != 0:
+                        wb = openpyxl.load_workbook(file_path + 'Orders_Summary_' + season + '.xlsx')
+                        wb_sheet_name = wb.get_sheet_by_name(wb.get_sheet_names()[0])
+                        wb_sheet_name.delete_rows(min_row + 2, max_row + 2)
+                        wb.save(file_path + 'Orders_Summary_' + season + '.xlsx')
+                        wb.close()
+                        remove_flag = 1
+                    else:
+                        logger.debug('Did not find this Order in the Orders Summary Excel Sheet...')
+                        remove_flag = 0
+
+                    ###re-create the files
+                    if remove_flag == 1:
+                        brand = get_brand(order_info_array[1])  # Column A
+                        order_type = get_order_type(order_info_array[0])  # Column B
+                        order_no = get_order_no(order_info_array[3])  # Column D
+                        department_no = get_department_no(order_info_array[3])  # Column E
+                        product_no = get_product_no(order_info_array[3])  # Column F
+                        date_of_order = get_date_of_order(order_info_array[5])  # Column G
+                        product_name = get_product_name(order_info_array[4])  # Column H
+                        development_no = get_development_no(order_info_array[9])  # Column I
+                        no_of_pieces = get_no_of_pieces(order_info_array[12])  # Column J
+                        download_date = datetime.date.today().strftime('%Y-%m-%d')  # Column V
+
+                        ### create the price/country mapping information
+                        terms_1st_position = 0
+                        terms_last_position = 0
+                        time_delivery_1st_position = 0
+                        time_delivery_last_position = 0
+                        price_1st_position = 0
+                        price_last_position = 0
+                        colourname_1st_position = 0
+                        colourname_last_position = 0
+                        for p in range(0, len(order_info_array)):
+                            if re.search(r'Terms of Delivery', order_info_array[p]) is not None:
+                                terms_1st_position = p
+                            if re.search(r'Time of Delivery Planning Markets', order_info_array[p]) is not None:
+                                terms_last_position = p - 1
+                                time_delivery_1st_position = p
+                            if re.search(r'Total: \d+', order_info_array[p]) is not None:
+                                time_delivery_last_position = p - 1
+                            if re.search(r'Invoice Average Price', order_info_array[p]) is not None:
+                                price_1st_position = p
+                            if (re.search(r'By accepting', order_info_array[p]) is not None) or (
+                                    re.search(r'License Order', order_info_array[p]) is not None):
+                                if price_last_position == 0:
+                                    price_last_position = p - 1
+                                elif price_last_position > p:
+                                    price_last_position = p - 1
+                            if (re.search(r'Article No H&M Colour Code', order_info_array[p])):
+                                colourname_1st_position = p
+                            if (re.search(r'Total Quantity:', order_info_array[p])):
+                                colourname_last_position = p - 1
+
+                        ### create the country/term mapping
+                        term_dict = {}
+                        term_dict.clear()
+                        term_dict = get_term_dicts(order_info_array, terms_1st_position + 1, terms_last_position + 1)
+
+                        ##create the time delivery mapping
+                        time_delivery_dict = {}
+                        time_delivery_dict.clear()
+                        time_delivery_dict = get_delivery_dates_dicts(order_info_array, time_delivery_1st_position + 1,
+                                                                      time_delivery_last_position + 1)
+                        logger.debug('Print time Delivery Dict: ')
+                        logger.debug(time_delivery_dict)
+
+                        ##create price mapping
+                        price_dict = {}
+                        price_dict = get_price_dicts(order_info_array, price_1st_position + 1, price_last_position + 1)
+                        logger.debug('Print price dict: ')
+                        logger.debug(price_dict)
+
+                        ##create colourname mapping
+                        colourname_dict = {}
+                        colourname_dict.clear()
+                        colourname_dict = get_colourname_dicts(order_info_array, colourname_1st_position + 1,
+                                                               colourname_last_position + 1)
+                        logger.debug('Print Colourname dict: ')
+                        logger.debug(colourname_dict)
+
+                        ###detail loop start here
+                        detail_pages = []
+                        detail_pages = get_sizecolourbreakdown_pages_text(
+                            i.replace('PurchaseOrder', 'SizePerColourBreakdown'))
+                        for dp in range(0, len(detail_pages)):
+                            country_name = ''  # Column K
+                            fright_term = ''  # Column L
+                            cost = ''  # Column Q
+                            currency = ''  # Column R
+                            TOD = ''  # Column T
+                            page_text = detail_pages[dp].extract_text_simple()
+                            order_detail_array = split_lines(page_text)
+
+                            assortment_1st_position = 0
+                            assortment_last_position = 0
+                            solid_1st_position = 0
+                            solid_last_position = 0
+
+                            for p in range(0, len(order_detail_array)):
+                                if (re.search(r'Assortment', order_detail_array[p])):
+                                    assortment_1st_position = p
+                                if (re.search(r'Solid', order_detail_array[p])):
+                                    solid_1st_position = p
+                                    assortment_last_position = p - 1
+                                if (re.search(r'Total', order_detail_array[p])):
+                                    solid_last_position = p - 1
+
+                            country_code = get_detail_country_code(order_detail_array[11])
+                            ## get term
+
+                            for k in term_dict.keys():
+                                if re.search(country_code, str(k)) is not None:
+                                    country_name = k
+                                    fright_term = term_dict[k]
+                                    break
+                            ## get cost and currency
+                            for k in price_dict.keys():
+                                if re.search(country_code, str(k)) is not None:
+                                    cost = price_dict[k].split('-')[0]
+                                    currency = price_dict[k].split('-')[1]
+                                    break
+
+                            for k in time_delivery_dict.keys():
+                                if re.search(country_code, str(k)) is not None:
+                                    TOD = time_delivery_dict[k]
+                                    break
+
+                            ##get artical NO & colourcode+colourname
+                            artical_list = re.findall(r'\d+.*\d+', order_detail_array[12])[0].split(' ')
+                            colourcode_list = re.findall(r'\d+-.*', order_detail_array[13])[0].split(' ')
+                            # print(country_name)
+                            for a in artical_list:
+                                artical_no = ''  # Column U
+                                colourcode_colourname = ''  # Column M
+                                size = ''  # Column N
+                                packing_type = ''  # Column O
+                                qty_artical = ''  # Column P
+                                artical_no = a
+                                for k in colourname_dict.keys():
+                                    if a == k:
+                                        colourcode_colourname = colourcode_list[artical_list.index(a)] + ' ' + str(
+                                            colourname_dict[a])
+                                        break
+                                ## assorment/solid qty information
+
+                                if assortment_1st_position > 0:
+                                    packing_type = 'Assortment'
+                                    # print(packing_type)
+                                    no_of_asst_list = []
+                                    for ap in range(assortment_1st_position + 1, assortment_last_position + 1):
+                                        if re.search(r'No of Asst:', order_detail_array[ap]) is not None:
+                                            no_of_asst_list = order_detail_array[ap].replace('No of Asst: ', '').split(
+                                                ' ')
+                                            break
+                                    for ap in range(assortment_1st_position + 1, assortment_last_position + 1):
+                                        if re.search(r'\(.*\)\*', order_detail_array[ap]) is not None:
+                                            size = re.findall(r'\(.*\)\*', order_detail_array[ap])[0].replace(')*',
+                                                                                                              '').replace(
+                                                '(', '')
+                                            if re.findall(r'\* \d+.*', order_detail_array[ap]) == []:
+                                                next
+                                            else:
+                                                if re.findall(r'\* \d+.*', order_detail_array[ap]) is not [] and int(
+                                                        re.findall(r'\* \d+.*', order_detail_array[ap])[0].replace('* ',
+                                                                                                                   '').split(
+                                                            ' ')[artical_list.index(a)]) > 0:
+                                                    qty_artical = int(
+                                                        re.findall(r'\* \d+.*', order_detail_array[ap])[0].replace('* ',
+                                                                                                                   '').split(
+                                                            ' ')[artical_list.index(a)]) * int(
+                                                        no_of_asst_list[artical_list.index(a)])
+                                                    ####call write_data_into_excel()
+                                                    ##prepare dataset
+                                                    data = [brand, order_type, season, order_no, department_no,
+                                                            product_no,
+                                                            date_of_order, product_name, development_no, no_of_pieces,
+                                                            country_name, fright_term.replace(',', '')
+                                                        , colourcode_colourname, size, packing_type, qty_artical, cost,
+                                                            currency, int(no_of_pieces) * int(qty_artical), TOD,
+                                                            artical_no,
+                                                            download_date]
+                                                    logger.debug('Writing data into excel sheet: ')
+                                                    logger.debug(data)
+                                                    write_data_into_excel(file_path, season, orderNum, data)
+
+                                if solid_1st_position > 0:
+                                    packing_type = 'Solid'
+                                    # print(packing_type)
+                                    for sp in range(solid_1st_position + 1, solid_last_position + 1):
+                                        if re.search(r'\(.*\)\*', order_detail_array[sp]) is not None:
+                                            size = re.findall(r'\(.*\)\*', order_detail_array[sp])[0].replace(')*',
+                                                                                                              '').replace(
+                                                '(', '')
+                                            # print(re.findall(r'\* \d+.*', order_detail_array[sp])[0].replace('* ',''))
+                                            if re.findall(r'\* \d+.*', order_detail_array[sp]) == []:
+                                                next
+                                            else:
+                                                if re.findall(r'\* \d+.*', order_detail_array[sp]) is not [] and int(
+                                                        re.findall(r'\* \d+.*', order_detail_array[sp])[0].replace('* ',
+                                                                                                                   '').split(
+                                                            ' ')[artical_list.index(a)]) > 0:
+                                                    qty_artical = int(
+                                                        re.findall(r'\* \d+.*', order_detail_array[sp])[0].replace('* ',
+                                                                                                                   '').split(
+                                                            ' ')[artical_list.index(a)])
+                                                    #######write data into excel sheet
+                                                    ##read excel file , if file not existed, create a new one.
+                                                    # prepare dataset
+                                                    data = [brand, order_type, season, order_no, department_no,
+                                                            product_no,
+                                                            date_of_order, product_name, development_no, no_of_pieces,
+                                                            country_name, fright_term.replace(',', ''),
+                                                            colourcode_colourname, size, packing_type, qty_artical,
+                                                            cost,
+                                                            currency, int(no_of_pieces) * int(qty_artical), TOD,
+                                                            artical_no,
+                                                            download_date]
+                                                    logger.debug('Writing data into excel sheet: ')
+                                                    logger.debug(data)
+                                                    write_data_into_excel(file_path, season, orderNum, data)
                 else:
-                    #throw error as the child file is not exists.
-                    f = open(file_path + str(orderNum) +'_SizePerColourBreakdown*')
+                    # throw error as the child file is not exists.
+                    f = open(file_path + 'updated_' + str(orderNum) + '_SizePerColourBreakdown*')
             except FileNotFoundError:
-                print('File is not found!')
+                 logger.error('OrderNum: ' + str(orderNum) + ', file is not found!')
 
-    ##end of outer for loop
-
-    #logic to remove files in Archive folder older than 1 year
-    archive_path = '/Users/Kristd/TJ/Nutstore Files/Project/python/pdf2excel/Archive/'
-    last_year_date = (datetime.date.today()+datetime.timedelta(days=-365)).strftime('%Y%m%d')
-    f2 = glob.glob(archive_path + '*PurchaseOrder*')
-    for i_d in f2:
-        file_name = os.path.basename(i_d)
-        if re.search(pattern, file_name.upper()) is None:
-            l_date = file_name.split('_',4)[2]
-            #print(l_date)
-        else:
-            l_date = file_name.split('_', 5)[3]
-            #print(l_date)
-
-        if l_date < last_year_date:
-            os.remove(i_d)
-            i_sd = i_d.replace('PurchaseOrder','SizePerColourBreakdown')
-            os.remove(i_sd)
-            print('Files have been removed')
+                    ###move processed file into Archive folder.
+                try:
+                    if os.path.exists(i.replace('PurchaseOrder', 'SizePerColourBreakdown')):
+                        ##get the PurchaseOrder info and go down to the detail loop!!!!!!!!!!
+                        ####Update Order Scenarios
+                        archive_path = '/Users/Kristd/Documents/github/pdf2excel/Archive/'
+                        shutil.move(i, archive_path + file_name)
+                        shutil.move(i.replace('PurchaseOrder', 'SizePerColourBreakdown'),
+                                archive_path + file_name.replace('PurchaseOrder', 'SizePerColourBreakdown'))
+                        print(i + ' : Files have been moved to Archive folder...')
+                    else:
+                        # throw error as the child file is not exists.
+                        f = open(i.replace('PurchaseOrder', 'SizePerColourBreakdown'))
+                except FileNotFoundError:
+                    print('File is not found!')
+        ##end of outer for loop
 
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
