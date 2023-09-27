@@ -1,1 +1,8 @@
 .idea
+Archive
+build
+dist
+excel_order
+pdf_order
+pdf2excel.log
+pdf2excel_update_bk.log
