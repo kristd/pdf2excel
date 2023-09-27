@@ -1,190 +1,123 @@
-2023-09-22 22:12:40.150 | DEBUG    | __main__:<module>:527 - ----------------------- Update Order Scenario -----------------------
-2023-09-22 22:12:40.150 | DEBUG    | __main__:<module>:528 - Update Order Number: 619973
-2023-09-22 22:12:40.246 | DEBUG    | __main__:<module>:535 - Season Code: S8-2023
-2023-09-22 22:12:40.247 | DEBUG    | __main__:rename_file_from_season:28 - Moving file from /Users/Kristd/Documents/github/pdf2excel/In/S8-2023/619973_Single_Sheet_5.xlsx to /Users/Kristd/Documents/github/pdf2excel/In/S8-2023/619973_Single_Sheet_6.xlsx
-2023-09-22 22:12:40.247 | DEBUG    | __main__:rename_file_from_season:24 - Moving file from /Users/Kristd/Documents/github/pdf2excel/In/S8-2023/619973_Single_Sheet.xlsx to /Users/Kristd/Documents/github/pdf2excel/In/S8-2023/619973_Single_Sheet_1.xlsx
-2023-09-22 22:12:40.247 | DEBUG    | __main__:<module>:542 - /Users/Kristd/Documents/github/pdf2excel/In/Orders_Summary_S8-2023.xlsx
-2023-09-22 22:12:40.378 | DEBUG    | __main__:<module>:553 - min row: 406
-2023-09-22 22:12:40.378 | DEBUG    | __main__:<module>:554 - max row: 493
-2023-09-22 22:12:40.592 | DEBUG    | __main__:<module>:619 - Print time Delivery Dict: 
-2023-09-22 22:12:40.592 | DEBUG    | __main__:<module>:620 - {'SW, OT, OD': '2023-6-26', 'OU, OF, OI, LH': '2023-7-03', 'NL/OE, OG, DR': '2023-7-10', 'LD': '2023-7-17', 'OK': '2023-7-31', 'OJ, OO': '2023-8-07', 'OB': '2023-8-21'}
-2023-09-22 22:12:40.592 | DEBUG    | __main__:<module>:625 - Print price dict: 
-2023-09-22 22:12:40.592 | DEBUG    | __main__:<module>:626 - {'OB': '17.02-CNY', 'OD': '2.38-USD', 'NL/OE, OU, OG, SW, OF, OJ, OK, OT, OI, LD, LH, DR, OOBy accepting and performing under this Order, the Supplier acknowledges:': '2.42-USD'}
-2023-09-22 22:12:40.593 | DEBUG    | __main__:<module>:633 - Print Colourname dict: 
-2023-09-22 22:12:40.593 | DEBUG    | __main__:<module>:634 - {'007': 'Lilac Purple Light Placement print'}
-2023-09-22 22:12:40.661 | DEBUG    | __main__:<module>:773 - Writing data into excel sheet: 
-2023-09-22 22:12:40.662 | DEBUG    | __main__:<module>:774 - ['H&M', 'Online', 'S8-2023', '619973', '7921', '1133559', '2023-5-23', 'Marie Fancy 7PACK socks', '1172439D', '7', 'OE-中欧', 'sea', '64-202 Lilac Purple Light Placement print', '22/24', 'Solid', 320, '2.42', 'USD', 2240, '2023-7-10', '007', '2023-09-22']
-2023-09-22 22:12:40.837 | DEBUG    | __main__:<module>:773 - Writing data into excel sheet: 
-2023-09-22 22:12:40.837 | DEBUG    | __main__:<module>:774 - ['H&M', 'Online', 'S8-2023', '619973', '7921', '1133559', '2023-5-23', 'Marie Fancy 7PACK socks', '1172439D', '7', 'OE-中欧', 'sea', '64-202 Lilac Purple Light Placement print', '25/27', 'Solid', 680, '2.42', 'USD', 4760, '2023-7-10', '007', '2023-09-22']
-2023-09-22 22:12:41.032 | DEBUG    | __main__:<module>:773 - Writing data into excel sheet: 
-2023-09-22 22:12:41.032 | DEBUG    | __main__:<module>:774 - ['H&M', 'Online', 'S8-2023', '619973', '7921', '1133559', '2023-5-23', 'Marie Fancy 7PACK socks', '1172439D', '7', 'OE-中欧', 'sea', '64-202 Lilac Purple Light Placement print', '28/30', 'Solid', 760, '2.42', 'USD', 5320, '2023-7-10', '007', '2023-09-22']
-2023-09-22 22:12:41.230 | DEBUG    | __main__:<module>:773 - Writing data into excel sheet: 
-2023-09-22 22:12:41.230 | DEBUG    | __main__:<module>:774 - ['H&M', 'Online', 'S8-2023', '619973', '7921', '1133559', '2023-5-23', 'Marie Fancy 7PACK socks', '1172439D', '7', 'OE-中欧', 'sea', '64-202 Lilac Purple Light Placement print', '31/33', 'Solid', 800, '2.42', 'USD', 5600, '2023-7-10', '007', '2023-09-22']
-2023-09-22 22:12:41.428 | DEBUG    | __main__:<module>:773 - Writing data into excel sheet: 
-2023-09-22 22:12:41.428 | DEBUG    | __main__:<module>:774 - ['H&M', 'Online', 'S8-2023', '619973', '7921', '1133559', '2023-5-23', 'Marie Fancy 7PACK socks', '1172439D', '7', 'OE-中欧', 'sea', '64-202 Lilac Purple Light Placement print', '34/36', 'Solid', 880, '2.42', 'USD', 6160, '2023-7-10', '007', '2023-09-22']
-2023-09-22 22:12:41.630 | DEBUG    | __main__:<module>:773 - Writing data into excel sheet: 
-2023-09-22 22:12:41.630 | DEBUG    | __main__:<module>:774 - ['H&M', 'Online', 'S8-2023', '619973', '7921', '1133559', '2023-5-23', 'Marie Fancy 7PACK socks', '1172439D', '7', 'OE-中欧', 'sea', '64-202 Lilac Purple Light Placement print', '37/39', 'Solid', 560, '2.42', 'USD', 3920, '2023-7-10', '007', '2023-09-22']
-2023-09-22 22:12:41.882 | DEBUG    | __main__:<module>:773 - Writing data into excel sheet: 
-2023-09-22 22:12:41.882 | DEBUG    | __main__:<module>:774 - ['H&M', 'Online', 'S8-2023', '619973', '7921', '1133559', '2023-5-23', 'Marie Fancy 7PACK socks', '1172439D', '7', 'OU-美国', 'sea', '64-202 Lilac Purple Light Placement print', '22/24', 'Solid', 172, '2.42', 'USD', 1204, '2023-7-03', '007', '2023-09-22']
-2023-09-22 22:12:42.087 | DEBUG    | __main__:<module>:773 - Writing data into excel sheet: 
-2023-09-22 22:12:42.087 | DEBUG    | __main__:<module>:774 - ['H&M', 'Online', 'S8-2023', '619973', '7921', '1133559', '2023-5-23', 'Marie Fancy 7PACK socks', '1172439D', '7', 'OU-美国', 'sea', '64-202 Lilac Purple Light Placement print', '25/27', 'Solid', 265, '2.42', 'USD', 1855, '2023-7-03', '007', '2023-09-22']
-2023-09-22 22:12:42.291 | DEBUG    | __main__:<module>:773 - Writing data into excel sheet: 
-2023-09-22 22:12:42.291 | DEBUG    | __main__:<module>:774 - ['H&M', 'Online', 'S8-2023', '619973', '7921', '1133559', '2023-5-23', 'Marie Fancy 7PACK socks', '1172439D', '7', 'OU-美国', 'sea', '64-202 Lilac Purple Light Placement print', '28/30', 'Solid', 374, '2.42', 'USD', 2618, '2023-7-03', '007', '2023-09-22']
-2023-09-22 22:12:42.495 | DEBUG    | __main__:<module>:773 - Writing data into excel sheet: 
-2023-09-22 22:12:42.496 | DEBUG    | __main__:<module>:774 - ['H&M', 'Online', 'S8-2023', '619973', '7921', '1133559', '2023-5-23', 'Marie Fancy 7PACK socks', '1172439D', '7', 'OU-美国', 'sea', '64-202 Lilac Purple Light Placement print', '31/33', 'Solid', 327, '2.42', 'USD', 2289, '2023-7-03', '007', '2023-09-22']
-2023-09-22 22:12:42.702 | DEBUG    | __main__:<module>:773 - Writing data into excel sheet: 
-2023-09-22 22:12:42.702 | DEBUG    | __main__:<module>:774 - ['H&M', 'Online', 'S8-2023', '619973', '7921', '1133559', '2023-5-23', 'Marie Fancy 7PACK socks', '1172439D', '7', 'OU-美国', 'sea', '64-202 Lilac Purple Light Placement print', '34/36', 'Solid', 249, '2.42', 'USD', 1743, '2023-7-03', '007', '2023-09-22']
-2023-09-22 22:12:42.884 | DEBUG    | __main__:<module>:773 - Writing data into excel sheet: 
-2023-09-22 22:12:42.884 | DEBUG    | __main__:<module>:774 - ['H&M', 'Online', 'S8-2023', '619973', '7921', '1133559', '2023-5-23', 'Marie Fancy 7PACK socks', '1172439D', '7', 'OU-美国', 'sea', '64-202 Lilac Purple Light Placement print', '37/39', 'Solid', 172, '2.42', 'USD', 1204, '2023-7-03', '007', '2023-09-22']
-2023-09-22 22:12:43.140 | DEBUG    | __main__:<module>:773 - Writing data into excel sheet: 
-2023-09-22 22:12:43.140 | DEBUG    | __main__:<module>:774 - ['H&M', 'Online', 'S8-2023', '619973', '7921', '1133559', '2023-5-23', 'Marie Fancy 7PACK socks', '1172439D', '7', 'OG-英国', 'sea', '64-202 Lilac Purple Light Placement print', '22/24', 'Solid', 264, '2.42', 'USD', 1848, '2023-7-10', '007', '2023-09-22']
-2023-09-22 22:12:43.343 | DEBUG    | __main__:<module>:773 - Writing data into excel sheet: 
-2023-09-22 22:12:43.343 | DEBUG    | __main__:<module>:774 - ['H&M', 'Online', 'S8-2023', '619973', '7921', '1133559', '2023-5-23', 'Marie Fancy 7PACK socks', '1172439D', '7', 'OG-英国', 'sea', '64-202 Lilac Purple Light Placement print', '25/27', 'Solid', 320, '2.42', 'USD', 2240, '2023-7-10', '007', '2023-09-22']
-2023-09-22 22:12:43.546 | DEBUG    | __main__:<module>:773 - Writing data into excel sheet: 
-2023-09-22 22:12:43.546 | DEBUG    | __main__:<module>:774 - ['H&M', 'Online', 'S8-2023', '619973', '7921', '1133559', '2023-5-23', 'Marie Fancy 7PACK socks', '1172439D', '7', 'OG-英国', 'sea', '64-202 Lilac Purple Light Placement print', '28/30', 'Solid', 301, '2.42', 'USD', 2107, '2023-7-10', '007', '2023-09-22']
-2023-09-22 22:12:43.755 | DEBUG    | __main__:<module>:773 - Writing data into excel sheet: 
-2023-09-22 22:12:43.755 | DEBUG    | __main__:<module>:774 - ['H&M', 'Online', 'S8-2023', '619973', '7921', '1133559', '2023-5-23', 'Marie Fancy 7PACK socks', '1172439D', '7', 'OG-英国', 'sea', '64-202 Lilac Purple Light Placement print', '31/33', 'Solid', 339, '2.42', 'USD', 2373, '2023-7-10', '007', '2023-09-22']
-2023-09-22 22:12:43.959 | DEBUG    | __main__:<module>:773 - Writing data into excel sheet: 
-2023-09-22 22:12:43.960 | DEBUG    | __main__:<module>:774 - ['H&M', 'Online', 'S8-2023', '619973', '7921', '1133559', '2023-5-23', 'Marie Fancy 7PACK socks', '1172439D', '7', 'OG-英国', 'sea', '64-202 Lilac Purple Light Placement print', '34/36', 'Solid', 358, '2.42', 'USD', 2506, '2023-7-10', '007', '2023-09-22']
-2023-09-22 22:12:44.162 | DEBUG    | __main__:<module>:773 - Writing data into excel sheet: 
-2023-09-22 22:12:44.162 | DEBUG    | __main__:<module>:774 - ['H&M', 'Online', 'S8-2023', '619973', '7921', '1133559', '2023-5-23', 'Marie Fancy 7PACK socks', '1172439D', '7', 'OG-英国', 'sea', '64-202 Lilac Purple Light Placement print', '37/39', 'Solid', 301, '2.42', 'USD', 2107, '2023-7-10', '007', '2023-09-22']
-2023-09-22 22:12:44.425 | DEBUG    | __main__:<module>:773 - Writing data into excel sheet: 
-2023-09-22 22:12:44.425 | DEBUG    | __main__:<module>:774 - ['H&M', 'Online', 'S8-2023', '619973', '7921', '1133559', '2023-5-23', 'Marie Fancy 7PACK socks', '1172439D', '7', 'SW-瑞典', 'sea', '64-202 Lilac Purple Light Placement print', '22/24', 'Solid', 225, '2.42', 'USD', 1575, '2023-6-26', '007', '2023-09-22']
-2023-09-22 22:12:44.638 | DEBUG    | __main__:<module>:773 - Writing data into excel sheet: 
-2023-09-22 22:12:44.638 | DEBUG    | __main__:<module>:774 - ['H&M', 'Online', 'S8-2023', '619973', '7921', '1133559', '2023-5-23', 'Marie Fancy 7PACK socks', '1172439D', '7', 'SW-瑞典', 'sea', '64-202 Lilac Purple Light Placement print', '25/27', 'Solid', 423, '2.42', 'USD', 2961, '2023-6-26', '007', '2023-09-22']
-2023-09-22 22:12:44.852 | DEBUG    | __main__:<module>:773 - Writing data into excel sheet: 
-2023-09-22 22:12:44.853 | DEBUG    | __main__:<module>:774 - ['H&M', 'Online', 'S8-2023', '619973', '7921', '1133559', '2023-5-23', 'Marie Fancy 7PACK socks', '1172439D', '7', 'SW-瑞典', 'sea', '64-202 Lilac Purple Light Placement print', '28/30', 'Solid', 479, '2.42', 'USD', 3353, '2023-6-26', '007', '2023-09-22']
-2023-09-22 22:12:45.065 | DEBUG    | __main__:<module>:773 - Writing data into excel sheet: 
-2023-09-22 22:12:45.065 | DEBUG    | __main__:<module>:774 - ['H&M', 'Online', 'S8-2023', '619973', '7921', '1133559', '2023-5-23', 'Marie Fancy 7PACK socks', '1172439D', '7', 'SW-瑞典', 'sea', '64-202 Lilac Purple Light Placement print', '31/33', 'Solid', 676, '2.42', 'USD', 4732, '2023-6-26', '007', '2023-09-22']
-2023-09-22 22:12:45.277 | DEBUG    | __main__:<module>:773 - Writing data into excel sheet: 
-2023-09-22 22:12:45.277 | DEBUG    | __main__:<module>:774 - ['H&M', 'Online', 'S8-2023', '619973', '7921', '1133559', '2023-5-23', 'Marie Fancy 7PACK socks', '1172439D', '7', 'SW-瑞典', 'sea', '64-202 Lilac Purple Light Placement print', '34/36', 'Solid', 648, '2.42', 'USD', 4536, '2023-6-26', '007', '2023-09-22']
-2023-09-22 22:12:45.491 | DEBUG    | __main__:<module>:773 - Writing data into excel sheet: 
-2023-09-22 22:12:45.492 | DEBUG    | __main__:<module>:774 - ['H&M', 'Online', 'S8-2023', '619973', '7921', '1133559', '2023-5-23', 'Marie Fancy 7PACK socks', '1172439D', '7', 'SW-瑞典', 'sea', '64-202 Lilac Purple Light Placement print', '37/39', 'Solid', 366, '2.42', 'USD', 2562, '2023-6-26', '007', '2023-09-22']
-2023-09-22 22:12:45.756 | DEBUG    | __main__:<module>:773 - Writing data into excel sheet: 
-2023-09-22 22:12:45.756 | DEBUG    | __main__:<module>:774 - ['H&M', 'Online', 'S8-2023', '619973', '7921', '1133559', '2023-5-23', 'Marie Fancy 7PACK socks', '1172439D', '7', 'OF-西班牙', 'sea', '64-202 Lilac Purple Light Placement print', '22/24', 'Solid', 83, '2.42', 'USD', 581, '2023-7-03', '007', '2023-09-22']
-2023-09-22 22:12:45.978 | DEBUG    | __main__:<module>:773 - Writing data into excel sheet: 
-2023-09-22 22:12:45.978 | DEBUG    | __main__:<module>:774 - ['H&M', 'Online', 'S8-2023', '619973', '7921', '1133559', '2023-5-23', 'Marie Fancy 7PACK socks', '1172439D', '7', 'OF-西班牙', 'sea', '64-202 Lilac Purple Light Placement print', '25/27', 'Solid', 166, '2.42', 'USD', 1162, '2023-7-03', '007', '2023-09-22']
-2023-09-22 22:12:46.201 | DEBUG    | __main__:<module>:773 - Writing data into excel sheet: 
-2023-09-22 22:12:46.201 | DEBUG    | __main__:<module>:774 - ['H&M', 'Online', 'S8-2023', '619973', '7921', '1133559', '2023-5-23', 'Marie Fancy 7PACK socks', '1172439D', '7', 'OF-西班牙', 'sea', '64-202 Lilac Purple Light Placement print', '28/30', 'Solid', 166, '2.42', 'USD', 1162, '2023-7-03', '007', '2023-09-22']
-2023-09-22 22:12:46.423 | DEBUG    | __main__:<module>:773 - Writing data into excel sheet: 
-2023-09-22 22:12:46.423 | DEBUG    | __main__:<module>:774 - ['H&M', 'Online', 'S8-2023', '619973', '7921', '1133559', '2023-5-23', 'Marie Fancy 7PACK socks', '1172439D', '7', 'OF-西班牙', 'sea', '64-202 Lilac Purple Light Placement print', '31/33', 'Solid', 159, '2.42', 'USD', 1113, '2023-7-03', '007', '2023-09-22']
-2023-09-22 22:12:46.647 | DEBUG    | __main__:<module>:773 - Writing data into excel sheet: 
-2023-09-22 22:12:46.647 | DEBUG    | __main__:<module>:774 - ['H&M', 'Online', 'S8-2023', '619973', '7921', '1133559', '2023-5-23', 'Marie Fancy 7PACK socks', '1172439D', '7', 'OF-西班牙', 'sea', '64-202 Lilac Purple Light Placement print', '34/36', 'Solid', 121, '2.42', 'USD', 847, '2023-7-03', '007', '2023-09-22']
-2023-09-22 22:12:46.868 | DEBUG    | __main__:<module>:773 - Writing data into excel sheet: 
-2023-09-22 22:12:46.869 | DEBUG    | __main__:<module>:774 - ['H&M', 'Online', 'S8-2023', '619973', '7921', '1133559', '2023-5-23', 'Marie Fancy 7PACK socks', '1172439D', '7', 'OF-西班牙', 'sea', '64-202 Lilac Purple Light Placement print', '37/39', 'Solid', 61, '2.42', 'USD', 427, '2023-7-03', '007', '2023-09-22']
-2023-09-22 22:12:47.139 | DEBUG    | __main__:<module>:773 - Writing data into excel sheet: 
-2023-09-22 22:12:47.139 | DEBUG    | __main__:<module>:774 - ['H&M', 'Online', 'S8-2023', '619973', '7921', '1133559', '2023-5-23', 'Marie Fancy 7PACK socks', '1172439D', '7', 'OB-中国', 'Road', '64-202 Lilac Purple Light Placement print', '22/24', 'Solid', 2, '17.02', 'CNY', 14, '2023-8-21', '007', '2023-09-22']
-2023-09-22 22:12:47.372 | DEBUG    | __main__:<module>:773 - Writing data into excel sheet: 
-2023-09-22 22:12:47.372 | DEBUG    | __main__:<module>:774 - ['H&M', 'Online', 'S8-2023', '619973', '7921', '1133559', '2023-5-23', 'Marie Fancy 7PACK socks', '1172439D', '7', 'OB-中国', 'Road', '64-202 Lilac Purple Light Placement print', '25/27', 'Solid', 4, '17.02', 'CNY', 28, '2023-8-21', '007', '2023-09-22']
-2023-09-22 22:12:47.597 | DEBUG    | __main__:<module>:773 - Writing data into excel sheet: 
-2023-09-22 22:12:47.597 | DEBUG    | __main__:<module>:774 - ['H&M', 'Online', 'S8-2023', '619973', '7921', '1133559', '2023-5-23', 'Marie Fancy 7PACK socks', '1172439D', '7', 'OB-中国', 'Road', '64-202 Lilac Purple Light Placement print', '28/30', 'Solid', 4, '17.02', 'CNY', 28, '2023-8-21', '007', '2023-09-22']
-2023-09-22 22:12:47.829 | DEBUG    | __main__:<module>:773 - Writing data into excel sheet: 
-2023-09-22 22:12:47.829 | DEBUG    | __main__:<module>:774 - ['H&M', 'Online', 'S8-2023', '619973', '7921', '1133559', '2023-5-23', 'Marie Fancy 7PACK socks', '1172439D', '7', 'OB-中国', 'Road', '64-202 Lilac Purple Light Placement print', '31/33', 'Solid', 5, '17.02', 'CNY', 35, '2023-8-21', '007', '2023-09-22']
-2023-09-22 22:12:48.054 | DEBUG    | __main__:<module>:773 - Writing data into excel sheet: 
-2023-09-22 22:12:48.055 | DEBUG    | __main__:<module>:774 - ['H&M', 'Online', 'S8-2023', '619973', '7921', '1133559', '2023-5-23', 'Marie Fancy 7PACK socks', '1172439D', '7', 'OB-中国', 'Road', '64-202 Lilac Purple Light Placement print', '34/36', 'Solid', 4, '17.02', 'CNY', 28, '2023-8-21', '007', '2023-09-22']
-2023-09-22 22:12:48.324 | DEBUG    | __main__:<module>:773 - Writing data into excel sheet: 
-2023-09-22 22:12:48.324 | DEBUG    | __main__:<module>:774 - ['H&M', 'Online', 'S8-2023', '619973', '7921', '1133559', '2023-5-23', 'Marie Fancy 7PACK socks', '1172439D', '7', 'OJ-日本', 'sea', '64-202 Lilac Purple Light Placement print', '22/24', 'Solid', 21, '2.42', 'USD', 147, '2023-8-07', '007', '2023-09-22']
-2023-09-22 22:12:48.555 | DEBUG    | __main__:<module>:773 - Writing data into excel sheet: 
-2023-09-22 22:12:48.555 | DEBUG    | __main__:<module>:774 - ['H&M', 'Online', 'S8-2023', '619973', '7921', '1133559', '2023-5-23', 'Marie Fancy 7PACK socks', '1172439D', '7', 'OJ-日本', 'sea', '64-202 Lilac Purple Light Placement print', '25/27', 'Solid', 27, '2.42', 'USD', 189, '2023-8-07', '007', '2023-09-22']
-2023-09-22 22:12:48.784 | DEBUG    | __main__:<module>:773 - Writing data into excel sheet: 
-2023-09-22 22:12:48.784 | DEBUG    | __main__:<module>:774 - ['H&M', 'Online', 'S8-2023', '619973', '7921', '1133559', '2023-5-23', 'Marie Fancy 7PACK socks', '1172439D', '7', 'OJ-日本', 'sea', '64-202 Lilac Purple Light Placement print', '28/30', 'Solid', 29, '2.42', 'USD', 203, '2023-8-07', '007', '2023-09-22']
-2023-09-22 22:12:49.013 | DEBUG    | __main__:<module>:773 - Writing data into excel sheet: 
-2023-09-22 22:12:49.013 | DEBUG    | __main__:<module>:774 - ['H&M', 'Online', 'S8-2023', '619973', '7921', '1133559', '2023-5-23', 'Marie Fancy 7PACK socks', '1172439D', '7', 'OJ-日本', 'sea', '64-202 Lilac Purple Light Placement print', '31/33', 'Solid', 37, '2.42', 'USD', 259, '2023-8-07', '007', '2023-09-22']
-2023-09-22 22:12:49.239 | DEBUG    | __main__:<module>:773 - Writing data into excel sheet: 
-2023-09-22 22:12:49.239 | DEBUG    | __main__:<module>:774 - ['H&M', 'Online', 'S8-2023', '619973', '7921', '1133559', '2023-5-23', 'Marie Fancy 7PACK socks', '1172439D', '7', 'OJ-日本', 'sea', '64-202 Lilac Purple Light Placement print', '34/36', 'Solid', 28, '2.42', 'USD', 196, '2023-8-07', '007', '2023-09-22']
-2023-09-22 22:12:49.479 | DEBUG    | __main__:<module>:773 - Writing data into excel sheet: 
-2023-09-22 22:12:49.479 | DEBUG    | __main__:<module>:774 - ['H&M', 'Online', 'S8-2023', '619973', '7921', '1133559', '2023-5-23', 'Marie Fancy 7PACK socks', '1172439D', '7', 'OJ-日本', 'sea', '64-202 Lilac Purple Light Placement print', '37/39', 'Solid', 11, '2.42', 'USD', 77, '2023-8-07', '007', '2023-09-22']
-2023-09-22 22:12:49.758 | DEBUG    | __main__:<module>:773 - Writing data into excel sheet: 
-2023-09-22 22:12:49.759 | DEBUG    | __main__:<module>:774 - ['H&M', 'Online', 'S8-2023', '619973', '7921', '1133559', '2023-5-23', 'Marie Fancy 7PACK socks', '1172439D', '7', 'OK-韩国', 'sea', '64-202 Lilac Purple Light Placement print', '22/24', 'Solid', 6, '2.42', 'USD', 42, '2023-7-31', '007', '2023-09-22']
-2023-09-22 22:12:49.998 | DEBUG    | __main__:<module>:773 - Writing data into excel sheet: 
-2023-09-22 22:12:49.998 | DEBUG    | __main__:<module>:774 - ['H&M', 'Online', 'S8-2023', '619973', '7921', '1133559', '2023-5-23', 'Marie Fancy 7PACK socks', '1172439D', '7', 'OK-韩国', 'sea', '64-202 Lilac Purple Light Placement print', '25/27', 'Solid', 9, '2.42', 'USD', 63, '2023-7-31', '007', '2023-09-22']
-2023-09-22 22:12:50.236 | DEBUG    | __main__:<module>:773 - Writing data into excel sheet: 
-2023-09-22 22:12:50.236 | DEBUG    | __main__:<module>:774 - ['H&M', 'Online', 'S8-2023', '619973', '7921', '1133559', '2023-5-23', 'Marie Fancy 7PACK socks', '1172439D', '7', 'OK-韩国', 'sea', '64-202 Lilac Purple Light Placement print', '28/30', 'Solid', 11, '2.42', 'USD', 77, '2023-7-31', '007', '2023-09-22']
-2023-09-22 22:12:50.475 | DEBUG    | __main__:<module>:773 - Writing data into excel sheet: 
-2023-09-22 22:12:50.475 | DEBUG    | __main__:<module>:774 - ['H&M', 'Online', 'S8-2023', '619973', '7921', '1133559', '2023-5-23', 'Marie Fancy 7PACK socks', '1172439D', '7', 'OK-韩国', 'sea', '64-202 Lilac Purple Light Placement print', '31/33', 'Solid', 12, '2.42', 'USD', 84, '2023-7-31', '007', '2023-09-22']
-2023-09-22 22:12:50.710 | DEBUG    | __main__:<module>:773 - Writing data into excel sheet: 
-2023-09-22 22:12:50.710 | DEBUG    | __main__:<module>:774 - ['H&M', 'Online', 'S8-2023', '619973', '7921', '1133559', '2023-5-23', 'Marie Fancy 7PACK socks', '1172439D', '7', 'OK-韩国', 'sea', '64-202 Lilac Purple Light Placement print', '34/36', 'Solid', 9, '2.42', 'USD', 63, '2023-7-31', '007', '2023-09-22']
-2023-09-22 22:12:50.994 | DEBUG    | __main__:<module>:773 - Writing data into excel sheet: 
-2023-09-22 22:12:50.995 | DEBUG    | __main__:<module>:774 - ['H&M', 'Online', 'S8-2023', '619973', '7921', '1133559', '2023-5-23', 'Marie Fancy 7PACK socks', '1172439D', '7', 'OT-土耳其', 'sea', '64-202 Lilac Purple Light Placement print', '22/24', 'Solid', 3, '2.42', 'USD', 21, '2023-6-26', '007', '2023-09-22']
-2023-09-22 22:12:51.234 | DEBUG    | __main__:<module>:773 - Writing data into excel sheet: 
-2023-09-22 22:12:51.234 | DEBUG    | __main__:<module>:774 - ['H&M', 'Online', 'S8-2023', '619973', '7921', '1133559', '2023-5-23', 'Marie Fancy 7PACK socks', '1172439D', '7', 'OT-土耳其', 'sea', '64-202 Lilac Purple Light Placement print', '25/27', 'Solid', 9, '2.42', 'USD', 63, '2023-6-26', '007', '2023-09-22']
-2023-09-22 22:12:51.466 | DEBUG    | __main__:<module>:773 - Writing data into excel sheet: 
-2023-09-22 22:12:51.467 | DEBUG    | __main__:<module>:774 - ['H&M', 'Online', 'S8-2023', '619973', '7921', '1133559', '2023-5-23', 'Marie Fancy 7PACK socks', '1172439D', '7', 'OT-土耳其', 'sea', '64-202 Lilac Purple Light Placement print', '28/30', 'Solid', 10, '2.42', 'USD', 70, '2023-6-26', '007', '2023-09-22']
-2023-09-22 22:12:51.704 | DEBUG    | __main__:<module>:773 - Writing data into excel sheet: 
-2023-09-22 22:12:51.705 | DEBUG    | __main__:<module>:774 - ['H&M', 'Online', 'S8-2023', '619973', '7921', '1133559', '2023-5-23', 'Marie Fancy 7PACK socks', '1172439D', '7', 'OT-土耳其', 'sea', '64-202 Lilac Purple Light Placement print', '31/33', 'Solid', 10, '2.42', 'USD', 70, '2023-6-26', '007', '2023-09-22']
-2023-09-22 22:12:51.941 | DEBUG    | __main__:<module>:773 - Writing data into excel sheet: 
-2023-09-22 22:12:51.941 | DEBUG    | __main__:<module>:774 - ['H&M', 'Online', 'S8-2023', '619973', '7921', '1133559', '2023-5-23', 'Marie Fancy 7PACK socks', '1172439D', '7', 'OT-土耳其', 'sea', '64-202 Lilac Purple Light Placement print', '34/36', 'Solid', 6, '2.42', 'USD', 42, '2023-6-26', '007', '2023-09-22']
-2023-09-22 22:12:52.215 | DEBUG    | __main__:<module>:773 - Writing data into excel sheet: 
-2023-09-22 22:12:52.215 | DEBUG    | __main__:<module>:774 - ['H&M', 'Online', 'S8-2023', '619973', '7921', '1133559', '2023-5-23', 'Marie Fancy 7PACK socks', '1172439D', '7', 'OT-土耳其', 'sea', '64-202 Lilac Purple Light Placement print', '37/39', 'Solid', 6, '2.42', 'USD', 42, '2023-6-26', '007', '2023-09-22']
-2023-09-22 22:12:52.507 | DEBUG    | __main__:<module>:773 - Writing data into excel sheet: 
-2023-09-22 22:12:52.507 | DEBUG    | __main__:<module>:774 - ['H&M', 'Online', 'S8-2023', '619973', '7921', '1133559', '2023-5-23', 'Marie Fancy 7PACK socks', '1172439D', '7', 'OI-印度', 'sea', '64-202 Lilac Purple Light Placement print', '22/24', 'Solid', 15, '2.42', 'USD', 105, '2023-7-03', '007', '2023-09-22']
-2023-09-22 22:12:52.751 | DEBUG    | __main__:<module>:773 - Writing data into excel sheet: 
-2023-09-22 22:12:52.751 | DEBUG    | __main__:<module>:774 - ['H&M', 'Online', 'S8-2023', '619973', '7921', '1133559', '2023-5-23', 'Marie Fancy 7PACK socks', '1172439D', '7', 'OI-印度', 'sea', '64-202 Lilac Purple Light Placement print', '25/27', 'Solid', 21, '2.42', 'USD', 147, '2023-7-03', '007', '2023-09-22']
-2023-09-22 22:12:52.995 | DEBUG    | __main__:<module>:773 - Writing data into excel sheet: 
-2023-09-22 22:12:52.995 | DEBUG    | __main__:<module>:774 - ['H&M', 'Online', 'S8-2023', '619973', '7921', '1133559', '2023-5-23', 'Marie Fancy 7PACK socks', '1172439D', '7', 'OI-印度', 'sea', '64-202 Lilac Purple Light Placement print', '28/30', 'Solid', 14, '2.42', 'USD', 98, '2023-7-03', '007', '2023-09-22']
-2023-09-22 22:12:53.253 | DEBUG    | __main__:<module>:773 - Writing data into excel sheet: 
-2023-09-22 22:12:53.253 | DEBUG    | __main__:<module>:774 - ['H&M', 'Online', 'S8-2023', '619973', '7921', '1133559', '2023-5-23', 'Marie Fancy 7PACK socks', '1172439D', '7', 'OI-印度', 'sea', '64-202 Lilac Purple Light Placement print', '31/33', 'Solid', 10, '2.42', 'USD', 70, '2023-7-03', '007', '2023-09-22']
-2023-09-22 22:12:53.503 | DEBUG    | __main__:<module>:773 - Writing data into excel sheet: 
-2023-09-22 22:12:53.503 | DEBUG    | __main__:<module>:774 - ['H&M', 'Online', 'S8-2023', '619973', '7921', '1133559', '2023-5-23', 'Marie Fancy 7PACK socks', '1172439D', '7', 'OI-印度', 'sea', '64-202 Lilac Purple Light Placement print', '34/36', 'Solid', 16, '2.42', 'USD', 112, '2023-7-03', '007', '2023-09-22']
-2023-09-22 22:12:53.752 | DEBUG    | __main__:<module>:773 - Writing data into excel sheet: 
-2023-09-22 22:12:53.752 | DEBUG    | __main__:<module>:774 - ['H&M', 'Online', 'S8-2023', '619973', '7921', '1133559', '2023-5-23', 'Marie Fancy 7PACK socks', '1172439D', '7', 'OI-印度', 'sea', '64-202 Lilac Purple Light Placement print', '37/39', 'Solid', 24, '2.42', 'USD', 168, '2023-7-03', '007', '2023-09-22']
-2023-09-22 22:12:54.049 | DEBUG    | __main__:<module>:773 - Writing data into excel sheet: 
-2023-09-22 22:12:54.049 | DEBUG    | __main__:<module>:774 - ['H&M', 'Online', 'S8-2023', '619973', '7921', '1133559', '2023-5-23', 'Marie Fancy 7PACK socks', '1172439D', '7', 'OD-中东', 'sea', '64-202 Lilac Purple Light Placement print', '22/24', 'Solid', 5, '2.38', 'USD', 35, '2023-6-26', '007', '2023-09-22']
-2023-09-22 22:12:54.301 | DEBUG    | __main__:<module>:773 - Writing data into excel sheet: 
-2023-09-22 22:12:54.302 | DEBUG    | __main__:<module>:774 - ['H&M', 'Online', 'S8-2023', '619973', '7921', '1133559', '2023-5-23', 'Marie Fancy 7PACK socks', '1172439D', '7', 'OD-中东', 'sea', '64-202 Lilac Purple Light Placement print', '25/27', 'Solid', 14, '2.38', 'USD', 98, '2023-6-26', '007', '2023-09-22']
-2023-09-22 22:12:54.584 | DEBUG    | __main__:<module>:773 - Writing data into excel sheet: 
-2023-09-22 22:12:54.585 | DEBUG    | __main__:<module>:774 - ['H&M', 'Online', 'S8-2023', '619973', '7921', '1133559', '2023-5-23', 'Marie Fancy 7PACK socks', '1172439D', '7', 'OD-中东', 'sea', '64-202 Lilac Purple Light Placement print', '28/30', 'Solid', 12, '2.38', 'USD', 84, '2023-6-26', '007', '2023-09-22']
-2023-09-22 22:12:54.840 | DEBUG    | __main__:<module>:773 - Writing data into excel sheet: 
-2023-09-22 22:12:54.840 | DEBUG    | __main__:<module>:774 - ['H&M', 'Online', 'S8-2023', '619973', '7921', '1133559', '2023-5-23', 'Marie Fancy 7PACK socks', '1172439D', '7', 'OD-中东', 'sea', '64-202 Lilac Purple Light Placement print', '31/33', 'Solid', 10, '2.38', 'USD', 70, '2023-6-26', '007', '2023-09-22']
-2023-09-22 22:12:55.091 | DEBUG    | __main__:<module>:773 - Writing data into excel sheet: 
-2023-09-22 22:12:55.091 | DEBUG    | __main__:<module>:774 - ['H&M', 'Online', 'S8-2023', '619973', '7921', '1133559', '2023-5-23', 'Marie Fancy 7PACK socks', '1172439D', '7', 'OD-中东', 'sea', '64-202 Lilac Purple Light Placement print', '34/36', 'Solid', 14, '2.38', 'USD', 98, '2023-6-26', '007', '2023-09-22']
-2023-09-22 22:12:55.345 | DEBUG    | __main__:<module>:773 - Writing data into excel sheet: 
-2023-09-22 22:12:55.345 | DEBUG    | __main__:<module>:774 - ['H&M', 'Online', 'S8-2023', '619973', '7921', '1133559', '2023-5-23', 'Marie Fancy 7PACK socks', '1172439D', '7', 'OD-中东', 'sea', '64-202 Lilac Purple Light Placement print', '37/39', 'Solid', 6, '2.38', 'USD', 42, '2023-6-26', '007', '2023-09-22']
-2023-09-22 22:12:55.646 | DEBUG    | __main__:<module>:773 - Writing data into excel sheet: 
-2023-09-22 22:12:55.646 | DEBUG    | __main__:<module>:774 - ['H&M', 'Online', 'S8-2023', '619973', '7921', '1133559', '2023-5-23', 'Marie Fancy 7PACK socks', '1172439D', '7', 'LD-墨西哥', 'sea', '64-202 Lilac Purple Light Placement print', '22/24', 'Solid', 31, '2.42', 'USD', 217, '2023-7-17', '007', '2023-09-22']
-2023-09-22 22:12:55.908 | DEBUG    | __main__:<module>:773 - Writing data into excel sheet: 
-2023-09-22 22:12:55.908 | DEBUG    | __main__:<module>:774 - ['H&M', 'Online', 'S8-2023', '619973', '7921', '1133559', '2023-5-23', 'Marie Fancy 7PACK socks', '1172439D', '7', 'LD-墨西哥', 'sea', '64-202 Lilac Purple Light Placement print', '25/27', 'Solid', 37, '2.42', 'USD', 259, '2023-7-17', '007', '2023-09-22']
-2023-09-22 22:12:56.161 | DEBUG    | __main__:<module>:773 - Writing data into excel sheet: 
-2023-09-22 22:12:56.161 | DEBUG    | __main__:<module>:774 - ['H&M', 'Online', 'S8-2023', '619973', '7921', '1133559', '2023-5-23', 'Marie Fancy 7PACK socks', '1172439D', '7', 'LD-墨西哥', 'sea', '64-202 Lilac Purple Light Placement print', '28/30', 'Solid', 41, '2.42', 'USD', 287, '2023-7-17', '007', '2023-09-22']
-2023-09-22 22:12:56.414 | DEBUG    | __main__:<module>:773 - Writing data into excel sheet: 
-2023-09-22 22:12:56.415 | DEBUG    | __main__:<module>:774 - ['H&M', 'Online', 'S8-2023', '619973', '7921', '1133559', '2023-5-23', 'Marie Fancy 7PACK socks', '1172439D', '7', 'LD-墨西哥', 'sea', '64-202 Lilac Purple Light Placement print', '31/33', 'Solid', 27, '2.42', 'USD', 189, '2023-7-17', '007', '2023-09-22']
-2023-09-22 22:12:56.704 | DEBUG    | __main__:<module>:773 - Writing data into excel sheet: 
-2023-09-22 22:12:56.704 | DEBUG    | __main__:<module>:774 - ['H&M', 'Online', 'S8-2023', '619973', '7921', '1133559', '2023-5-23', 'Marie Fancy 7PACK socks', '1172439D', '7', 'LD-墨西哥', 'sea', '64-202 Lilac Purple Light Placement print', '34/36', 'Solid', 37, '2.42', 'USD', 259, '2023-7-17', '007', '2023-09-22']
-2023-09-22 22:12:56.966 | DEBUG    | __main__:<module>:773 - Writing data into excel sheet: 
-2023-09-22 22:12:56.966 | DEBUG    | __main__:<module>:774 - ['H&M', 'Online', 'S8-2023', '619973', '7921', '1133559', '2023-5-23', 'Marie Fancy 7PACK socks', '1172439D', '7', 'LD-墨西哥', 'sea', '64-202 Lilac Purple Light Placement print', '37/39', 'Solid', 22, '2.42', 'USD', 154, '2023-7-17', '007', '2023-09-22']
-2023-09-22 22:12:57.275 | DEBUG    | __main__:<module>:773 - Writing data into excel sheet: 
-2023-09-22 22:12:57.275 | DEBUG    | __main__:<module>:774 - ['H&M', 'Online', 'S8-2023', '619973', '7921', '1133559', '2023-5-23', 'Marie Fancy 7PACK socks', '1172439D', '7', 'LH-波兰', 'sea', '64-202 Lilac Purple Light Placement print', '22/24', 'Solid', 120, '2.42', 'USD', 840, '2023-7-03', '007', '2023-09-22']
-2023-09-22 22:12:57.542 | DEBUG    | __main__:<module>:773 - Writing data into excel sheet: 
-2023-09-22 22:12:57.542 | DEBUG    | __main__:<module>:774 - ['H&M', 'Online', 'S8-2023', '619973', '7921', '1133559', '2023-5-23', 'Marie Fancy 7PACK socks', '1172439D', '7', 'LH-波兰', 'sea', '64-202 Lilac Purple Light Placement print', '25/27', 'Solid', 170, '2.42', 'USD', 1190, '2023-7-03', '007', '2023-09-22']
-2023-09-22 22:12:57.809 | DEBUG    | __main__:<module>:773 - Writing data into excel sheet: 
-2023-09-22 22:12:57.809 | DEBUG    | __main__:<module>:774 - ['H&M', 'Online', 'S8-2023', '619973', '7921', '1133559', '2023-5-23', 'Marie Fancy 7PACK socks', '1172439D', '7', 'LH-波兰', 'sea', '64-202 Lilac Purple Light Placement print', '28/30', 'Solid', 170, '2.42', 'USD', 1190, '2023-7-03', '007', '2023-09-22']
-2023-09-22 22:12:58.069 | DEBUG    | __main__:<module>:773 - Writing data into excel sheet: 
-2023-09-22 22:12:58.070 | DEBUG    | __main__:<module>:774 - ['H&M', 'Online', 'S8-2023', '619973', '7921', '1133559', '2023-5-23', 'Marie Fancy 7PACK socks', '1172439D', '7', 'LH-波兰', 'sea', '64-202 Lilac Purple Light Placement print', '31/33', 'Solid', 210, '2.42', 'USD', 1470, '2023-7-03', '007', '2023-09-22']
-2023-09-22 22:12:58.366 | DEBUG    | __main__:<module>:773 - Writing data into excel sheet: 
-2023-09-22 22:12:58.366 | DEBUG    | __main__:<module>:774 - ['H&M', 'Online', 'S8-2023', '619973', '7921', '1133559', '2023-5-23', 'Marie Fancy 7PACK socks', '1172439D', '7', 'LH-波兰', 'sea', '64-202 Lilac Purple Light Placement print', '34/36', 'Solid', 180, '2.42', 'USD', 1260, '2023-7-03', '007', '2023-09-22']
-2023-09-22 22:12:58.628 | DEBUG    | __main__:<module>:773 - Writing data into excel sheet: 
-2023-09-22 22:12:58.628 | DEBUG    | __main__:<module>:774 - ['H&M', 'Online', 'S8-2023', '619973', '7921', '1133559', '2023-5-23', 'Marie Fancy 7PACK socks', '1172439D', '7', 'LH-波兰', 'sea', '64-202 Lilac Purple Light Placement print', '37/39', 'Solid', 150, '2.42', 'USD', 1050, '2023-7-03', '007', '2023-09-22']
-2023-09-22 22:12:58.940 | DEBUG    | __main__:<module>:773 - Writing data into excel sheet: 
-2023-09-22 22:12:58.940 | DEBUG    | __main__:<module>:774 - ['H&M', 'Online', 'S8-2023', '619973', '7921', '1133559', '2023-5-23', 'Marie Fancy 7PACK socks', '1172439D', '7', 'OO-澳大利亚', 'sea', '64-202 Lilac Purple Light Placement print', '22/24', 'Solid', 1, '2.42', 'USD', 7, '2023-8-07', '007', '2023-09-22']
-2023-09-22 22:12:59.209 | DEBUG    | __main__:<module>:773 - Writing data into excel sheet: 
-2023-09-22 22:12:59.210 | DEBUG    | __main__:<module>:774 - ['H&M', 'Online', 'S8-2023', '619973', '7921', '1133559', '2023-5-23', 'Marie Fancy 7PACK socks', '1172439D', '7', 'OO-澳大利亚', 'sea', '64-202 Lilac Purple Light Placement print', '25/27', 'Solid', 2, '2.42', 'USD', 14, '2023-8-07', '007', '2023-09-22']
-2023-09-22 22:12:59.471 | DEBUG    | __main__:<module>:773 - Writing data into excel sheet: 
-2023-09-22 22:12:59.471 | DEBUG    | __main__:<module>:774 - ['H&M', 'Online', 'S8-2023', '619973', '7921', '1133559', '2023-5-23', 'Marie Fancy 7PACK socks', '1172439D', '7', 'OO-澳大利亚', 'sea', '64-202 Lilac Purple Light Placement print', '28/30', 'Solid', 2, '2.42', 'USD', 14, '2023-8-07', '007', '2023-09-22']
-2023-09-22 22:12:59.776 | DEBUG    | __main__:<module>:773 - Writing data into excel sheet: 
-2023-09-22 22:12:59.776 | DEBUG    | __main__:<module>:774 - ['H&M', 'Online', 'S8-2023', '619973', '7921', '1133559', '2023-5-23', 'Marie Fancy 7PACK socks', '1172439D', '7', 'OO-澳大利亚', 'sea', '64-202 Lilac Purple Light Placement print', '31/33', 'Solid', 2, '2.42', 'USD', 14, '2023-8-07', '007', '2023-09-22']
-2023-09-22 22:13:00.047 | DEBUG    | __main__:<module>:773 - Writing data into excel sheet: 
-2023-09-22 22:13:00.047 | DEBUG    | __main__:<module>:774 - ['H&M', 'Online', 'S8-2023', '619973', '7921', '1133559', '2023-5-23', 'Marie Fancy 7PACK socks', '1172439D', '7', 'OO-澳大利亚', 'sea', '64-202 Lilac Purple Light Placement print', '34/36', 'Solid', 2, '2.42', 'USD', 14, '2023-8-07', '007', '2023-09-22']
-2023-09-22 22:13:00.321 | DEBUG    | __main__:<module>:773 - Writing data into excel sheet: 
-2023-09-22 22:13:00.321 | DEBUG    | __main__:<module>:774 - ['H&M', 'Online', 'S8-2023', '619973', '7921', '1133559', '2023-5-23', 'Marie Fancy 7PACK socks', '1172439D', '7', 'OO-澳大利亚', 'sea', '64-202 Lilac Purple Light Placement print', '37/39', 'Solid', 1, '2.42', 'USD', 7, '2023-8-07', '007', '2023-09-22']
-2023-09-22 22:13:00.642 | DEBUG    | __main__:<module>:773 - Writing data into excel sheet: 
-2023-09-22 22:13:00.642 | DEBUG    | __main__:<module>:774 - ['H&M', 'Online', 'S8-2023', '619973', '7921', '1133559', '2023-5-23', 'Marie Fancy 7PACK socks', '1172439D', '7', 'DR-加拿大', 'sea', '64-202 Lilac Purple Light Placement print', '22/24', 'Solid', 115, '2.42', 'USD', 805, '2023-7-10', '007', '2023-09-22']
-2023-09-22 22:13:00.920 | DEBUG    | __main__:<module>:773 - Writing data into excel sheet: 
-2023-09-22 22:13:00.920 | DEBUG    | __main__:<module>:774 - ['H&M', 'Online', 'S8-2023', '619973', '7921', '1133559', '2023-5-23', 'Marie Fancy 7PACK socks', '1172439D', '7', 'DR-加拿大', 'sea', '64-202 Lilac Purple Light Placement print', '25/27', 'Solid', 178, '2.42', 'USD', 1246, '2023-7-10', '007', '2023-09-22']
-2023-09-22 22:13:01.224 | DEBUG    | __main__:<module>:773 - Writing data into excel sheet: 
-2023-09-22 22:13:01.224 | DEBUG    | __main__:<module>:774 - ['H&M', 'Online', 'S8-2023', '619973', '7921', '1133559', '2023-5-23', 'Marie Fancy 7PACK socks', '1172439D', '7', 'DR-加拿大', 'sea', '64-202 Lilac Purple Light Placement print', '28/30', 'Solid', 251, '2.42', 'USD', 1757, '2023-7-10', '007', '2023-09-22']
-2023-09-22 22:13:01.495 | DEBUG    | __main__:<module>:773 - Writing data into excel sheet: 
-2023-09-22 22:13:01.495 | DEBUG    | __main__:<module>:774 - ['H&M', 'Online', 'S8-2023', '619973', '7921', '1133559', '2023-5-23', 'Marie Fancy 7PACK socks', '1172439D', '7', 'DR-加拿大', 'sea', '64-202 Lilac Purple Light Placement print', '31/33', 'Solid', 220, '2.42', 'USD', 1540, '2023-7-10', '007', '2023-09-22']
-2023-09-22 22:13:01.770 | DEBUG    | __main__:<module>:773 - Writing data into excel sheet: 
-2023-09-22 22:13:01.771 | DEBUG    | __main__:<module>:774 - ['H&M', 'Online', 'S8-2023', '619973', '7921', '1133559', '2023-5-23', 'Marie Fancy 7PACK socks', '1172439D', '7', 'DR-加拿大', 'sea', '64-202 Lilac Purple Light Placement print', '34/36', 'Solid', 167, '2.42', 'USD', 1169, '2023-7-10', '007', '2023-09-22']
-2023-09-22 22:13:02.050 | DEBUG    | __main__:<module>:773 - Writing data into excel sheet: 
-2023-09-22 22:13:02.050 | DEBUG    | __main__:<module>:774 - ['H&M', 'Online', 'S8-2023', '619973', '7921', '1133559', '2023-5-23', 'Marie Fancy 7PACK socks', '1172439D', '7', 'DR-加拿大', 'sea', '64-202 Lilac Purple Light Placement print', '37/39', 'Solid', 115, '2.42', 'USD', 805, '2023-7-10', '007', '2023-09-22']
+2023-09-26 13:36:02.667 | DEBUG    | __main__:getConfig:22 - proDir : /Users/Kristd/Documents/github/pdf2excel
+2023-09-26 13:36:02.668 | DEBUG    | __main__:getConfig:22 - proDir : /Users/Kristd/Documents/github/pdf2excel
+2023-09-26 13:36:02.668 | DEBUG    | __main__:<module>:316 - Current Order Number: 586268
+2023-09-26 13:36:02.668 | DEBUG    | __main__:<module>:320 - ----------------------- New Order Scenario -----------------------
+2023-09-26 13:36:02.744 | DEBUG    | __main__:<module>:346 - None
+2023-09-26 13:36:02.745 | DEBUG    | __main__:<module>:346 - None
+2023-09-26 13:36:02.745 | DEBUG    | __main__:<module>:346 - None
+2023-09-26 13:36:02.745 | DEBUG    | __main__:<module>:346 - None
+2023-09-26 13:36:02.745 | DEBUG    | __main__:<module>:346 - None
+2023-09-26 13:36:02.745 | DEBUG    | __main__:<module>:346 - None
+2023-09-26 13:36:02.745 | DEBUG    | __main__:<module>:346 - None
+2023-09-26 13:36:02.746 | DEBUG    | __main__:<module>:346 - None
+2023-09-26 13:36:02.746 | DEBUG    | __main__:<module>:346 - None
+2023-09-26 13:36:02.746 | DEBUG    | __main__:<module>:346 - None
+2023-09-26 13:36:02.746 | DEBUG    | __main__:<module>:346 - None
+2023-09-26 13:36:02.746 | DEBUG    | __main__:<module>:346 - None
+2023-09-26 13:36:02.746 | DEBUG    | __main__:<module>:346 - None
+2023-09-26 13:36:02.746 | DEBUG    | __main__:<module>:346 - None
+2023-09-26 13:36:02.746 | DEBUG    | __main__:<module>:346 - None
+2023-09-26 13:36:02.746 | DEBUG    | __main__:<module>:346 - None
+2023-09-26 13:36:02.747 | DEBUG    | __main__:<module>:346 - None
+2023-09-26 13:36:02.747 | DEBUG    | __main__:<module>:346 - None
+2023-09-26 13:36:02.747 | DEBUG    | __main__:<module>:346 - None
+2023-09-26 13:36:02.747 | DEBUG    | __main__:<module>:346 - None
+2023-09-26 13:36:02.747 | DEBUG    | __main__:<module>:346 - None
+2023-09-26 13:36:02.747 | DEBUG    | __main__:<module>:346 - None
+2023-09-26 13:36:02.747 | DEBUG    | __main__:<module>:346 - None
+2023-09-26 13:36:02.747 | DEBUG    | __main__:<module>:346 - None
+2023-09-26 13:36:02.747 | DEBUG    | __main__:<module>:346 - None
+2023-09-26 13:36:02.748 | DEBUG    | __main__:<module>:346 - None
+2023-09-26 13:36:02.748 | DEBUG    | __main__:<module>:346 - None
+2023-09-26 13:36:02.748 | DEBUG    | __main__:<module>:346 - None
+2023-09-26 13:36:02.748 | DEBUG    | __main__:<module>:346 - None
+2023-09-26 13:36:02.748 | DEBUG    | __main__:<module>:346 - None
+2023-09-26 13:36:02.748 | DEBUG    | __main__:<module>:346 - <re.Match object; span=(0, 72), match='By accepting and performing under this Order, the>
+2023-09-26 13:36:02.748 | DEBUG    | __main__:<module>:346 - None
+2023-09-26 13:36:02.748 | DEBUG    | __main__:<module>:346 - None
+2023-09-26 13:36:02.748 | DEBUG    | __main__:<module>:346 - None
+2023-09-26 13:36:02.749 | DEBUG    | __main__:<module>:346 - None
+2023-09-26 13:36:02.749 | DEBUG    | __main__:<module>:346 - None
+2023-09-26 13:36:02.749 | DEBUG    | __main__:<module>:346 - None
+2023-09-26 13:36:02.749 | DEBUG    | __main__:<module>:346 - None
+2023-09-26 13:36:02.749 | DEBUG    | __main__:<module>:346 - None
+2023-09-26 13:36:02.749 | DEBUG    | __main__:<module>:346 - None
+2023-09-26 13:36:02.749 | DEBUG    | __main__:<module>:346 - None
+2023-09-26 13:36:02.749 | DEBUG    | __main__:getConfig:22 - proDir : /Users/Kristd/Documents/github/pdf2excel
+2023-09-26 13:36:02.768 | DEBUG    | __main__:<module>:381 - Print time Delivery Dict: 
+2023-09-26 13:36:02.768 | DEBUG    | __main__:<module>:382 - {'CL, PE, UY': '2023-11-27', 'ZA': '2023-12-11', 'AU': '2023-12-25'}
+2023-09-26 13:36:02.768 | DEBUG    | __main__:<module>:387 - Print price dict: 
+2023-09-26 13:36:02.768 | DEBUG    | __main__:<module>:388 - {'CL, AU, ZA, PE, UYBy accepting and performing under this Order, the Supplier acknowledges:': '2.32-USD'}
+2023-09-26 13:36:02.769 | DEBUG    | __main__:<module>:395 - Print Colourname dict: 
+2023-09-26 13:36:02.769 | DEBUG    | __main__:<module>:396 - {'058': 'Grey Dusty Light Placement print'}
+2023-09-26 13:36:02.828 | DEBUG    | __main__:<module>:529 - Writing data into excel sheet: 
+2023-09-26 13:36:02.829 | DEBUG    | __main__:<module>:530 - ['H&M', 'Store', 'S8-2023', '586268', '4214', '0487052', '2023-9-11', 'TP REGULAR SOCK 7PACK', '1168787D', '7', 'CL-智利', 'sea', '07-197 Grey Dusty Light Placement print', '22/24', 'Solid', 73, '2.32', 'USD', 511, '2023-11-27', '058', '2023-09-26']
+2023-09-26 13:36:02.842 | DEBUG    | __main__:<module>:529 - Writing data into excel sheet: 
+2023-09-26 13:36:02.842 | DEBUG    | __main__:<module>:530 - ['H&M', 'Store', 'S8-2023', '586268', '4214', '0487052', '2023-9-11', 'TP REGULAR SOCK 7PACK', '1168787D', '7', 'CL-智利', 'sea', '07-197 Grey Dusty Light Placement print', '25/27', 'Solid', 171, '2.32', 'USD', 1197, '2023-11-27', '058', '2023-09-26']
+2023-09-26 13:36:02.858 | DEBUG    | __main__:<module>:529 - Writing data into excel sheet: 
+2023-09-26 13:36:02.858 | DEBUG    | __main__:<module>:530 - ['H&M', 'Store', 'S8-2023', '586268', '4214', '0487052', '2023-9-11', 'TP REGULAR SOCK 7PACK', '1168787D', '7', 'CL-智利', 'sea', '07-197 Grey Dusty Light Placement print', '28/30', 'Solid', 207, '2.32', 'USD', 1449, '2023-11-27', '058', '2023-09-26']
+2023-09-26 13:36:02.873 | DEBUG    | __main__:<module>:529 - Writing data into excel sheet: 
+2023-09-26 13:36:02.873 | DEBUG    | __main__:<module>:530 - ['H&M', 'Store', 'S8-2023', '586268', '4214', '0487052', '2023-9-11', 'TP REGULAR SOCK 7PACK', '1168787D', '7', 'CL-智利', 'sea', '07-197 Grey Dusty Light Placement print', '31/33', 'Solid', 232, '2.32', 'USD', 1624, '2023-11-27', '058', '2023-09-26']
+2023-09-26 13:36:02.889 | DEBUG    | __main__:<module>:529 - Writing data into excel sheet: 
+2023-09-26 13:36:02.889 | DEBUG    | __main__:<module>:530 - ['H&M', 'Store', 'S8-2023', '586268', '4214', '0487052', '2023-9-11', 'TP REGULAR SOCK 7PACK', '1168787D', '7', 'CL-智利', 'sea', '07-197 Grey Dusty Light Placement print', '34/36', 'Solid', 268, '2.32', 'USD', 1876, '2023-11-27', '058', '2023-09-26']
+2023-09-26 13:36:02.907 | DEBUG    | __main__:<module>:529 - Writing data into excel sheet: 
+2023-09-26 13:36:02.907 | DEBUG    | __main__:<module>:530 - ['H&M', 'Store', 'S8-2023', '586268', '4214', '0487052', '2023-9-11', 'TP REGULAR SOCK 7PACK', '1168787D', '7', 'CL-智利', 'sea', '07-197 Grey Dusty Light Placement print', '37/39', 'Solid', 207, '2.32', 'USD', 1449, '2023-11-27', '058', '2023-09-26']
+2023-09-26 13:36:02.924 | DEBUG    | __main__:<module>:529 - Writing data into excel sheet: 
+2023-09-26 13:36:02.924 | DEBUG    | __main__:<module>:530 - ['H&M', 'Store', 'S8-2023', '586268', '4214', '0487052', '2023-9-11', 'TP REGULAR SOCK 7PACK', '1168787D', '7', 'CL-智利', 'sea', '07-197 Grey Dusty Light Placement print', '40/42', 'Solid', 61, '2.32', 'USD', 427, '2023-11-27', '058', '2023-09-26']
+2023-09-26 13:36:03.016 | DEBUG    | __main__:<module>:529 - Writing data into excel sheet: 
+2023-09-26 13:36:03.017 | DEBUG    | __main__:<module>:530 - ['H&M', 'Store', 'S8-2023', '586268', '4214', '0487052', '2023-9-11', 'TP REGULAR SOCK 7PACK', '1168787D', '7', 'AU-澳大利亚', 'sea', '07-197 Grey Dusty Light Placement print', '22/24', 'Solid', 8, '2.32', 'USD', 56, '2023-12-25', '058', '2023-09-26']
+2023-09-26 13:36:03.037 | DEBUG    | __main__:<module>:529 - Writing data into excel sheet: 
+2023-09-26 13:36:03.038 | DEBUG    | __main__:<module>:530 - ['H&M', 'Store', 'S8-2023', '586268', '4214', '0487052', '2023-9-11', 'TP REGULAR SOCK 7PACK', '1168787D', '7', 'AU-澳大利亚', 'sea', '07-197 Grey Dusty Light Placement print', '25/27', 'Solid', 20, '2.32', 'USD', 140, '2023-12-25', '058', '2023-09-26']
+2023-09-26 13:36:03.057 | DEBUG    | __main__:<module>:529 - Writing data into excel sheet: 
+2023-09-26 13:36:03.057 | DEBUG    | __main__:<module>:530 - ['H&M', 'Store', 'S8-2023', '586268', '4214', '0487052', '2023-9-11', 'TP REGULAR SOCK 7PACK', '1168787D', '7', 'AU-澳大利亚', 'sea', '07-197 Grey Dusty Light Placement print', '28/30', 'Solid', 24, '2.32', 'USD', 168, '2023-12-25', '058', '2023-09-26']
+2023-09-26 13:36:03.079 | DEBUG    | __main__:<module>:529 - Writing data into excel sheet: 
+2023-09-26 13:36:03.079 | DEBUG    | __main__:<module>:530 - ['H&M', 'Store', 'S8-2023', '586268', '4214', '0487052', '2023-9-11', 'TP REGULAR SOCK 7PACK', '1168787D', '7', 'AU-澳大利亚', 'sea', '07-197 Grey Dusty Light Placement print', '31/33', 'Solid', 26, '2.32', 'USD', 182, '2023-12-25', '058', '2023-09-26']
+2023-09-26 13:36:03.100 | DEBUG    | __main__:<module>:529 - Writing data into excel sheet: 
+2023-09-26 13:36:03.100 | DEBUG    | __main__:<module>:530 - ['H&M', 'Store', 'S8-2023', '586268', '4214', '0487052', '2023-9-11', 'TP REGULAR SOCK 7PACK', '1168787D', '7', 'AU-澳大利亚', 'sea', '07-197 Grey Dusty Light Placement print', '34/36', 'Solid', 31, '2.32', 'USD', 217, '2023-12-25', '058', '2023-09-26']
+2023-09-26 13:36:03.121 | DEBUG    | __main__:<module>:529 - Writing data into excel sheet: 
+2023-09-26 13:36:03.121 | DEBUG    | __main__:<module>:530 - ['H&M', 'Store', 'S8-2023', '586268', '4214', '0487052', '2023-9-11', 'TP REGULAR SOCK 7PACK', '1168787D', '7', 'AU-澳大利亚', 'sea', '07-197 Grey Dusty Light Placement print', '37/39', 'Solid', 24, '2.32', 'USD', 168, '2023-12-25', '058', '2023-09-26']
+2023-09-26 13:36:03.145 | DEBUG    | __main__:<module>:529 - Writing data into excel sheet: 
+2023-09-26 13:36:03.145 | DEBUG    | __main__:<module>:530 - ['H&M', 'Store', 'S8-2023', '586268', '4214', '0487052', '2023-9-11', 'TP REGULAR SOCK 7PACK', '1168787D', '7', 'AU-澳大利亚', 'sea', '07-197 Grey Dusty Light Placement print', '40/42', 'Solid', 7, '2.32', 'USD', 49, '2023-12-25', '058', '2023-09-26']
+2023-09-26 13:36:03.225 | DEBUG    | __main__:<module>:529 - Writing data into excel sheet: 
+2023-09-26 13:36:03.225 | DEBUG    | __main__:<module>:530 - ['H&M', 'Store', 'S8-2023', '586268', '4214', '0487052', '2023-9-11', 'TP REGULAR SOCK 7PACK', '1168787D', '7', 'ZA-南非', 'sea', '07-197 Grey Dusty Light Placement print', '22/24', 'Solid', 9, '2.32', 'USD', 63, '2023-12-11', '058', '2023-09-26']
+2023-09-26 13:36:03.252 | DEBUG    | __main__:<module>:529 - Writing data into excel sheet: 
+2023-09-26 13:36:03.253 | DEBUG    | __main__:<module>:530 - ['H&M', 'Store', 'S8-2023', '586268', '4214', '0487052', '2023-9-11', 'TP REGULAR SOCK 7PACK', '1168787D', '7', 'ZA-南非', 'sea', '07-197 Grey Dusty Light Placement print', '25/27', 'Solid', 22, '2.32', 'USD', 154, '2023-12-11', '058', '2023-09-26']
+2023-09-26 13:36:03.278 | DEBUG    | __main__:<module>:529 - Writing data into excel sheet: 
+2023-09-26 13:36:03.278 | DEBUG    | __main__:<module>:530 - ['H&M', 'Store', 'S8-2023', '586268', '4214', '0487052', '2023-9-11', 'TP REGULAR SOCK 7PACK', '1168787D', '7', 'ZA-南非', 'sea', '07-197 Grey Dusty Light Placement print', '28/30', 'Solid', 27, '2.32', 'USD', 189, '2023-12-11', '058', '2023-09-26']
+2023-09-26 13:36:03.305 | DEBUG    | __main__:<module>:529 - Writing data into excel sheet: 
+2023-09-26 13:36:03.305 | DEBUG    | __main__:<module>:530 - ['H&M', 'Store', 'S8-2023', '586268', '4214', '0487052', '2023-9-11', 'TP REGULAR SOCK 7PACK', '1168787D', '7', 'ZA-南非', 'sea', '07-197 Grey Dusty Light Placement print', '31/33', 'Solid', 30, '2.32', 'USD', 210, '2023-12-11', '058', '2023-09-26']
+2023-09-26 13:36:03.332 | DEBUG    | __main__:<module>:529 - Writing data into excel sheet: 
+2023-09-26 13:36:03.332 | DEBUG    | __main__:<module>:530 - ['H&M', 'Store', 'S8-2023', '586268', '4214', '0487052', '2023-9-11', 'TP REGULAR SOCK 7PACK', '1168787D', '7', 'ZA-南非', 'sea', '07-197 Grey Dusty Light Placement print', '34/36', 'Solid', 35, '2.32', 'USD', 245, '2023-12-11', '058', '2023-09-26']
+2023-09-26 13:36:03.360 | DEBUG    | __main__:<module>:529 - Writing data into excel sheet: 
+2023-09-26 13:36:03.360 | DEBUG    | __main__:<module>:530 - ['H&M', 'Store', 'S8-2023', '586268', '4214', '0487052', '2023-9-11', 'TP REGULAR SOCK 7PACK', '1168787D', '7', 'ZA-南非', 'sea', '07-197 Grey Dusty Light Placement print', '37/39', 'Solid', 27, '2.32', 'USD', 189, '2023-12-11', '058', '2023-09-26']
+2023-09-26 13:36:03.389 | DEBUG    | __main__:<module>:529 - Writing data into excel sheet: 
+2023-09-26 13:36:03.389 | DEBUG    | __main__:<module>:530 - ['H&M', 'Store', 'S8-2023', '586268', '4214', '0487052', '2023-9-11', 'TP REGULAR SOCK 7PACK', '1168787D', '7', 'ZA-南非', 'sea', '07-197 Grey Dusty Light Placement print', '40/42', 'Solid', 8, '2.32', 'USD', 56, '2023-12-11', '058', '2023-09-26']
+2023-09-26 13:36:03.496 | DEBUG    | __main__:<module>:529 - Writing data into excel sheet: 
+2023-09-26 13:36:03.496 | DEBUG    | __main__:<module>:530 - ['H&M', 'Store', 'S8-2023', '586268', '4214', '0487052', '2023-9-11', 'TP REGULAR SOCK 7PACK', '1168787D', '7', 'PE-秘鲁', 'sea', '07-197 Grey Dusty Light Placement print', '22/24', 'Solid', 15, '2.32', 'USD', 105, '2023-11-27', '058', '2023-09-26']
+2023-09-26 13:36:03.528 | DEBUG    | __main__:<module>:529 - Writing data into excel sheet: 
+2023-09-26 13:36:03.528 | DEBUG    | __main__:<module>:530 - ['H&M', 'Store', 'S8-2023', '586268', '4214', '0487052', '2023-9-11', 'TP REGULAR SOCK 7PACK', '1168787D', '7', 'PE-秘鲁', 'sea', '07-197 Grey Dusty Light Placement print', '25/27', 'Solid', 34, '2.32', 'USD', 238, '2023-11-27', '058', '2023-09-26']
+2023-09-26 13:36:03.558 | DEBUG    | __main__:<module>:529 - Writing data into excel sheet: 
+2023-09-26 13:36:03.558 | DEBUG    | __main__:<module>:530 - ['H&M', 'Store', 'S8-2023', '586268', '4214', '0487052', '2023-9-11', 'TP REGULAR SOCK 7PACK', '1168787D', '7', 'PE-秘鲁', 'sea', '07-197 Grey Dusty Light Placement print', '28/30', 'Solid', 42, '2.32', 'USD', 294, '2023-11-27', '058', '2023-09-26']
+2023-09-26 13:36:03.590 | DEBUG    | __main__:<module>:529 - Writing data into excel sheet: 
+2023-09-26 13:36:03.590 | DEBUG    | __main__:<module>:530 - ['H&M', 'Store', 'S8-2023', '586268', '4214', '0487052', '2023-9-11', 'TP REGULAR SOCK 7PACK', '1168787D', '7', 'PE-秘鲁', 'sea', '07-197 Grey Dusty Light Placement print', '31/33', 'Solid', 47, '2.32', 'USD', 329, '2023-11-27', '058', '2023-09-26']
+2023-09-26 13:36:03.624 | DEBUG    | __main__:<module>:529 - Writing data into excel sheet: 
+2023-09-26 13:36:03.624 | DEBUG    | __main__:<module>:530 - ['H&M', 'Store', 'S8-2023', '586268', '4214', '0487052', '2023-9-11', 'TP REGULAR SOCK 7PACK', '1168787D', '7', 'PE-秘鲁', 'sea', '07-197 Grey Dusty Light Placement print', '34/36', 'Solid', 54, '2.32', 'USD', 378, '2023-11-27', '058', '2023-09-26']
+2023-09-26 13:36:03.658 | DEBUG    | __main__:<module>:529 - Writing data into excel sheet: 
+2023-09-26 13:36:03.658 | DEBUG    | __main__:<module>:530 - ['H&M', 'Store', 'S8-2023', '586268', '4214', '0487052', '2023-9-11', 'TP REGULAR SOCK 7PACK', '1168787D', '7', 'PE-秘鲁', 'sea', '07-197 Grey Dusty Light Placement print', '37/39', 'Solid', 42, '2.32', 'USD', 294, '2023-11-27', '058', '2023-09-26']
+2023-09-26 13:36:03.692 | DEBUG    | __main__:<module>:529 - Writing data into excel sheet: 
+2023-09-26 13:36:03.692 | DEBUG    | __main__:<module>:530 - ['H&M', 'Store', 'S8-2023', '586268', '4214', '0487052', '2023-9-11', 'TP REGULAR SOCK 7PACK', '1168787D', '7', 'PE-秘鲁', 'sea', '07-197 Grey Dusty Light Placement print', '40/42', 'Solid', 12, '2.32', 'USD', 84, '2023-11-27', '058', '2023-09-26']
+2023-09-26 13:36:03.783 | DEBUG    | __main__:<module>:529 - Writing data into excel sheet: 
+2023-09-26 13:36:03.784 | DEBUG    | __main__:<module>:530 - ['H&M', 'Store', 'S8-2023', '586268', '4214', '0487052', '2023-9-11', 'TP REGULAR SOCK 7PACK', '1168787D', '7', 'UY-乌拉圭', 'sea', '07-197 Grey Dusty Light Placement print', '22/24', 'Solid', 6, '2.32', 'USD', 42, '2023-11-27', '058', '2023-09-26']
+2023-09-26 13:36:03.821 | DEBUG    | __main__:<module>:529 - Writing data into excel sheet: 
+2023-09-26 13:36:03.821 | DEBUG    | __main__:<module>:530 - ['H&M', 'Store', 'S8-2023', '586268', '4214', '0487052', '2023-9-11', 'TP REGULAR SOCK 7PACK', '1168787D', '7', 'UY-乌拉圭', 'sea', '07-197 Grey Dusty Light Placement print', '25/27', 'Solid', 13, '2.32', 'USD', 91, '2023-11-27', '058', '2023-09-26']
+2023-09-26 13:36:03.878 | DEBUG    | __main__:<module>:529 - Writing data into excel sheet: 
+2023-09-26 13:36:03.878 | DEBUG    | __main__:<module>:530 - ['H&M', 'Store', 'S8-2023', '586268', '4214', '0487052', '2023-9-11', 'TP REGULAR SOCK 7PACK', '1168787D', '7', 'UY-乌拉圭', 'sea', '07-197 Grey Dusty Light Placement print', '28/30', 'Solid', 17, '2.32', 'USD', 119, '2023-11-27', '058', '2023-09-26']
+2023-09-26 13:36:03.915 | DEBUG    | __main__:<module>:529 - Writing data into excel sheet: 
+2023-09-26 13:36:03.916 | DEBUG    | __main__:<module>:530 - ['H&M', 'Store', 'S8-2023', '586268', '4214', '0487052', '2023-9-11', 'TP REGULAR SOCK 7PACK', '1168787D', '7', 'UY-乌拉圭', 'sea', '07-197 Grey Dusty Light Placement print', '31/33', 'Solid', 19, '2.32', 'USD', 133, '2023-11-27', '058', '2023-09-26']
+2023-09-26 13:36:03.955 | DEBUG    | __main__:<module>:529 - Writing data into excel sheet: 
+2023-09-26 13:36:03.955 | DEBUG    | __main__:<module>:530 - ['H&M', 'Store', 'S8-2023', '586268', '4214', '0487052', '2023-9-11', 'TP REGULAR SOCK 7PACK', '1168787D', '7', 'UY-乌拉圭', 'sea', '07-197 Grey Dusty Light Placement print', '34/36', 'Solid', 21, '2.32', 'USD', 147, '2023-11-27', '058', '2023-09-26']
+2023-09-26 13:36:03.995 | DEBUG    | __main__:<module>:529 - Writing data into excel sheet: 
+2023-09-26 13:36:03.995 | DEBUG    | __main__:<module>:530 - ['H&M', 'Store', 'S8-2023', '586268', '4214', '0487052', '2023-9-11', 'TP REGULAR SOCK 7PACK', '1168787D', '7', 'UY-乌拉圭', 'sea', '07-197 Grey Dusty Light Placement print', '37/39', 'Solid', 17, '2.32', 'USD', 119, '2023-11-27', '058', '2023-09-26']
+2023-09-26 13:36:04.037 | DEBUG    | __main__:<module>:529 - Writing data into excel sheet: 
+2023-09-26 13:36:04.037 | DEBUG    | __main__:<module>:530 - ['H&M', 'Store', 'S8-2023', '586268', '4214', '0487052', '2023-9-11', 'TP REGULAR SOCK 7PACK', '1168787D', '7', 'UY-乌拉圭', 'sea', '07-197 Grey Dusty Light Placement print', '40/42', 'Solid', 5, '2.32', 'USD', 35, '2023-11-27', '058', '2023-09-26']
+2023-09-26 13:36:04.078 | DEBUG    | __main__:getConfig:22 - proDir : /Users/Kristd/Documents/github/pdf2excel

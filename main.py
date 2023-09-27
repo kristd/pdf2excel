@@ -13,9 +13,19 @@ import datetime
 import re
 import calendar
 import shutil
-import yaml
 from loguru import logger
+import configparser
 
+
+def getConfig(filename,section,option):
+    proDir = os.path.split(os.path.realpath(__file__))[0]
+    logger.debug('proDir : ' + proDir)
+    configPath = os.path.join(proDir,filename)
+    conf = configparser.ConfigParser()
+
+    conf.read(configPath)
+    config=conf.get(section,option)
+    return config
 
 def rename_file_from_season(folder_path, file_name_pattern):
     for old_f in sorted(os.listdir(folder_path), reverse=True):
@@ -117,8 +127,6 @@ def get_delivery_dates_dicts(text, p1, p2):
     time_delivery_dict = {}
     time_delivery_dict.clear()
     for p in range(p1, p2):
-        print(text[p])
-        print(text[p][3:6])
         if re.search(r'\d+', text[p]) is not None:
             if (p + 1) <= p2 and re.search(r'\d+', text[p + 1]) is not None:
                 l_day = text[p][0:2]
@@ -159,10 +167,10 @@ def get_price_dicts(text, p1, p2):
     return price_dict
 
 
-def get_term_dicts(text, p1, p2):
+def get_term_dicts(text, p1, p2, code_file_path):
     term_dicts = {}
     term_dicts.clear()
-    df = pd.read_excel("/Users/Kristd/Documents/github/pdf2excel/country_code.xlsx")
+    df = pd.read_excel( code_file_path + 'country_code.xlsx')
     df_li = df.values.tolist()
     country_codes = []
     for s_li in df_li:
@@ -289,15 +297,18 @@ def write_data_into_excel(file_path, season, orderNum, data):
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    log_path = '/Users/Kristd/Documents/github/pdf2excel/'
+    log_path = getConfig('config','ENVPATH','main_path')
+    logger.debug('log_path: ' + log_path)
     ###initial log file
-    os.remove(log_path + 'pdf2excel.log')
+    if os.path.exists(log_path + 'pdf2excel.log'):
+        os.remove(log_path + 'pdf2excel.log')
     log_file = logger.add(log_path + 'pdf2excel.log')
     # get PurchaseOrder files list
     formatted_today = datetime.date.today().strftime('%Y%m%d')
-    file_path = '/Users/Kristd/Documents/github/pdf2excel/In/'
+    file_path = getConfig('config','ENVPATH','pdf_order_path')
     f = glob.glob(file_path + '*PurchaseOrder*')
     pattern = 'UPDATED_*'
+    excel_file_path = getConfig('config','ENVPATH','excel_order_path')
     for i in f:  # PurchaseOrder loop, the outer loop
         file_name = os.path.basename(i)
         if re.search(pattern, file_name.upper()) is None:
@@ -332,6 +343,7 @@ if __name__ == '__main__':
                     colourname_1st_position = 0
                     colourname_last_position = 0
                     for p in range(0, len(order_info_array)):
+                        logger.debug(re.search(r'By accepting and performing under this Order, the Supplier acknowledges:', order_info_array[p]))
                         if re.search(r'Terms of Delivery', order_info_array[p]) is not None:
                             terms_1st_position = p
                         if re.search(r'Time of Delivery Planning Markets', order_info_array[p]) is not None:
@@ -341,12 +353,15 @@ if __name__ == '__main__':
                             time_delivery_last_position = p - 1
                         if re.search(r'Invoice Average Price', order_info_array[p]) is not None:
                             price_1st_position = p
-                        if (re.search(r'By accepting', order_info_array[p]) is not None) or (
-                                re.search(r'License Order', order_info_array[p]) is not None):
-                            if price_last_position == 0:
+                        if (re.search(r'By accepting and performing under this Order, the Supplier acknowledges:', order_info_array[p]) is not None) or (re.search(r'Please note that this order concerns a licensed product.*', order_info_array[p]) is not None):
+                            if price_last_position == 0 and re.search(r'By accepting and performing under this Order, the Supplier acknowledges:', order_info_array[p]) is not None:
                                 price_last_position = p - 1
-                            elif price_last_position > p:
+                            elif price_last_position > p and re.search(r'By accepting and performing under this Order, the Supplier acknowledges:', order_info_array[p]) is not None:
                                 price_last_position = p - 1
+                            elif price_last_position == 0 and re.search(r'Please note that this order concerns a licensed product.*', order_info_array[p]) is not None:
+                                price_last_position = p - 2
+                            elif price_last_position > p and re.search(r'Please note that this order concerns a licensed product.*', order_info_array[p]) is not None:
+                                price_last_position = p - 2
                         if (re.search(r'Article No H&M Colour Code', order_info_array[p])):
                             colourname_1st_position = p
                         if (re.search(r'Total Quantity:', order_info_array[p])):
@@ -355,7 +370,8 @@ if __name__ == '__main__':
                     ### create the country/term mapping
                     term_dict = {}
                     term_dict.clear()
-                    term_dict = get_term_dicts(order_info_array, terms_1st_position + 1, terms_last_position + 1)
+                    code_file_path = getConfig('config','ENVPATH','main_path')
+                    term_dict = get_term_dicts(order_info_array, terms_1st_position + 1, terms_last_position + 1,code_file_path)
 
                     ##create the time delivery mapping
                     time_delivery_dict = {}
@@ -479,7 +495,7 @@ if __name__ == '__main__':
                                                         download_date]
                                                 logger.debug('Writing data into excel sheet: ')
                                                 logger.debug(data)
-                                                write_data_into_excel(file_path, season, orderNum, data)
+                                                write_data_into_excel(excel_file_path, season, orderNum, data)
 
                             if solid_1st_position > 0:
                                 packing_type = 'Solid'
@@ -512,7 +528,7 @@ if __name__ == '__main__':
                                                         download_date]
                                                 logger.debug('Writing data into excel sheet: ')
                                                 logger.debug(data)
-                                                write_data_into_excel(file_path, season, orderNum, data)
+                                                write_data_into_excel(excel_file_path, season, orderNum, data)
                     ######end of detail loop
                 else:
                     # throw error as the child file is not exists.
@@ -525,7 +541,7 @@ if __name__ == '__main__':
                 if os.path.exists(i.replace('PurchaseOrder', 'SizePerColourBreakdown')):
                     ##get the PurchaseOrder info and go down to the detail loop!!!!!!!!!!
                     ####Update Order Scenarios
-                    archive_path = '/Users/Kristd/Documents/github/pdf2excel/Archive/'
+                    archive_path = getConfig('config','ENVPATH','archive_path')
                     shutil.move(i, archive_path + file_name)
                     shutil.move(i.replace('PurchaseOrder', 'SizePerColourBreakdown'),
                                 archive_path + file_name.replace('PurchaseOrder', 'SizePerColourBreakdown'))
@@ -751,7 +767,7 @@ if __name__ == '__main__':
                                                             download_date]
                                                     logger.debug('Writing data into excel sheet: ')
                                                     logger.debug(data)
-                                                    write_data_into_excel(file_path, season, orderNum, data)
+                                                    write_data_into_excel(excel_file_path, season, orderNum, data)
 
                                 if solid_1st_position > 0:
                                     packing_type = 'Solid'
@@ -787,7 +803,7 @@ if __name__ == '__main__':
                                                             download_date]
                                                     logger.debug('Writing data into excel sheet: ')
                                                     logger.debug(data)
-                                                    write_data_into_excel(file_path, season, orderNum, data)
+                                                    write_data_into_excel(excel_file_path, season, orderNum, data)
                 else:
                     # throw error as the child file is not exists.
                     f = open(file_path + 'updated_' + str(orderNum) + '_SizePerColourBreakdown*')
@@ -795,20 +811,20 @@ if __name__ == '__main__':
                 logger.error('OrderNum: ' + str(orderNum) + ', file is not found!')
 
                 # move processed file into Archive folder
-                try:
-                    if os.path.exists(i.replace('PurchaseOrder', 'SizePerColourBreakdown')):
-                        ##get the PurchaseOrder info and go down to the detail loop!!!!!!!!!!
-                        ####Update Order Scenarios
-                        archive_path = '/Users/Kristd/Documents/github/pdf2excel/Archive/'
-                        shutil.move(i, archive_path + file_name)
-                        shutil.move(i.replace('PurchaseOrder', 'SizePerColourBreakdown'),
+            try:
+                if os.path.exists(i.replace('PurchaseOrder', 'SizePerColourBreakdown')):
+                    ##get the PurchaseOrder info and go down to the detail loop!!!!!!!!!!
+                    ####Update Order Scenarios
+                    archive_path = getConfig('config','ENVPATH','archive_path')
+                    shutil.move(i, archive_path + file_name)
+                    shutil.move(i.replace('PurchaseOrder', 'SizePerColourBreakdown'),
                                     archive_path + file_name.replace('PurchaseOrder', 'SizePerColourBreakdown'))
-                        print(i + ' : Files have been moved to Archive folder...')
-                    else:
+                    print(i + ' : Files have been moved to Archive folder...')
+                else:
                         # throw error as the child file is not exists.
-                        f = open(i.replace('PurchaseOrder', 'SizePerColourBreakdown'))
-                except FileNotFoundError:
-                    print('File is not found!')
+                    f = open(i.replace('PurchaseOrder', 'SizePerColourBreakdown'))
+            except FileNotFoundError:
+                print('File is not found!')
         # end of outer for loop
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
