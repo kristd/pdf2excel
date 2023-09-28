@@ -14,18 +14,15 @@ import re
 import calendar
 import shutil
 from loguru import logger
-import configparser
+import json
 
 
-def getConfig(filename,section,option):
-    proDir = os.path.split(os.path.realpath(__file__))[0]
-    logger.debug('proDir : ' + proDir)
-    configPath = os.path.join(proDir,filename)
-    conf = configparser.ConfigParser()
 
-    conf.read(configPath)
-    config=conf.get(section,option)
-    return config
+def getConfig(filename):
+    f = open(filename,'r')
+    content = f.read()
+    a = json.loads(content)
+    return a
 
 def rename_file_from_season(folder_path, file_name_pattern):
     for old_f in sorted(os.listdir(folder_path), reverse=True):
@@ -297,7 +294,8 @@ def write_data_into_excel(file_path, season, orderNum, data):
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    log_path = getConfig('config','ENVPATH','main_path')
+    path_dicts = getConfig('config.json')
+    log_path = path_dicts['main_path']
     logger.debug('log_path: ' + log_path)
     ###initial log file
     if os.path.exists(log_path + 'pdf2excel.log'):
@@ -305,10 +303,10 @@ if __name__ == '__main__':
     log_file = logger.add(log_path + 'pdf2excel.log')
     # get PurchaseOrder files list
     formatted_today = datetime.date.today().strftime('%Y%m%d')
-    file_path = getConfig('config','ENVPATH','pdf_order_path')
+    file_path = path_dicts['pdf_order_path']
     f = glob.glob(file_path + '*PurchaseOrder*')
     pattern = 'UPDATED_*'
-    excel_file_path = getConfig('config','ENVPATH','excel_order_path')
+    excel_file_path = path_dicts['excel_order_path']
     for i in f:  # PurchaseOrder loop, the outer loop
         file_name = os.path.basename(i)
         if re.search(pattern, file_name.upper()) is None:
@@ -370,7 +368,7 @@ if __name__ == '__main__':
                     ### create the country/term mapping
                     term_dict = {}
                     term_dict.clear()
-                    code_file_path = getConfig('config','ENVPATH','main_path')
+                    code_file_path = path_dicts['main_path']
                     term_dict = get_term_dicts(order_info_array, terms_1st_position + 1, terms_last_position + 1,code_file_path)
 
                     ##create the time delivery mapping
@@ -541,7 +539,7 @@ if __name__ == '__main__':
                 if os.path.exists(i.replace('PurchaseOrder', 'SizePerColourBreakdown')):
                     ##get the PurchaseOrder info and go down to the detail loop!!!!!!!!!!
                     ####Update Order Scenarios
-                    archive_path = getConfig('config','ENVPATH','archive_path')
+                    archive_path = path_dicts['archive_path']
                     shutil.move(i, archive_path + file_name)
                     shutil.move(i.replace('PurchaseOrder', 'SizePerColourBreakdown'),
                                 archive_path + file_name.replace('PurchaseOrder', 'SizePerColourBreakdown'))
@@ -815,7 +813,7 @@ if __name__ == '__main__':
                 if os.path.exists(i.replace('PurchaseOrder', 'SizePerColourBreakdown')):
                     ##get the PurchaseOrder info and go down to the detail loop!!!!!!!!!!
                     ####Update Order Scenarios
-                    archive_path = getConfig('config','ENVPATH','archive_path')
+                    archive_path = path_dicts['archive_path']
                     shutil.move(i, archive_path + file_name)
                     shutil.move(i.replace('PurchaseOrder', 'SizePerColourBreakdown'),
                                     archive_path + file_name.replace('PurchaseOrder', 'SizePerColourBreakdown'))
