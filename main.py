@@ -1,9 +1,3 @@
-# This is a sample Python script.
-#import openpyxl
-# Press ⌃R to execute it or replace it with your code.
-# Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
-
-
 import pdfplumber
 import pandas as pd
 import openpyxl
@@ -17,13 +11,12 @@ from loguru import logger
 import json
 
 
-
-def getConfig(filename):
-    env_dicts = os.environ
-    f = open(os.path.join(env_dicts['_MEIPASS2'],filename),'r')
+def get_config(filename):
+    f = open(filename, 'r')
     content = f.read()
     a = json.loads(content)
     return a
+
 
 def rename_file_from_season(folder_path, file_name_pattern):
     for old_f in sorted(os.listdir(folder_path), reverse=True):
@@ -168,7 +161,7 @@ def get_price_dicts(text, p1, p2):
 def get_term_dicts(text, p1, p2, code_file_path):
     term_dicts = {}
     term_dicts.clear()
-    df = pd.read_excel( code_file_path + 'country_code.xlsx')
+    df = pd.read_excel(code_file_path + 'country_code.xlsx')
     df_li = df.values.tolist()
     country_codes = []
     for s_li in df_li:
@@ -295,9 +288,11 @@ def write_data_into_excel(file_path, season, orderNum, data):
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    path_dicts = getConfig('config.json')
+    path_dicts = get_config('config.json')
+    print(path_dicts)
+    logger.info('path_dicts: ' + json.dumps(path_dicts))
     log_path = path_dicts['main_path']
-    logger.debug('log_path: ' + log_path)
+    logger.info('log_path: ' + log_path)
     ###initial log file
     if os.path.exists(log_path + 'pdf2excel.log'):
         os.remove(log_path + 'pdf2excel.log')
@@ -342,7 +337,9 @@ if __name__ == '__main__':
                     colourname_1st_position = 0
                     colourname_last_position = 0
                     for p in range(0, len(order_info_array)):
-                        logger.debug(re.search(r'By accepting and performing under this Order, the Supplier acknowledges:', order_info_array[p]))
+                        logger.debug(
+                            re.search(r'By accepting and performing under this Order, the Supplier acknowledges:',
+                                      order_info_array[p]))
                         if re.search(r'Terms of Delivery', order_info_array[p]) is not None:
                             terms_1st_position = p
                         if re.search(r'Time of Delivery Planning Markets', order_info_array[p]) is not None:
@@ -352,14 +349,25 @@ if __name__ == '__main__':
                             time_delivery_last_position = p - 1
                         if re.search(r'Invoice Average Price', order_info_array[p]) is not None:
                             price_1st_position = p
-                        if (re.search(r'By accepting and performing under this Order, the Supplier acknowledges:', order_info_array[p]) is not None) or (re.search(r'Please note that this order concerns a licensed product.*', order_info_array[p]) is not None):
-                            if price_last_position == 0 and re.search(r'By accepting and performing under this Order, the Supplier acknowledges:', order_info_array[p]) is not None:
+                        if (re.search(r'By accepting and performing under this Order, the Supplier acknowledges:',
+                                      order_info_array[p]) is not None) or (
+                                re.search(r'Please note that this order concerns a licensed product.*',
+                                          order_info_array[p]) is not None):
+                            if price_last_position == 0 and re.search(
+                                    r'By accepting and performing under this Order, the Supplier acknowledges:',
+                                    order_info_array[p]) is not None:
                                 price_last_position = p - 1
-                            elif price_last_position > p and re.search(r'By accepting and performing under this Order, the Supplier acknowledges:', order_info_array[p]) is not None:
+                            elif price_last_position > p and re.search(
+                                    r'By accepting and performing under this Order, the Supplier acknowledges:',
+                                    order_info_array[p]) is not None:
                                 price_last_position = p - 1
-                            elif price_last_position == 0 and re.search(r'Please note that this order concerns a licensed product.*', order_info_array[p]) is not None:
+                            elif price_last_position == 0 and re.search(
+                                    r'Please note that this order concerns a licensed product.*',
+                                    order_info_array[p]) is not None:
                                 price_last_position = p - 2
-                            elif price_last_position > p and re.search(r'Please note that this order concerns a licensed product.*', order_info_array[p]) is not None:
+                            elif price_last_position > p and re.search(
+                                    r'Please note that this order concerns a licensed product.*',
+                                    order_info_array[p]) is not None:
                                 price_last_position = p - 2
                         if (re.search(r'Article No H&M Colour Code', order_info_array[p])):
                             colourname_1st_position = p
@@ -370,7 +378,8 @@ if __name__ == '__main__':
                     term_dict = {}
                     term_dict.clear()
                     code_file_path = path_dicts['main_path']
-                    term_dict = get_term_dicts(order_info_array, terms_1st_position + 1, terms_last_position + 1,code_file_path)
+                    term_dict = get_term_dicts(order_info_array, terms_1st_position + 1, terms_last_position + 1,
+                                               code_file_path)
 
                     ##create the time delivery mapping
                     time_delivery_dict = {}
@@ -817,13 +826,18 @@ if __name__ == '__main__':
                     archive_path = path_dicts['archive_path']
                     shutil.move(i, archive_path + file_name)
                     shutil.move(i.replace('PurchaseOrder', 'SizePerColourBreakdown'),
-                                    archive_path + file_name.replace('PurchaseOrder', 'SizePerColourBreakdown'))
+                                archive_path + file_name.replace('PurchaseOrder', 'SizePerColourBreakdown'))
                     print(i + ' : Files have been moved to Archive folder...')
                 else:
-                        # throw error as the child file is not exists.
+                    # throw error as the child file is not exists.
                     f = open(i.replace('PurchaseOrder', 'SizePerColourBreakdown'))
             except FileNotFoundError:
                 print('File is not found!')
         # end of outer for loop
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
+
+# if __name__ == '__main__':
+#     print("hello")
+#     path_dict = get_config("config.json")
+#     print(path_dict)
