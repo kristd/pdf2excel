@@ -15,14 +15,12 @@ import calendar
 import shutil
 from loguru import logger
 import json
-import sys
 
 
 
 def getConfig(filename):
-    base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
-    logger.debug('base_path: ' + os.path.join(base_path,filename))
-    f = open(os.path.join(base_path,filename),'r')
+    env_dicts = os.environ
+    f = open(os.path.join(env_dicts['_MEIPASS2'],filename),'r')
     content = f.read()
     a = json.loads(content)
     return a
