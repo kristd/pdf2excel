@@ -1,5 +1,5 @@
 # This is a sample Python script.
-import openpyxl
+#import openpyxl
 # Press ⌃R to execute it or replace it with your code.
 # Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
 
@@ -15,11 +15,14 @@ import calendar
 import shutil
 from loguru import logger
 import json
+import sys
 
 
 
 def getConfig(filename):
-    f = open(filename,'r')
+    base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
+    logger.debug('base_path: ' + os.path.join(base_path,filename))
+    f = open(os.path.join(base_path,filename),'r')
     content = f.read()
     a = json.loads(content)
     return a
