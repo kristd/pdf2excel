@@ -19,8 +19,7 @@ import json
 
 
 def getConfig(filename):
-    env_dicts = os.environ
-    f = open(os.path.join(env_dicts['_MEIPASS2'],filename),'r')
+    f = open(filename, 'r')
     content = f.read()
     a = json.loads(content)
     return a
