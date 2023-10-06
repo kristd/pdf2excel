@@ -46,7 +46,7 @@ def get_purchase_order_first_page_text(i):
 
 def get_sizecolourbreakdown_pages_text(i):
     pdf_object = pdfplumber.open(i)
-    return pdf_object.pages
+    return pdf_object
 
 
 def get_file_validation(file_path, orderNum, flag):
@@ -395,8 +395,9 @@ if __name__ == '__main__':
 
                     ###detail loop start here
                     detail_pages = []
-                    detail_pages = get_sizecolourbreakdown_pages_text(
+                    detail_obj = get_sizecolourbreakdown_pages_text(
                         i.replace('PurchaseOrder', 'SizePerColourBreakdown'))
+                    detail_pages = detail_obj.pages
                     for dp in range(0, len(detail_pages)):
                         country_name = ''  # Column K
                         fright_term = ''  # Column L
@@ -527,6 +528,7 @@ if __name__ == '__main__':
                                                 logger.debug('Writing data into excel sheet: ')
                                                 logger.debug(data)
                                                 write_data_into_excel(excel_file_path, season, orderNum, data)
+                    detail_obj.close()
                     ######end of detail loop
                 else:
                     # throw error as the child file is not exists.
@@ -664,8 +666,9 @@ if __name__ == '__main__':
 
                         ###detail loop start here
                         detail_pages = []
-                        detail_pages = get_sizecolourbreakdown_pages_text(
+                        detail_obj = get_sizecolourbreakdown_pages_text(
                             i.replace('PurchaseOrder', 'SizePerColourBreakdown'))
+                        detail_pages = detail_obj.pages
                         for dp in range(0, len(detail_pages)):
                             country_name = ''  # Column K
                             fright_term = ''  # Column L
@@ -802,6 +805,8 @@ if __name__ == '__main__':
                                                     logger.debug('Writing data into excel sheet: ')
                                                     logger.debug(data)
                                                     write_data_into_excel(excel_file_path, season, orderNum, data)
+                        detail_obj.close()
+                        ####end of size loop
                 else:
                     # throw error as the child file is not exists.
                     f = open(file_path + 'updated_' + str(orderNum) + '_SizePerColourBreakdown*')
