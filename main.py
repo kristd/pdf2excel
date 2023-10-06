@@ -40,13 +40,12 @@ def rename_file_from_season(folder_path, file_name_pattern):
 
 def get_purchase_order_first_page_text(i):
     pdf_object = pdfplumber.open(i)
-    first_page = pdf_object.pages[0]
-    return first_page.extract_text_simple()
+    return pdf_object
 
 
 def get_sizecolourbreakdown_pages_text(i):
     pdf_object = pdfplumber.open(i)
-    return pdf_object.pages
+    return pdf_object
 
 
 def get_file_validation(file_path, orderNum, flag):
@@ -317,7 +316,8 @@ if __name__ == '__main__':
                     # get the PurchaseOrder info and go down to the detail loop!!!!!!!!!!
                     logger.debug('----------------------- New Order Scenario -----------------------')
                     ####New Order Scenario
-                    order_text = get_purchase_order_first_page_text(i)
+                    order_object = get_purchase_order_first_page_text(i)
+                    order_text = order_object.pages[0].extract_text_simple()
                     order_info_array = split_lines(order_text)
                     brand = get_brand(order_info_array[1])  # Column A
                     order_type = get_order_type(order_info_array[0])  # Column B
@@ -395,8 +395,9 @@ if __name__ == '__main__':
 
                     ###detail loop start here
                     detail_pages = []
-                    detail_pages = get_sizecolourbreakdown_pages_text(
+                    detail_obj = get_sizecolourbreakdown_pages_text(
                         i.replace('PurchaseOrder', 'SizePerColourBreakdown'))
+                    detail_pages = detail_obj.pages
                     for dp in range(0, len(detail_pages)):
                         country_name = ''  # Column K
                         fright_term = ''  # Column L
@@ -527,6 +528,8 @@ if __name__ == '__main__':
                                                 logger.debug('Writing data into excel sheet: ')
                                                 logger.debug(data)
                                                 write_data_into_excel(excel_file_path, season, orderNum, data)
+                    detail_obj.close()
+                    order_object.close()
                     ######end of detail loop
                 else:
                     # throw error as the child file is not exists.
@@ -558,7 +561,8 @@ if __name__ == '__main__':
             try:
                 if get_file_validation(file_path, orderNum, 2):
                     # get the PurchaseOrder info and go down to the detail loop!!!!!!!!!!
-                    order_text = get_purchase_order_first_page_text(i)
+                    order_object = get_purchase_order_first_page_text(i)
+                    order_text = order_object.pages[0].extract_text_simple()
                     order_info_array = split_lines(order_text)
                     season = get_season(order_info_array[6])  # Column C
                     logger.debug('Season Code: ' + season)
@@ -664,8 +668,9 @@ if __name__ == '__main__':
 
                         ###detail loop start here
                         detail_pages = []
-                        detail_pages = get_sizecolourbreakdown_pages_text(
+                        detail_obj = get_sizecolourbreakdown_pages_text(
                             i.replace('PurchaseOrder', 'SizePerColourBreakdown'))
+                        detail_pages = detail_obj.pages
                         for dp in range(0, len(detail_pages)):
                             country_name = ''  # Column K
                             fright_term = ''  # Column L
@@ -802,12 +807,14 @@ if __name__ == '__main__':
                                                     logger.debug('Writing data into excel sheet: ')
                                                     logger.debug(data)
                                                     write_data_into_excel(excel_file_path, season, orderNum, data)
+                        detail_obj.close()
+                        order_object.close()
+                        ####end of size loop
                 else:
                     # throw error as the child file is not exists.
                     f = open(file_path + 'updated_' + str(orderNum) + '_SizePerColourBreakdown*')
             except FileNotFoundError:
                 logger.error('OrderNum: ' + str(orderNum) + ', file is not found!')
-
                 # move processed file into Archive folder
             try:
                 if os.path.exists(i.replace('PurchaseOrder', 'SizePerColourBreakdown')):
