@@ -19,7 +19,7 @@ import json
 
 
 def getConfig(filename):
-    f = open(filename, 'r')
+    f = open(filename, 'r',encoding='gbk')
     content = f.read()
     a = json.loads(content)
     return a
@@ -39,12 +39,12 @@ def rename_file_from_season(folder_path, file_name_pattern):
 
 
 def get_purchase_order_first_page_text(i):
-    pdf_object = pdfplumber.open(i)
+    pdf_object = pdfplumber.open(i,encoding='gbk')
     return pdf_object
 
 
 def get_sizecolourbreakdown_pages_text(i):
-    pdf_object = pdfplumber.open(i)
+    pdf_object = pdfplumber.open(i,encoding='gbk')
     return pdf_object
 
 
@@ -215,7 +215,7 @@ def write_data_into_summary_excel(file_path, data, season):
         workbook.save(file_path + file_name)
         workbook.close()
     else:
-        wb = openpyxl.load_workbook(file_path + file_name)
+        wb = openpyxl.load_workbook(file_path + file_name,encoding='gbk')
         wb_sheet_name = wb.get_sheet_by_name(wb.get_sheet_names()[0])
         wb_sheet_name.append(data)
         wb.save(file_path + file_name)
@@ -246,7 +246,7 @@ def write_data_into_excel(file_path, season, orderNum, data):
             write_data_into_summary_excel(file_path, data, season)
         else:
             ##append data
-            wb = openpyxl.load_workbook(file_path + season + '/' + str(orderNum) + '_Single_Sheet.xlsx')
+            wb = openpyxl.load_workbook(file_path + season + '/' + str(orderNum) + '_Single_Sheet.xlsx',encoding='gbk')
             wb_sheet_name = wb.get_sheet_by_name(wb.get_sheet_names()[0])
             wb_sheet_name.append(data)
             wb.save(file_path + season + '/' + str(orderNum) + '_Single_Sheet.xlsx')
@@ -275,7 +275,7 @@ def write_data_into_excel(file_path, season, orderNum, data):
 
         else:
             ##append data
-            wb = openpyxl.load_workbook(file_path + season + '/' + str(orderNum) + '_Single_Sheet.xlsx')
+            wb = openpyxl.load_workbook(file_path + season + '/' + str(orderNum) + '_Single_Sheet.xlsx',encoding='gbk')
             wb_sheet_name = wb.get_sheet_by_name(wb.get_sheet_names()[0])
             wb_sheet_name.append(data)
             wb.save(file_path + season + '/' + str(orderNum) + '_Single_Sheet.xlsx')
@@ -533,7 +533,7 @@ if __name__ == '__main__':
                     ######end of detail loop
                 else:
                     # throw error as the child file is not exists.
-                    f = open(file_path + str(orderNum) + '_SizePerColourBreakdown*')
+                    f = open(file_path + str(orderNum) + '_SizePerColourBreakdown*',encoding='gbk')
             except FileNotFoundError:
                 logger.error('OrderNum: ' + str(orderNum) + ', file is not found!')
 
@@ -549,7 +549,7 @@ if __name__ == '__main__':
                     print(i + ' : Files have been moved to Archive folder...')
                 else:
                     # throw error as the child file is not exists.
-                    f = open(i.replace('PurchaseOrder', 'SizePerColourBreakdown'))
+                    f = open(i.replace('PurchaseOrder', 'SizePerColourBreakdown'),encoding='gbk')
             except FileNotFoundError:
                 print('File is not found!')
 
@@ -586,7 +586,7 @@ if __name__ == '__main__':
                     logger.debug('min row: ' + str(min_row + 2))
                     logger.debug('max row: ' + str(max_row + 2))
                     if max_row != 0:
-                        wb = openpyxl.load_workbook(file_path + 'Orders_Summary_' + season + '.xlsx')
+                        wb = openpyxl.load_workbook(file_path + 'Orders_Summary_' + season + '.xlsx',encoding='gbk')
                         wb_sheet_name = wb.get_sheet_by_name(wb.get_sheet_names()[0])
                         wb_sheet_name.delete_rows(min_row + 2, max_row + 2)
                         wb.save(file_path + 'Orders_Summary_' + season + '.xlsx')
@@ -812,7 +812,7 @@ if __name__ == '__main__':
                         ####end of size loop
                 else:
                     # throw error as the child file is not exists.
-                    f = open(file_path + 'updated_' + str(orderNum) + '_SizePerColourBreakdown*')
+                    f = open(file_path + 'updated_' + str(orderNum) + '_SizePerColourBreakdown*',encoding='gbk')
             except FileNotFoundError:
                 logger.error('OrderNum: ' + str(orderNum) + ', file is not found!')
                 # move processed file into Archive folder
@@ -827,7 +827,7 @@ if __name__ == '__main__':
                     print(i + ' : Files have been moved to Archive folder...')
                 else:
                         # throw error as the child file is not exists.
-                    f = open(i.replace('PurchaseOrder', 'SizePerColourBreakdown'))
+                    f = open(i.replace('PurchaseOrder', 'SizePerColourBreakdown'),encoding='gbk')
             except FileNotFoundError:
                 print('File is not found!')
         # end of outer for loop
