@@ -165,6 +165,7 @@ def get_price_dicts(text, p1, p2):
 
 
 def get_term_dicts(text, p1, p2, code_file_path):
+    logger.debug('in get_term_dicts')
     term_dicts = {}
     term_dicts.clear()
     df = pd.read_excel( code_file_path + 'country_code.xlsx')
@@ -342,7 +343,6 @@ if __name__ == '__main__':
                     colourname_1st_position = 0
                     colourname_last_position = 0
                     for p in range(0, len(order_info_array)):
-                        logger.debug(re.search(r'By accepting and performing under this Order, the Supplier acknowledges:', order_info_array[p]))
                         if re.search(r'Terms of Delivery', order_info_array[p]) is not None:
                             terms_1st_position = p
                         if re.search(r'Time of Delivery Planning Markets', order_info_array[p]) is not None:
@@ -367,12 +367,14 @@ if __name__ == '__main__':
                             colourname_last_position = p - 1
 
                     ### create the country/term mapping
+                    logger.debug('getting term dict...')
                     term_dict = {}
                     term_dict.clear()
                     code_file_path = path_dicts['main_path']
                     term_dict = get_term_dicts(order_info_array, terms_1st_position + 1, terms_last_position + 1,code_file_path)
 
                     ##create the time delivery mapping
+                    logger.debug('getting time delivery dict...')
                     time_delivery_dict = {}
                     time_delivery_dict.clear()
                     time_delivery_dict = get_delivery_dates_dicts(order_info_array, time_delivery_1st_position + 1,
@@ -381,6 +383,7 @@ if __name__ == '__main__':
                     logger.debug(time_delivery_dict)
 
                     ##create price mapping
+                    logger.debug('getting price dict...')
                     price_dict = {}
                     price_dict = get_price_dicts(order_info_array, price_1st_position + 1, price_last_position + 1)
                     logger.debug('Print price dict: ')
