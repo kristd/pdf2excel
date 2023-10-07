@@ -651,6 +651,7 @@ if __name__ == '__main__':
                         ### create the country/term mapping
                         term_dict = {}
                         term_dict.clear()
+                        code_file_path = path_dicts['main_path']
                         term_dict = get_term_dicts(order_info_array, terms_1st_position + 1, terms_last_position + 1,code_file_path)
 
                         ##create the time delivery mapping
