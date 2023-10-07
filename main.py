@@ -531,6 +531,7 @@ if __name__ == '__main__':
                                                 write_data_into_excel(excel_file_path, season, orderNum, data)
                     detail_obj.close()
                     order_object.close()
+                    logger.debug('I am here..after order object closed...')
                     ######end of detail loop
                 else:
                     # throw error as the child file is not exists. encoding='gbk'
