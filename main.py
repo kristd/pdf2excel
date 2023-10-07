@@ -28,14 +28,16 @@ def rename_file_from_season(folder_path, file_name_pattern):
     for old_f in sorted(os.listdir(folder_path), reverse=True):
         if re.search(file_name_pattern, old_f) is not None:
             if re.search(r'_\d+.xlsx', old_f) is None:
-                logger.debug('Moving file from ' + folder_path + old_f + ' to ' + folder_path + str(
-                    orderNum) + '_Single_Sheet_1.xlsx')
-                shutil.move(folder_path + old_f, folder_path + str(orderNum) + '_Single_Sheet_1.xlsx')
+                logger.debug('Moving file from ' + os.path.join(folder_path,old_f) + ' to ' + os.path.join(folder_path,str(
+                    orderNum) + '_Single_Sheet_1.xlsx'))
+                shutil.move(os.path.join(folder_path,old_f), os.path.join(folder_path,str(
+                    orderNum) + '_Single_Sheet_1.xlsx'))
             else:
                 index = int(old_f.split('_')[3].split('.')[0]) + 1
-                logger.debug('Moving file from ' + folder_path + old_f + ' to ' + folder_path + str(
-                    orderNum) + '_Single_Sheet_' + str(index) + '.xlsx')
-                shutil.move(folder_path + old_f, folder_path + str(orderNum) + '_Single_Sheet_' + str(index) + '.xlsx')
+                logger.debug('Moving file from ' + os.path.join(folder_path,old_f) + ' to ' + os.path.join(folder_path,str(
+                    orderNum) + '_Single_Sheet_' + str(index) + '.xlsx'))
+                shutil.move(os.path.join(folder_path,old_f), os.path.join(folder_path,str(
+                    orderNum) + '_Single_Sheet_' + str(index) + '.xlsx'))
 
 
 def get_purchase_order_first_page_text(i):
@@ -228,8 +230,8 @@ def write_data_into_excel(file_path, season, orderNum, data):
     ##read excel file , if file not existed, create a new one.
     if os.path.exists(file_path + season):
         os.chdir(file_path + season)
-        if not os.path.exists(file_path + season + '/' + str(
-                orderNum) + '_Single_Sheet.xlsx'):
+        if not os.path.exists(os.path.join(file_path,season,str(
+                orderNum) + '_Single_Sheet.xlsx')):
             workbook = openpyxl.Workbook()
             sheet = workbook.create_sheet(orderNum, index=0)
             header = ["品牌/Brands", "订单类型/Order Type", "季度/Season", "订单号/Order No", "部门号/Department No",
@@ -241,23 +243,23 @@ def write_data_into_excel(file_path, season, orderNum, data):
                       "总数量/总件数/Total Pairs/pcs", "出货日期/TOD", "编号/Artical No", "下载日期/Download Date"]
             sheet.append(header)
             sheet.append(data)
-            workbook.save(file_path + season + '/' + str(
-                orderNum) + '_Single_Sheet.xlsx')
+            workbook.save(os.path.join(file_path,season,str(
+                orderNum) + '_Single_Sheet.xlsx'))
             workbook.close()
             write_data_into_summary_excel(file_path, data, season)
         else:
             ##append data
-            wb = openpyxl.load_workbook(file_path + season + '/' + str(orderNum) + '_Single_Sheet.xlsx')
+            wb = openpyxl.load_workbook(os.path.join(file_path,season,str(orderNum) + '_Single_Sheet.xlsx'))
             wb_sheet_name = wb.get_sheet_by_name(wb.get_sheet_names()[0])
             wb_sheet_name.append(data)
-            wb.save(file_path + season + '/' + str(orderNum) + '_Single_Sheet.xlsx')
+            wb.save(os.path.join(file_path,season,str(orderNum) + '_Single_Sheet.xlsx'))
             wb.close()
             ###Summary Sheet
             write_data_into_summary_excel(file_path, data, season)
     else:
         os.makedirs(file_path + season)
         os.chdir(file_path + season)
-        if not os.path.exists(file_path + season + '/' + str(orderNum) + '_Single_Sheet.xlsx'):
+        if not os.path.exists(os.path.join(file_path,season,str(orderNum) + '_Single_Sheet.xlsx')):
             workbook = openpyxl.Workbook()
             sheet = workbook.create_sheet(orderNum, index=0)
             header = ["品牌/Brands", "订单类型/Order Type", "季度/Season", "订单号/Order No", "部门号/Department No",
@@ -269,17 +271,19 @@ def write_data_into_excel(file_path, season, orderNum, data):
                       "总数量/总件数/Total Pairs/pcs", "出货日期/TOD", "编号/Artical No", "下载日期/Download Date"]
             sheet.append(header)
             sheet.append(data)
-            workbook.save(file_path + season + '/' + str(
-                orderNum) + '_Single_Sheet.xlsx')
+            workbook.save(os.path.join(file_path,season,str(
+                orderNum) + '_Single_Sheet.xlsx'))
             workbook.close()
             write_data_into_summary_excel(file_path, data, season)
 
         else:
             ##append data
-            wb = openpyxl.load_workbook(file_path + season + '/' + str(orderNum) + '_Single_Sheet.xlsx')
+            wb = openpyxl.load_workbook(os.path.join(file_path,season,str(
+                orderNum) + '_Single_Sheet.xlsx'))
             wb_sheet_name = wb.get_sheet_by_name(wb.get_sheet_names()[0])
             wb_sheet_name.append(data)
-            wb.save(file_path + season + '/' + str(orderNum) + '_Single_Sheet.xlsx')
+            wb.save(os.path.join(file_path,season,str(
+                orderNum) + '_Single_Sheet.xlsx'))
             wb.close()
             ###Summary Sheet
             write_data_into_summary_excel(file_path, data, season)
@@ -571,7 +575,7 @@ if __name__ == '__main__':
                     order_info_array = split_lines(order_text)
                     season = get_season(order_info_array[6])  # Column C
                     logger.debug('Season Code: ' + season)
-                    folder_path = file_path + season + '/'
+                    folder_path =  os.path.join(excel_file_path,season)
                     old_sheet_pattern = str(orderNum) + '_Single_Sheet.*'
                     ###rename all the existed single excel sheet
                     rename_file_from_season(folder_path, old_sheet_pattern)
