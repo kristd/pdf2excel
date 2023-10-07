@@ -19,8 +19,7 @@ import json
 
 
 def getConfig(filename):
-    ## encoding='gbk'
-    f = open(filename, 'r')
+    f = open(filename, 'r',encoding='gbk')
     content = f.read()
     a = json.loads(content)
     return a
@@ -371,6 +370,7 @@ if __name__ == '__main__':
                     term_dict = {}
                     term_dict.clear()
                     code_file_path = path_dicts['main_path']
+                    logger.debug('getting country code file....')
                     term_dict = get_term_dicts(order_info_array, terms_1st_position + 1, terms_last_position + 1,code_file_path)
 
                     ##create the time delivery mapping
@@ -537,8 +537,8 @@ if __name__ == '__main__':
                     logger.debug('I am here..after order object closed...')
                     ######end of detail loop
                 else:
-                    # throw error as the child file is not exists. encoding='gbk'
-                    f = open(file_path + str(orderNum) + '_SizePerColourBreakdown*')
+                    # throw error as the child file is not exists.
+                    f = open(file_path + str(orderNum) + '_SizePerColourBreakdown*',encoding='gbk')
             except FileNotFoundError:
                 logger.error('OrderNum: ' + str(orderNum) + ', file is not found!')
 
@@ -553,8 +553,8 @@ if __name__ == '__main__':
                                 archive_path + file_name.replace('PurchaseOrder', 'SizePerColourBreakdown'))
                     print(i + ' : Files have been moved to Archive folder...')
                 else:
-                    # throw error as the child file is not exists.encoding='gbk'
-                    f = open(i.replace('PurchaseOrder', 'SizePerColourBreakdown'))
+                    # throw error as the child file is not exists.
+                    f = open(i.replace('PurchaseOrder', 'SizePerColourBreakdown'),encoding='gbk')
             except FileNotFoundError:
                 print('File is not found!')
 
@@ -816,8 +816,8 @@ if __name__ == '__main__':
                         order_object.close()
                         ####end of size loop
                 else:
-                    # throw error as the child file is not exists.encoding='gbk'
-                    f = open(file_path + 'updated_' + str(orderNum) + '_SizePerColourBreakdown*')
+                    # throw error as the child file is not exists.
+                    f = open(file_path + 'updated_' + str(orderNum) + '_SizePerColourBreakdown*',encoding='gbk')
             except FileNotFoundError:
                 logger.error('OrderNum: ' + str(orderNum) + ', file is not found!')
                 # move processed file into Archive folder
@@ -831,8 +831,8 @@ if __name__ == '__main__':
                                     archive_path + file_name.replace('PurchaseOrder', 'SizePerColourBreakdown'))
                     print(i + ' : Files have been moved to Archive folder...')
                 else:
-                        # throw error as the child file is not exists.,encoding='gbk'
-                    f = open(i.replace('PurchaseOrder', 'SizePerColourBreakdown'))
+                        # throw error as the child file is not exists.,
+                    f = open(i.replace('PurchaseOrder', 'SizePerColourBreakdown'),encoding='gbk')
             except FileNotFoundError:
                 print('File is not found!')
         # end of outer for loop
