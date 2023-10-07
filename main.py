@@ -581,9 +581,9 @@ if __name__ == '__main__':
                     rename_file_from_season(folder_path, old_sheet_pattern)
 
                     ###remove the order from summary excel sheet
-                    logger.debug(file_path + 'Orders_Summary_' + season + '.xlsx')
+                    logger.debug(os.path.join(excel_file_path,'Orders_Summary_' + season + '.xlsx'))
                     remove_flag = 0
-                    df = pd.read_excel(file_path + 'Orders_Summary_' + season + '.xlsx').iloc[:, 3]
+                    df = pd.read_excel(os.path.join(excel_file_path,'Orders_Summary_' + season + '.xlsx')).iloc[:, 3]
                     min_row = 1000000000
                     max_row = 0
                     for j in range(0, len(df)):
@@ -595,10 +595,10 @@ if __name__ == '__main__':
                     logger.debug('min row: ' + str(min_row + 2))
                     logger.debug('max row: ' + str(max_row + 2))
                     if max_row != 0:
-                        wb = openpyxl.load_workbook(file_path + 'Orders_Summary_' + season + '.xlsx')
+                        wb = openpyxl.load_workbook(os.path.join(excel_file_path,'Orders_Summary_' + season + '.xlsx'))
                         wb_sheet_name = wb.get_sheet_by_name(wb.get_sheet_names()[0])
                         wb_sheet_name.delete_rows(min_row + 2, max_row + 2)
-                        wb.save(file_path + 'Orders_Summary_' + season + '.xlsx')
+                        wb.save(os.path.join(excel_file_path,'Orders_Summary_' + season + '.xlsx'))
                         wb.close()
                         remove_flag = 1
                     else:
