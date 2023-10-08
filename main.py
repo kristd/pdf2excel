@@ -209,13 +209,15 @@ def write_data_into_summary_excel(file_path, data, season):
                   "订单数量/Qty/Artical", "单价/Cost", "货币/Currency",
                   "总数量/总件数/Total Pairs/pcs", "出货日期/TOD", "编号/Artical No", "下载日期/Download Date"]
         sheet.append(header)
-        sheet.append(data)
+        for single_row in data:
+            sheet.append(single_row)
         workbook.save(file_path + file_name)
         workbook.close()
     else:
         wb = openpyxl.load_workbook(file_path + file_name)
         wb_sheet_name = wb.get_sheet_by_name(wb.get_sheet_names()[0])
-        wb_sheet_name.append(data)
+        for single_row in data:
+            wb_sheet_name.append(single_row)
         wb.save(file_path + file_name)
         wb.close()
 
@@ -237,7 +239,8 @@ def write_data_into_excel(file_path, season, orderNum, data):
                       "订单数量/Qty/Artical", "单价/Cost", "货币/Currency",
                       "总数量/总件数/Total Pairs/pcs", "出货日期/TOD", "编号/Artical No", "下载日期/Download Date"]
             sheet.append(header)
-            sheet.append(data)
+            for single_row in data:
+                sheet.append(single_row)
             workbook.save(os.path.join(file_path,season,str(
                 orderNum) + '_Single_Sheet.xlsx'))
             workbook.close()
@@ -246,7 +249,8 @@ def write_data_into_excel(file_path, season, orderNum, data):
             ##append data
             wb = openpyxl.load_workbook(os.path.join(file_path,season,str(orderNum) + '_Single_Sheet.xlsx'))
             wb_sheet_name = wb.get_sheet_by_name(wb.get_sheet_names()[0])
-            wb_sheet_name.append(data)
+            for single_row in data:
+                wb_sheet_name.append(single_row)
             wb.save(os.path.join(file_path,season,str(orderNum) + '_Single_Sheet.xlsx'))
             wb.close()
             ###Summary Sheet
@@ -265,7 +269,8 @@ def write_data_into_excel(file_path, season, orderNum, data):
                       "订单数量/Qty/Artical", "单价/Cost", "货币/Currency",
                       "总数量/总件数/Total Pairs/pcs", "出货日期/TOD", "编号/Artical No", "下载日期/Download Date"]
             sheet.append(header)
-            sheet.append(data)
+            for single_row in data:
+                sheet.append(single_row)
             workbook.save(os.path.join(file_path,season,str(
                 orderNum) + '_Single_Sheet.xlsx'))
             workbook.close()
@@ -276,7 +281,8 @@ def write_data_into_excel(file_path, season, orderNum, data):
             wb = openpyxl.load_workbook(os.path.join(file_path,season,str(
                 orderNum) + '_Single_Sheet.xlsx'))
             wb_sheet_name = wb.get_sheet_by_name(wb.get_sheet_names()[0])
-            wb_sheet_name.append(data)
+            for single_row in data:
+                wb_sheet_name.append(single_row)
             wb.save(os.path.join(file_path,season,str(
                 orderNum) + '_Single_Sheet.xlsx'))
             wb.close()
@@ -297,8 +303,6 @@ if __name__ == '__main__':
     log_path = path_dicts['main_path']
     logger.debug('log_path: ' + log_path)
     ###initial log file
-    if os.path.exists(log_path + 'pdf2excel.log'):
-        os.remove(log_path + 'pdf2excel.log')
     log_file = logger.add(log_path + 'pdf2excel.log')
     # get PurchaseOrder files list
     formatted_today = datetime.date.today().strftime('%Y%m%d')
@@ -313,6 +317,7 @@ if __name__ == '__main__':
     for s_li in df_li:
         country_codes.append(s_li[0] + '-' + s_li[1])
     for i in f:  # PurchaseOrder loop, the outer loop
+        data = []
         file_name = os.path.basename(i)
         if re.search(pattern, file_name.upper()) is None:
             orderNum = file_name.split('_', 1)[0]
@@ -483,26 +488,37 @@ if __name__ == '__main__':
                                         if re.findall(r'\* \d+.*', order_detail_array[ap]) == []:
                                             next
                                         else:
-                                            if re.findall(r'\* \d+.*', order_detail_array[ap]) is not [] and int(
+                                            if len(re.findall(r'\* \d+.*', order_detail_array[ap])[0].replace('* ',
+                                                                                                              '').split(
+                                                    ' ')) >= (artical_list.index(a)+1):
+                                                if re.findall(r'\* \d+.*', order_detail_array[ap]) is not [] and int(
                                                     re.findall(r'\* \d+.*', order_detail_array[ap])[0].replace('* ',
                                                                                                                '').split(
                                                         ' ')[artical_list.index(a)]) > 0:
-                                                qty_artical = int(
+                                                    qty_artical = int(
                                                     re.findall(r'\* \d+.*', order_detail_array[ap])[0].replace('* ',
                                                                                                                '').split(
                                                         ' ')[artical_list.index(a)]) * int(
                                                     no_of_asst_list[artical_list.index(a)])
                                                 ####call write_data_into_excel()
                                                 ##prepare dataset
-                                                data = [brand, order_type, season, order_no, department_no, product_no,
+                                                    data.append([brand, order_type, season, order_no, department_no, product_no,
                                                         date_of_order, product_name, development_no, no_of_pieces,
                                                         country_name, fright_term.replace(',', '')
                                                     , colourcode_colourname, size, packing_type, qty_artical, cost,
                                                         currency, int(no_of_pieces) * int(qty_artical), TOD, artical_no,
-                                                        download_date]
-                                                logger.debug('Writing data into excel sheet: ')
-                                                logger.debug(data)
-                                                write_data_into_excel(excel_file_path, season, orderNum, data)
+                                                        download_date])
+                                                    logger.debug('Appending data into dateaset... ')
+                                                    logger.debug([brand, order_type, season, order_no, department_no,
+                                                              product_no,
+                                                              date_of_order, product_name, development_no, no_of_pieces,
+                                                              country_name, fright_term.replace(',', ''),
+                                                              colourcode_colourname, size, packing_type, qty_artical,
+                                                              cost,
+                                                              currency, int(no_of_pieces) * int(qty_artical), TOD,
+                                                              artical_no,
+                                                              download_date])
+                                                #write_data_into_excel(excel_file_path, season, orderNum, data)
 
                             if solid_1st_position > 0:
                                 packing_type = 'Solid'
@@ -516,26 +532,33 @@ if __name__ == '__main__':
                                         if re.findall(r'\* \d+.*', order_detail_array[sp]) == []:
                                             next
                                         else:
-                                            if re.findall(r'\* \d+.*', order_detail_array[sp]) is not [] and int(
-                                                    re.findall(r'\* \d+.*', order_detail_array[sp])[0].replace('* ',
-                                                                                                               '').split(
-                                                        ' ')[artical_list.index(a)]) > 0:
-                                                qty_artical = int(
-                                                    re.findall(r'\* \d+.*', order_detail_array[sp])[0].replace('* ',
-                                                                                                               '').split(
-                                                        ' ')[artical_list.index(a)])
+                                            ##print('size: ' + str(len(re.findall(r'\* \d+.*', order_detail_array[sp])[0].replace('* ','').split(' ')))+', ' + 'current index: ' + str(artical_list.index(a)))
+                                            if len(re.findall(r'\* \d+.*', order_detail_array[sp])[0].replace('* ','').split(' ')) >= (artical_list.index(a) +1):
+                                                if re.findall(r'\* \d+.*', order_detail_array[sp]) is not [] and int(re.findall(r'\* \d+.*', order_detail_array[sp])[0].replace('* ','').split(' ')[artical_list.index(a)]) > 0:
+                                                    qty_artical = int(
+                                                        re.findall(r'\* \d+.*', order_detail_array[sp])[0].replace('* ',
+                                                                                                               '').split(' ')[artical_list.index(a)])
                                                 #######write data into excel sheet
                                                 ##read excel file , if file not existed, create a new one.
                                                 # prepare dataset
-                                                data = [brand, order_type, season, order_no, department_no, product_no,
+                                                    data.append([brand, order_type, season, order_no, department_no, product_no,
                                                         date_of_order, product_name, development_no, no_of_pieces,
                                                         country_name, fright_term.replace(',', ''),
                                                         colourcode_colourname, size, packing_type, qty_artical, cost,
                                                         currency, int(no_of_pieces) * int(qty_artical), TOD, artical_no,
-                                                        download_date]
-                                                logger.debug('Writing data into excel sheet: ')
-                                                logger.debug(data)
-                                                write_data_into_excel(excel_file_path, season, orderNum, data)
+                                                        download_date])
+                                                    logger.debug('Appending data into dateaset... ')
+                                                    logger.debug([brand, order_type, season, order_no, department_no,
+                                                              product_no,
+                                                              date_of_order, product_name, development_no, no_of_pieces,
+                                                              country_name, fright_term.replace(',', ''),
+                                                              colourcode_colourname, size, packing_type, qty_artical,
+                                                              cost,
+                                                              currency, int(no_of_pieces) * int(qty_artical), TOD,
+                                                              artical_no,
+                                                              download_date])
+                                                ##write_data_into_excel(excel_file_path, season, orderNum, data)
+                        logger.debug('Writing data into excel sheet....')
                     detail_obj.close()
                     order_object.close()
                     logger.debug('I am here..after order object closed...')
@@ -545,7 +568,8 @@ if __name__ == '__main__':
                     f = open(file_path + str(orderNum) + '_SizePerColourBreakdown*',encoding='gbk',errors='ignore')
             except FileNotFoundError:
                 logger.error('OrderNum: ' + str(orderNum) + ', file is not found!')
-
+            logger.debug(data)
+            write_data_into_excel(excel_file_path, season, orderNum, data)
             ###move processed file into Archive folder.
             try:
                 if os.path.exists(i.replace('PurchaseOrder', 'SizePerColourBreakdown')):
@@ -759,28 +783,40 @@ if __name__ == '__main__':
                                             if re.findall(r'\* \d+.*', order_detail_array[ap]) == []:
                                                 next
                                             else:
-                                                if re.findall(r'\* \d+.*', order_detail_array[ap]) is not [] and int(
+                                                if len(re.findall(r'\* \d+.*', order_detail_array[ap])[0].replace('* ',
+                                                                                                                  '').split(
+                                                        ' ')) >= (artical_list.index(a)+1):
+                                                    if re.findall(r'\* \d+.*', order_detail_array[ap]) is not [] and int(
                                                         re.findall(r'\* \d+.*', order_detail_array[ap])[0].replace('* ',
                                                                                                                    '').split(
                                                             ' ')[artical_list.index(a)]) > 0:
-                                                    qty_artical = int(
-                                                        re.findall(r'\* \d+.*', order_detail_array[ap])[0].replace('* ',
+                                                        qty_artical = int(
+                                                            re.findall(r'\* \d+.*', order_detail_array[ap])[0].replace('* ',
                                                                                                                    '').split(
                                                             ' ')[artical_list.index(a)]) * int(
-                                                        no_of_asst_list[artical_list.index(a)])
+                                                            no_of_asst_list[artical_list.index(a)])
                                                     ####call write_data_into_excel()
                                                     ##prepare dataset
-                                                    data = [brand, order_type, season, order_no, department_no,
+                                                        data.append([brand, order_type, season, order_no, department_no,
                                                             product_no,
                                                             date_of_order, product_name, development_no, no_of_pieces,
-                                                            country_name, fright_term.replace(',', '')
-                                                        , colourcode_colourname, size, packing_type, qty_artical, cost,
+                                                            country_name, fright_term.replace(',', ''), colourcode_colourname, size, packing_type, qty_artical, cost,
                                                             currency, int(no_of_pieces) * int(qty_artical), TOD,
                                                             artical_no,
-                                                            download_date]
-                                                    logger.debug('Writing data into excel sheet: ')
-                                                    logger.debug(data)
-                                                    write_data_into_excel(excel_file_path, season, orderNum, data)
+                                                            download_date])
+                                                        logger.debug('Appending data into dateaset... ')
+                                                        logger.debug([brand, order_type, season, order_no, department_no,
+                                                                  product_no,
+                                                                  date_of_order, product_name, development_no,
+                                                                  no_of_pieces,
+                                                                  country_name, fright_term.replace(',', ''),
+                                                                  colourcode_colourname, size, packing_type,
+                                                                  qty_artical,
+                                                                  cost,
+                                                                  currency, int(no_of_pieces) * int(qty_artical), TOD,
+                                                                  artical_no,
+                                                                  download_date])
+                                                    #write_data_into_excel(excel_file_path, season, orderNum, data)
 
                                 if solid_1st_position > 0:
                                     packing_type = 'Solid'
@@ -794,18 +830,21 @@ if __name__ == '__main__':
                                             if re.findall(r'\* \d+.*', order_detail_array[sp]) == []:
                                                 next
                                             else:
-                                                if re.findall(r'\* \d+.*', order_detail_array[sp]) is not [] and int(
+                                                if len(re.findall(r'\* \d+.*', order_detail_array[sp])[0].replace('* ',
+                                                                                                                  '').split(
+                                                        ' ')) >= (artical_list.index(a)+1):
+                                                    if re.findall(r'\* \d+.*', order_detail_array[sp]) is not [] and int(
                                                         re.findall(r'\* \d+.*', order_detail_array[sp])[0].replace('* ',
                                                                                                                    '').split(
                                                             ' ')[artical_list.index(a)]) > 0:
-                                                    qty_artical = int(
+                                                        qty_artical = int(
                                                         re.findall(r'\* \d+.*', order_detail_array[sp])[0].replace('* ',
                                                                                                                    '').split(
                                                             ' ')[artical_list.index(a)])
                                                     #######write data into excel sheet
                                                     ##read excel file , if file not existed, create a new one.
                                                     # prepare dataset
-                                                    data = [brand, order_type, season, order_no, department_no,
+                                                        data.append([brand, order_type, season, order_no, department_no,
                                                             product_no,
                                                             date_of_order, product_name, development_no, no_of_pieces,
                                                             country_name, fright_term.replace(',', ''),
@@ -813,19 +852,31 @@ if __name__ == '__main__':
                                                             cost,
                                                             currency, int(no_of_pieces) * int(qty_artical), TOD,
                                                             artical_no,
-                                                            download_date]
-                                                    logger.debug('Writing data into excel sheet: ')
-                                                    logger.debug(data)
-                                                    write_data_into_excel(excel_file_path, season, orderNum, data)
+                                                            download_date])
+                                                        logger.debug('Appending data into dateaset... ')
+                                                        logger.debug([brand, order_type, season, order_no, department_no,
+                                                            product_no,
+                                                            date_of_order, product_name, development_no, no_of_pieces,
+                                                            country_name, fright_term.replace(',', ''),
+                                                            colourcode_colourname, size, packing_type, qty_artical,
+                                                            cost,
+                                                            currency, int(no_of_pieces) * int(qty_artical), TOD,
+                                                            artical_no,
+                                                            download_date])
+                                                    ##write_data_into_excel(excel_file_path, season, orderNum, data)
+                            logger.debug('Writing data into excel sheet....')
                         detail_obj.close()
                         order_object.close()
                         ####end of size loop
                 else:
                     # throw error as the child file is not exists.
                     f = open(file_path + 'updated_' + str(orderNum) + '_SizePerColourBreakdown*',encoding='gbk',errors='ignore')
+
             except FileNotFoundError:
                 logger.error('OrderNum: ' + str(orderNum) + ', file is not found!')
                 # move processed file into Archive folder
+            logger.debug(data)
+            write_data_into_excel(excel_file_path, season, orderNum, data)
             try:
                 if os.path.exists(i.replace('PurchaseOrder', 'SizePerColourBreakdown')):
                     ##get the PurchaseOrder info and go down to the detail loop!!!!!!!!!!
