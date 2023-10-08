@@ -17,7 +17,6 @@ from loguru import logger
 import json
 
 
-
 def getConfig(filename):
     f = open(filename, 'r',encoding='gbk')
     content = f.read()
@@ -284,6 +283,10 @@ def write_data_into_excel(file_path, season, orderNum, data):
             write_data_into_summary_excel(file_path, data, season)
 
 
+def init_log_file(path_dicts):
+    log_path = path_dicts['main_path']
+    logger.add(log_path + 'pdf2excel-{time}.log')
+
 # with pdfplumber.open('/Users/kristd/Downloads/2PDF/667098_PurchaseOrder_20230627_144321.pdf') as pdf:
 #     for page in pdf.pages:
 #         print(page.extract_text_simple())
@@ -294,12 +297,11 @@ def write_data_into_excel(file_path, season, orderNum, data):
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     path_dicts = getConfig('config.json')
-    log_path = path_dicts['main_path']
-    logger.debug('log_path: ' + log_path)
-    ###initial log file
-    if os.path.exists(log_path + 'pdf2excel.log'):
-        os.remove(log_path + 'pdf2excel.log')
-    log_file = logger.add(log_path + 'pdf2excel.log')
+
+    # initial log file
+    init_log_file(path_dicts)
+    logger.info("----------------------- BEGIN -----------------------")
+
     # get PurchaseOrder files list
     formatted_today = datetime.date.today().strftime('%Y%m%d')
     file_path = path_dicts['pdf_order_path']
