@@ -165,15 +165,10 @@ def get_price_dicts(text, p1, p2):
     return price_dict
 
 
-def get_term_dicts(text, p1, p2, code_file_path):
+def get_term_dicts(text, p1, p2, country_code):
     logger.debug('in get_term_dicts')
     term_dicts = {}
     term_dicts.clear()
-    df = pd.read_excel( code_file_path + 'country_code.xlsx')
-    df_li = df.values.tolist()
-    country_codes = []
-    for s_li in df_li:
-        country_codes.append(s_li[0] + '-' + s_li[1])
 
     for p in range(p1, p2):
         country_list = text[p].split(',')
@@ -311,6 +306,12 @@ if __name__ == '__main__':
     f = glob.glob(file_path + '*PurchaseOrder*')
     pattern = 'UPDATED_*'
     excel_file_path = path_dicts['excel_order_path']
+    code_file_path = path_dicts['main_path']
+    df = pd.read_excel(code_file_path + 'country_code.xlsx')
+    df_li = df.values.tolist()
+    country_codes = []
+    for s_li in df_li:
+        country_codes.append(s_li[0] + '-' + s_li[1])
     for i in f:  # PurchaseOrder loop, the outer loop
         file_name = os.path.basename(i)
         if re.search(pattern, file_name.upper()) is None:
@@ -373,9 +374,8 @@ if __name__ == '__main__':
                     logger.debug('getting term dict...')
                     term_dict = {}
                     term_dict.clear()
-                    code_file_path = path_dicts['main_path']
                     logger.debug('getting country code file....')
-                    term_dict = get_term_dicts(order_info_array, terms_1st_position + 1, terms_last_position + 1,code_file_path)
+                    term_dict = get_term_dicts(order_info_array, terms_1st_position + 1, terms_last_position + 1,country_codes)
 
                     ##create the time delivery mapping
                     logger.debug('getting time delivery dict...')
@@ -652,7 +652,7 @@ if __name__ == '__main__':
                         term_dict = {}
                         term_dict.clear()
                         code_file_path = path_dicts['main_path']
-                        term_dict = get_term_dicts(order_info_array, terms_1st_position + 1, terms_last_position + 1,code_file_path)
+                        term_dict = get_term_dicts(order_info_array, terms_1st_position + 1, terms_last_position + 1,country_codes)
 
                         ##create the time delivery mapping
                         time_delivery_dict = {}
