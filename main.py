@@ -514,7 +514,6 @@ if __name__ == '__main__':
                                                         currency, int(no_of_pieces) * int(qty_artical), TOD, artical_no,
                                                         download_date])
                                                     logger.debug('Appending data into dateaset... ')
-                                                #write_data_into_excel(excel_file_path, season, orderNum, data)
 
                             if solid_1st_position > 0:
                                 packing_type = 'Solid'
@@ -544,7 +543,6 @@ if __name__ == '__main__':
                                                         currency, int(no_of_pieces) * int(qty_artical), TOD, artical_no,
                                                         download_date])
                                                 ##write_data_into_excel(excel_file_path, season, orderNum, data)
-                        logger.debug('Writing data into excel sheet....')
                     detail_obj.close()
                     order_object.close()
                     logger.debug('I am here..after order object closed...')
@@ -557,6 +555,8 @@ if __name__ == '__main__':
                         logger.debug(file_path + str(orderNum) + ', SizePerColourBreakdown is not found!!!!')
             except FileNotFoundError:
                 logger.error('OrderNum: ' + str(orderNum) + ', file is not found!')
+
+            logger.debug('Writing data into excel sheet....')
             write_data_into_excel(excel_file_path, season, orderNum, data)
             ###move processed file into Archive folder.
             try:
@@ -831,7 +831,6 @@ if __name__ == '__main__':
                                                             artical_no,
                                                             download_date])
                                                     ##write_data_into_excel(excel_file_path, season, orderNum, data)
-                            logger.debug('Writing data into excel sheet....')
                         detail_obj.close()
                         order_object.close()
                         ####end of size loop
@@ -845,6 +844,7 @@ if __name__ == '__main__':
                 logger.error('OrderNum: ' + str(orderNum) + ', main exception!!!!')
                 # move processed file into Archive folder
             if remove_flag == 1:
+                logger.debug('Writing data into excel sheet...')
                 write_data_into_excel(excel_file_path, season, orderNum, data)
                 try:
                     if os.path.exists(i.replace('PurchaseOrder', 'SizePerColourBreakdown')):
