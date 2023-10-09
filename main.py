@@ -20,7 +20,7 @@ import json
 
 def getConfig(filename):
     try:
-        f = open(filename, 'r',encoding='gbk')
+        f = open(filename, 'r',encoding='utf-8')
     except FileNotFoundError:
         logger.debug(filename + ' is not found!!!!!')
     content = f.read()
@@ -135,20 +135,23 @@ def get_delivery_dates_dicts(text, p1, p2):
     time_delivery_dict.clear()
     for p in range(p1, p2):
         if re.search(r'\d+', text[p]) is not None:
+            l_day = text[p][0:2]
+            l_mon = list(calendar.month_abbr).index(text[p][3:6])
+            l_year = text[p][8:12]
             if (p + 1) <= p2 and re.search(r'\d+', text[p + 1]) is not None:
-                l_day = text[p][0:2]
-                l_mon = list(calendar.month_abbr).index(text[p][3:6])
-                l_year = text[p][8:12]
                 time_delivery_dict[re.sub(u"\\(.*?\\)", '', text[p].replace('\xa0', '')[13:].replace(
                     re.findall(r'\d+ .*%', text[p].replace('\xa0', '')[13:])[0], '').strip())] = str(
                     l_year) + '-' + str(l_mon) + '-' + str(l_day)
-            else:
-                l_day = text[p][0:2]
-                l_mon = list(calendar.month_abbr).index(text[p][3:6])
-                l_year = text[p][8:12]
+            elif (p+2) <= p2 and re.search(r'\d+', text[p + 1]) is not None:
                 time_delivery_dict[re.sub(u"\\(.*?\\)", '', (text[p].replace('\xa0', '')[13:].replace(
                     re.findall(r'\d+ .*%', text[p].replace('\xa0', '')[13:])[0], '').strip() +
                                                              text[p + 1].replace('\xa0', '').strip()))] = str(
+                    l_year) + '-' + str(
+                    l_mon) + '-' + str(l_day)
+            elif (p+2) <= p2 and re.search(r'\d+', text[p + 1]) is None:
+                time_delivery_dict[re.sub(u"\\(.*?\\)", '', (text[p].replace('\xa0', '')[13:].replace(
+                    re.findall(r'\d+ .*%', text[p].replace('\xa0', '')[13:])[0], '').strip() +
+                                                             text[p + 1].replace('\xa0', '').strip()+ text[p+2].replace('\xa0', '').strip()))] = str(
                     l_year) + '-' + str(
                     l_mon) + '-' + str(l_day)
     return time_delivery_dict
@@ -384,6 +387,15 @@ if __name__ == '__main__':
                         if (re.search(r'Total Quantity:', order_info_array[p])):
                             colourname_last_position = p - 1
 
+
+                    logger.debug('terms_1st_position: ' + str(terms_1st_position))
+                    logger.debug('terms_last_position: ' + str(terms_last_position))
+                    logger.debug('time_delivery_1st_position: ' + str(time_delivery_1st_position))
+                    logger.debug('time_delivery_last_position: ' + str(time_delivery_last_position))
+                    logger.debug('price_1st_position: ' + str(price_1st_position))
+                    logger.debug('price_last_position: ' + str(price_last_position))
+                    logger.debug('colourname_1st_position: ' + str(colourname_1st_position))
+                    logger.debug('colourname_last_position: ' + str(colourname_last_position))
                     ### create the country/term mapping
                     logger.debug('getting term dict...')
                     term_dict = {}
@@ -550,7 +562,7 @@ if __name__ == '__main__':
                 else:
                     # throw error as the child file is not exists.
                     try:
-                        f = open(file_path + str(orderNum) + '_SizePerColourBreakdown*',encoding='gbk',errors='ignore')
+                        f = open(file_path + str(orderNum) + '_SizePerColourBreakdown*',encoding='utf-8',errors='ignore')
                     except FileNotFoundError:
                         logger.debug(file_path + str(orderNum) + ', SizePerColourBreakdown is not found!!!!')
             except FileNotFoundError:
@@ -571,7 +583,7 @@ if __name__ == '__main__':
                 else:
                     # throw error as the child file is not exists.
                     try:
-                        f = open(i.replace('PurchaseOrder', 'SizePerColourBreakdown'),encoding='gbk',errors='ignore')
+                        f = open(i.replace('PurchaseOrder', 'SizePerColourBreakdown'),encoding='utf-8',errors='ignore')
                     except FileNotFoundError:
                         logger.error('OrderNum: ' + str(orderNum) + ', SizePerColourBreakdown file not found!!!')
             except FileNotFoundError:
@@ -837,7 +849,7 @@ if __name__ == '__main__':
                 else:
                     # throw error as the child file is not exists.
                     try:
-                        f = open(file_path + 'updated_' + str(orderNum) + '_SizePerColourBreakdown*',encoding='gbk',errors='ignore')
+                        f = open(file_path + 'updated_' + str(orderNum) + '_SizePerColourBreakdown*',encoding='utf-8',errors='ignore')
                     except FileNotFoundError:
                         logger.error('OrderNum: ' + str(orderNum) + ', updated SizePerColourBreakdown file not found!!!')
             except FileNotFoundError:
@@ -858,7 +870,7 @@ if __name__ == '__main__':
                     else:
                         # throw error as the child file is not exists.,
                         try:
-                            f = open(i.replace('PurchaseOrder', 'SizePerColourBreakdown'),encoding='gbk',errors='ignore')
+                            f = open(i.replace('PurchaseOrder', 'SizePerColourBreakdown'),encoding='utf-8',errors='ignore')
                         except FileNotFoundError:
                             logger.error(
                                 'OrderNum: ' + str(orderNum) + ', updated SizePerColourBreakdown file not found!!!')
