@@ -844,25 +844,26 @@ if __name__ == '__main__':
             except FileNotFoundError:
                 logger.error('OrderNum: ' + str(orderNum) + ', main exception!!!!')
                 # move processed file into Archive folder
-            write_data_into_excel(excel_file_path, season, orderNum, data)
-            try:
-                if os.path.exists(i.replace('PurchaseOrder', 'SizePerColourBreakdown')):
-                    ##get the PurchaseOrder info and go down to the detail loop!!!!!!!!!!
-                    ####Update Order Scenarios
-                    archive_path = path_dicts['archive_path']
-                    shutil.move(i, archive_path + file_name)
-                    shutil.move(i.replace('PurchaseOrder', 'SizePerColourBreakdown'),
+            if remove_flag == 1:
+                write_data_into_excel(excel_file_path, season, orderNum, data)
+                try:
+                    if os.path.exists(i.replace('PurchaseOrder', 'SizePerColourBreakdown')):
+                        ##get the PurchaseOrder info and go down to the detail loop!!!!!!!!!!
+                        ####Update Order Scenarios
+                        archive_path = path_dicts['archive_path']
+                        shutil.move(i, archive_path + file_name)
+                        shutil.move(i.replace('PurchaseOrder', 'SizePerColourBreakdown'),
                                     archive_path + file_name.replace('PurchaseOrder', 'SizePerColourBreakdown'))
-                    print(i + ' : Files have been moved to Archive folder...')
-                else:
+                        print(i + ' : Files have been moved to Archive folder...')
+                    else:
                         # throw error as the child file is not exists.,
-                    try:
-                        f = open(i.replace('PurchaseOrder', 'SizePerColourBreakdown'),encoding='utf-8',errors='ignore')
-                    except FileNotFoundError:
-                        logger.error(
-                            'OrderNum: ' + str(orderNum) + ', updated SizePerColourBreakdown file not found!!!')
-            except FileNotFoundError:
-                print('File is not found!')
+                        try:
+                            f = open(i.replace('PurchaseOrder', 'SizePerColourBreakdown'),encoding='utf-8',errors='ignore')
+                        except FileNotFoundError:
+                            logger.error(
+                                'OrderNum: ' + str(orderNum) + ', updated SizePerColourBreakdown file not found!!!')
+                except FileNotFoundError:
+                    print('File is not found!')
         # end of outer for loop
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
