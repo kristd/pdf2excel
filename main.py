@@ -19,7 +19,10 @@ import json
 
 
 def getConfig(filename):
-    f = open(filename, 'r',encoding='utf-8')
+    try:
+        f = open(filename, 'r',encoding='utf-8')
+    except FileNotFoundError:
+        logger.debug(filename + ' is not found!!!!!')
     content = f.read()
     a = json.loads(content)
     return a
@@ -41,12 +44,18 @@ def rename_file_from_season(folder_path, file_name_pattern):
 
 
 def get_purchase_order_first_page_text(i):
-    pdf_object = pdfplumber.open(i)
+    try:
+        pdf_object = pdfplumber.open(i)
+    except InterruptedError:
+        logger.debug(i + ' is unable to be opened....')
     return pdf_object
 
 
 def get_sizecolourbreakdown_pages_text(i):
-    pdf_object = pdfplumber.open(i)
+    try:
+        pdf_object = pdfplumber.open(i)
+    except InterruptedError:
+        logger.debug(i + ' is unable to be opened....')
     return pdf_object
 
 
@@ -395,16 +404,12 @@ if __name__ == '__main__':
                     logger.debug('getting price dict...')
                     price_dict = {}
                     price_dict = get_price_dicts(order_info_array, price_1st_position + 1, price_last_position + 1)
-                    logger.debug('Print price dict: ')
-                    logger.debug(price_dict)
 
                     ##create colourname mapping
                     colourname_dict = {}
                     colourname_dict.clear()
                     colourname_dict = get_colourname_dicts(order_info_array, colourname_1st_position + 1,
                                                            colourname_last_position + 1)
-                    logger.debug('Print Colourname dict: ')
-                    logger.debug(colourname_dict)
 
                     ###detail loop start here
                     detail_pages = []
@@ -509,15 +514,6 @@ if __name__ == '__main__':
                                                         currency, int(no_of_pieces) * int(qty_artical), TOD, artical_no,
                                                         download_date])
                                                     logger.debug('Appending data into dateaset... ')
-                                                    logger.debug([brand, order_type, season, order_no, department_no,
-                                                              product_no,
-                                                              date_of_order, product_name, development_no, no_of_pieces,
-                                                              country_name, fright_term.replace(',', ''),
-                                                              colourcode_colourname, size, packing_type, qty_artical,
-                                                              cost,
-                                                              currency, int(no_of_pieces) * int(qty_artical), TOD,
-                                                              artical_no,
-                                                              download_date])
                                                 #write_data_into_excel(excel_file_path, season, orderNum, data)
 
                             if solid_1st_position > 0:
@@ -547,16 +543,6 @@ if __name__ == '__main__':
                                                         colourcode_colourname, size, packing_type, qty_artical, cost,
                                                         currency, int(no_of_pieces) * int(qty_artical), TOD, artical_no,
                                                         download_date])
-                                                    logger.debug('Appending data into dateaset... ')
-                                                    logger.debug([brand, order_type, season, order_no, department_no,
-                                                              product_no,
-                                                              date_of_order, product_name, development_no, no_of_pieces,
-                                                              country_name, fright_term.replace(',', ''),
-                                                              colourcode_colourname, size, packing_type, qty_artical,
-                                                              cost,
-                                                              currency, int(no_of_pieces) * int(qty_artical), TOD,
-                                                              artical_no,
-                                                              download_date])
                                                 ##write_data_into_excel(excel_file_path, season, orderNum, data)
                         logger.debug('Writing data into excel sheet....')
                     detail_obj.close()
@@ -565,10 +551,12 @@ if __name__ == '__main__':
                     ######end of detail loop
                 else:
                     # throw error as the child file is not exists.
-                    f = open(file_path + str(orderNum) + '_SizePerColourBreakdown*',encoding='utf-8',errors='ignore')
+                    try:
+                        f = open(file_path + str(orderNum) + '_SizePerColourBreakdown*',encoding='utf-8',errors='ignore')
+                    except FileNotFoundError:
+                        logger.debug(file_path + str(orderNum) + ', SizePerColourBreakdown is not found!!!!')
             except FileNotFoundError:
                 logger.error('OrderNum: ' + str(orderNum) + ', file is not found!')
-            logger.debug(data)
             write_data_into_excel(excel_file_path, season, orderNum, data)
             ###move processed file into Archive folder.
             try:
@@ -582,7 +570,10 @@ if __name__ == '__main__':
                     print(i + ' : Files have been moved to Archive folder...')
                 else:
                     # throw error as the child file is not exists.
-                    f = open(i.replace('PurchaseOrder', 'SizePerColourBreakdown'),encoding='utf-8',errors='ignore')
+                    try:
+                        f = open(i.replace('PurchaseOrder', 'SizePerColourBreakdown'),encoding='utf-8',errors='ignore')
+                    except FileNotFoundError:
+                        logger.error('OrderNum: ' + str(orderNum) + ', SizePerColourBreakdown file not found!!!')
             except FileNotFoundError:
                 print('File is not found!')
 
@@ -689,16 +680,14 @@ if __name__ == '__main__':
                         ##create price mapping
                         price_dict = {}
                         price_dict = get_price_dicts(order_info_array, price_1st_position + 1, price_last_position + 1)
-                        logger.debug('Print price dict: ')
-                        logger.debug(price_dict)
+
 
                         ##create colourname mapping
                         colourname_dict = {}
                         colourname_dict.clear()
                         colourname_dict = get_colourname_dicts(order_info_array, colourname_1st_position + 1,
                                                                colourname_last_position + 1)
-                        logger.debug('Print Colourname dict: ')
-                        logger.debug(colourname_dict)
+
 
                         ###detail loop start here
                         detail_pages = []
@@ -804,18 +793,6 @@ if __name__ == '__main__':
                                                             currency, int(no_of_pieces) * int(qty_artical), TOD,
                                                             artical_no,
                                                             download_date])
-                                                        logger.debug('Appending data into dateaset... ')
-                                                        logger.debug([brand, order_type, season, order_no, department_no,
-                                                                  product_no,
-                                                                  date_of_order, product_name, development_no,
-                                                                  no_of_pieces,
-                                                                  country_name, fright_term.replace(',', ''),
-                                                                  colourcode_colourname, size, packing_type,
-                                                                  qty_artical,
-                                                                  cost,
-                                                                  currency, int(no_of_pieces) * int(qty_artical), TOD,
-                                                                  artical_no,
-                                                                  download_date])
                                                     #write_data_into_excel(excel_file_path, season, orderNum, data)
 
                                 if solid_1st_position > 0:
@@ -853,16 +830,6 @@ if __name__ == '__main__':
                                                             currency, int(no_of_pieces) * int(qty_artical), TOD,
                                                             artical_no,
                                                             download_date])
-                                                        logger.debug('Appending data into dateaset... ')
-                                                        logger.debug([brand, order_type, season, order_no, department_no,
-                                                            product_no,
-                                                            date_of_order, product_name, development_no, no_of_pieces,
-                                                            country_name, fright_term.replace(',', ''),
-                                                            colourcode_colourname, size, packing_type, qty_artical,
-                                                            cost,
-                                                            currency, int(no_of_pieces) * int(qty_artical), TOD,
-                                                            artical_no,
-                                                            download_date])
                                                     ##write_data_into_excel(excel_file_path, season, orderNum, data)
                             logger.debug('Writing data into excel sheet....')
                         detail_obj.close()
@@ -870,12 +837,13 @@ if __name__ == '__main__':
                         ####end of size loop
                 else:
                     # throw error as the child file is not exists.
-                    f = open(file_path + 'updated_' + str(orderNum) + '_SizePerColourBreakdown*',encoding='utf-8',errors='ignore')
-
+                    try:
+                        f = open(file_path + 'updated_' + str(orderNum) + '_SizePerColourBreakdown*',encoding='utf-8',errors='ignore')
+                    except FileNotFoundError:
+                        logger.error('OrderNum: ' + str(orderNum) + ', updated SizePerColourBreakdown file not found!!!')
             except FileNotFoundError:
-                logger.error('OrderNum: ' + str(orderNum) + ', file is not found!')
+                logger.error('OrderNum: ' + str(orderNum) + ', main exception!!!!')
                 # move processed file into Archive folder
-            logger.debug(data)
             write_data_into_excel(excel_file_path, season, orderNum, data)
             try:
                 if os.path.exists(i.replace('PurchaseOrder', 'SizePerColourBreakdown')):
@@ -888,7 +856,11 @@ if __name__ == '__main__':
                     print(i + ' : Files have been moved to Archive folder...')
                 else:
                         # throw error as the child file is not exists.,
-                    f = open(i.replace('PurchaseOrder', 'SizePerColourBreakdown'),encoding='utf-8',errors='ignore')
+                    try:
+                        f = open(i.replace('PurchaseOrder', 'SizePerColourBreakdown'),encoding='utf-8',errors='ignore')
+                    except FileNotFoundError:
+                        logger.error(
+                            'OrderNum: ' + str(orderNum) + ', updated SizePerColourBreakdown file not found!!!')
             except FileNotFoundError:
                 print('File is not found!')
         # end of outer for loop
