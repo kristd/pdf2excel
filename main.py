@@ -609,7 +609,7 @@ if __name__ == '__main__':
                                 max_row = j
                     logger.debug('min row: ' + str(min_row + 2))
                     logger.debug('max row: ' + str(max_row + 2))
-                    if max_row != 0:
+                    if max_row != 2 and min_row != 1000000002:
                         wb = openpyxl.load_workbook(os.path.join(excel_file_path,'Orders_Summary_' + season + '.xlsx'))
                         wb_sheet_name = wb.get_sheet_by_name(wb.get_sheet_names()[0])
                         wb_sheet_name.delete_rows(min_row + 2, max_row + 2)
