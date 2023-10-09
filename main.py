@@ -20,7 +20,7 @@ import json
 
 def getConfig(filename):
     try:
-        f = open(filename, 'r',encoding='utf-8')
+        f = open(filename, 'r',encoding='gbk')
     except FileNotFoundError:
         logger.debug(filename + ' is not found!!!!!')
     content = f.read()
@@ -550,7 +550,7 @@ if __name__ == '__main__':
                 else:
                     # throw error as the child file is not exists.
                     try:
-                        f = open(file_path + str(orderNum) + '_SizePerColourBreakdown*',encoding='utf-8',errors='ignore')
+                        f = open(file_path + str(orderNum) + '_SizePerColourBreakdown*',encoding='gbk',errors='ignore')
                     except FileNotFoundError:
                         logger.debug(file_path + str(orderNum) + ', SizePerColourBreakdown is not found!!!!')
             except FileNotFoundError:
@@ -571,7 +571,7 @@ if __name__ == '__main__':
                 else:
                     # throw error as the child file is not exists.
                     try:
-                        f = open(i.replace('PurchaseOrder', 'SizePerColourBreakdown'),encoding='utf-8',errors='ignore')
+                        f = open(i.replace('PurchaseOrder', 'SizePerColourBreakdown'),encoding='gbk',errors='ignore')
                     except FileNotFoundError:
                         logger.error('OrderNum: ' + str(orderNum) + ', SizePerColourBreakdown file not found!!!')
             except FileNotFoundError:
@@ -837,7 +837,7 @@ if __name__ == '__main__':
                 else:
                     # throw error as the child file is not exists.
                     try:
-                        f = open(file_path + 'updated_' + str(orderNum) + '_SizePerColourBreakdown*',encoding='utf-8',errors='ignore')
+                        f = open(file_path + 'updated_' + str(orderNum) + '_SizePerColourBreakdown*',encoding='gbk',errors='ignore')
                     except FileNotFoundError:
                         logger.error('OrderNum: ' + str(orderNum) + ', updated SizePerColourBreakdown file not found!!!')
             except FileNotFoundError:
@@ -858,7 +858,7 @@ if __name__ == '__main__':
                     else:
                         # throw error as the child file is not exists.,
                         try:
-                            f = open(i.replace('PurchaseOrder', 'SizePerColourBreakdown'),encoding='utf-8',errors='ignore')
+                            f = open(i.replace('PurchaseOrder', 'SizePerColourBreakdown'),encoding='gbk',errors='ignore')
                         except FileNotFoundError:
                             logger.error(
                                 'OrderNum: ' + str(orderNum) + ', updated SizePerColourBreakdown file not found!!!')
