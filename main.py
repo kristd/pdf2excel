@@ -624,6 +624,7 @@ if __name__ == '__main__':
                     if max_row != 2 and min_row != 1000000002:
                         wb = openpyxl.load_workbook(os.path.join(excel_file_path,'Orders_Summary_' + season + '.xlsx'))
                         wb_sheet_name = wb.get_sheet_by_name(wb.get_sheet_names()[0])
+                        ###wb_sheet_name.delete_rows(min_row + 2, max_row + 2)
                         wb_sheet_name.delete_rows(idx=min_row + 2, amount=max_row-min_row+1)  ## idx/amount ver2.0
                         wb.save(os.path.join(excel_file_path,'Orders_Summary_' + season + '.xlsx'))
                         wb.close()
