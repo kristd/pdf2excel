@@ -134,21 +134,26 @@ def get_delivery_dates_dicts(text, p1, p2):
     time_delivery_dict = {}
     time_delivery_dict.clear()
     for p in range(p1, p2):
-        if re.search(r'\d+', text[p]) is not None:
+        logger.debug(text[p])
+        if re.search(r', \d{4}', text[p]) is not None:
             l_day = text[p][0:2]
             l_mon = list(calendar.month_abbr).index(text[p][3:6])
             l_year = text[p][8:12]
-            if (p + 1) <= p2 and re.search(r'\d+', text[p + 1]) is not None:
+            if p == p2-1:
                 time_delivery_dict[re.sub(u"\\(.*?\\)", '', text[p].replace('\xa0', '')[13:].replace(
                     re.findall(r'\d+ .*%', text[p].replace('\xa0', '')[13:])[0], '').strip())] = str(
                     l_year) + '-' + str(l_mon) + '-' + str(l_day)
-            elif (p+2) <= p2 and re.search(r'\d+', text[p + 1]) is not None:
+            if (p + 1) <= p2 and re.search(r', \d{4}', text[p + 1]) is not None:
+                time_delivery_dict[re.sub(u"\\(.*?\\)", '', text[p].replace('\xa0', '')[13:].replace(
+                    re.findall(r'\d+ .*%', text[p].replace('\xa0', '')[13:])[0], '').strip())] = str(
+                    l_year) + '-' + str(l_mon) + '-' + str(l_day)
+            elif (p+2) <= p2 and re.search(r', \d{4}', text[p + 2]) is not None:
                 time_delivery_dict[re.sub(u"\\(.*?\\)", '', (text[p].replace('\xa0', '')[13:].replace(
                     re.findall(r'\d+ .*%', text[p].replace('\xa0', '')[13:])[0], '').strip() +
                                                              text[p + 1].replace('\xa0', '').strip()))] = str(
                     l_year) + '-' + str(
                     l_mon) + '-' + str(l_day)
-            elif (p+2) <= p2 and re.search(r'\d+', text[p + 1]) is None:
+            elif (p+2) <= p2 and re.search(r', \d{4}', text[p + 2]) is None:
                 time_delivery_dict[re.sub(u"\\(.*?\\)", '', (text[p].replace('\xa0', '')[13:].replace(
                     re.findall(r'\d+ .*%', text[p].replace('\xa0', '')[13:])[0], '').strip() +
                                                              text[p + 1].replace('\xa0', '').strip()+ text[p+2].replace('\xa0', '').strip()))] = str(
