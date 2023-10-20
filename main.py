@@ -579,7 +579,7 @@ if __name__ == '__main__':
                     shutil.move(i, archive_path + file_name)
                     shutil.move(i.replace('PurchaseOrder', 'SizePerColourBreakdown'),
                                 archive_path + file_name.replace('PurchaseOrder', 'SizePerColourBreakdown'))
-                    print(i + ' : Files have been moved to Archive folder...')
+                    logger.debug(i + ' : Files have been moved to Archive folder...')
                 else:
                     # throw error as the child file is not exists.
                     try:
@@ -587,7 +587,7 @@ if __name__ == '__main__':
                     except FileNotFoundError:
                         logger.error('OrderNum: ' + str(orderNum) + ', SizePerColourBreakdown file not found!!!')
             except FileNotFoundError:
-                print('File is not found!')
+                logger.debug('File is not found!')
 
 
         else:
@@ -624,7 +624,7 @@ if __name__ == '__main__':
                     if max_row != 2 and min_row != 1000000002:
                         wb = openpyxl.load_workbook(os.path.join(excel_file_path,'Orders_Summary_' + season + '.xlsx'))
                         wb_sheet_name = wb.get_sheet_by_name(wb.get_sheet_names()[0])
-                        wb_sheet_name.delete_rows(min_row + 2, max_row + 2)
+                        wb_sheet_name.delete_rows(idx=min_row + 2, amount=max_row-min_row+1)  ## idx/amount ver2.0
                         wb.save(os.path.join(excel_file_path,'Orders_Summary_' + season + '.xlsx'))
                         wb.close()
                         remove_flag = 1
@@ -866,7 +866,7 @@ if __name__ == '__main__':
                         shutil.move(i, archive_path + file_name)
                         shutil.move(i.replace('PurchaseOrder', 'SizePerColourBreakdown'),
                                     archive_path + file_name.replace('PurchaseOrder', 'SizePerColourBreakdown'))
-                        print(i + ' : Files have been moved to Archive folder...')
+                        logger.debug(i + ' : Files have been moved to Archive folder...')
                     else:
                         # throw error as the child file is not exists.,
                         try:
@@ -875,7 +875,7 @@ if __name__ == '__main__':
                             logger.error(
                                 'OrderNum: ' + str(orderNum) + ', updated SizePerColourBreakdown file not found!!!')
                 except FileNotFoundError:
-                    print('File is not found!')
+                    logger.error('File is not found!')
         # end of outer for loop
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
