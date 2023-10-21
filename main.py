@@ -301,7 +301,7 @@ def write_data_into_excel(file_path, season, orderNum, data):
             workbook.save(os.path.join(file_path,season,str(
                 orderNum) + '_Single_Sheet.xlsx'))
             logger.debug('power_bi file: ' + os.path.join(file_path, 'power_bi', str(orderNum) + '_Single_Sheet.xlsx'))
-            workbook.save(os.path.join(file_path, 'power_bi', str(orderNum) + '_Single_Sheet.xlsx'))
+            workbook.save(os.path.join(file_path, 'power_bi', str(orderNum) + '_Single_Sheet.xlsx'))  ###power bi
             workbook.close()
             ##write_data_into_summary_excel(file_path, data, season)
 
