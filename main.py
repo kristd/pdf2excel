@@ -143,6 +143,9 @@ def get_delivery_dates_dicts(text, p1, p2):
             l_day = text[p][0:2]
             l_mon = list(calendar.month_abbr).index(text[p][3:6])
             l_year = text[p][8:12]
+            logger.debug('p1: ' + str(p1) + ', p2: ' + str(p2))
+            logger.debug('p: ' + str(p) + ', p+1: ' + str(p+1) + ', p+2: ' + str(p+2))
+            logger.debug('p: ' + text[p] + ', p+1: ' + text[p+1] +', p+2: ' + text[p+2])
             if p == p2-1:  ###last line
                 time_delivery_dict[re.sub(u"\\(.*?\\)", '', text[p].replace('\xa0', '')[13:].replace(
                     re.findall(r'\d+ .*%', text[p].replace('\xa0', '')[13:])[0], '').strip())] = str(
@@ -151,7 +154,7 @@ def get_delivery_dates_dicts(text, p1, p2):
                 time_delivery_dict[re.sub(u"\\(.*?\\)", '', text[p].replace('\xa0', '')[13:].replace(
                     re.findall(r'\d+ .*%', text[p].replace('\xa0', '')[13:])[0], '').strip())] = str(
                     l_year) + '-' + str(l_mon) + '-' + str(l_day)
-            elif (p+2) <= p2 and re.search(r', \d{4}', text[p + 2]) is not None:  #### 1 TOD 2 lines case
+            elif ((p+2) <= p2 and re.search(r', \d{4}', text[p + 2]) is not None) or re.search(r'Total',text[p+2]) is not None:  #### 1 TOD 2 lines case
                 time_delivery_dict[re.sub(u"\\(.*?\\)", '', (text[p].replace('\xa0', '')[13:].replace(
                     re.findall(r'\d+ .*%', text[p].replace('\xa0', '')[13:])[0], '').strip() +
                                                              text[p + 1].replace('\xa0', '').strip()))] = str(
@@ -889,6 +892,7 @@ if __name__ == '__main__':
                         order_object.close()
                         ####end of size loop
                 else:
+                    # throw error as the child file is not exists.
                     # throw error as the child file is not exists.
                     try:
                         f = open(file_path + 'updated_' + str(orderNum) + '_SizePerColourBreakdown*',encoding='utf-8',errors='ignore')
