@@ -467,6 +467,7 @@ if __name__ == '__main__':
                         solid_1st_position = 0
                         solid_last_position = 0
 
+
                         for p in range(0, len(order_detail_array)):
                             if (re.search(r'Assortment', order_detail_array[p])):
                                 assortment_1st_position = p
@@ -476,7 +477,7 @@ if __name__ == '__main__':
                             if (re.search(r'Total', order_detail_array[p])):
                                 solid_last_position = p - 1
 
-                        country_code = get_detail_country_code(order_detail_array[11])
+                        country_code = get_detail_country_code(order_detail_array[12])
                         ## get term
 
                         for k in term_dict.keys():
@@ -506,8 +507,8 @@ if __name__ == '__main__':
                                 break
 
                         ##get artical NO & colourcode+colourname
-                        artical_list = re.findall(r'\d+.*\d+', order_detail_array[12])[0].split(' ')
-                        colourcode_list = re.findall(r'\d+-.*', order_detail_array[13])[0].split(' ')
+                        artical_list = re.findall(r'\d+.*\d+', order_detail_array[13])[0].split(' ')
+                        colourcode_list = re.findall(r'\d+-.*', order_detail_array[14])[0].split(' ')
                         # print(country_name)
                         for a in artical_list:
                             artical_no = ''  # Column U
@@ -774,7 +775,7 @@ if __name__ == '__main__':
                                 if (re.search(r'Total', order_detail_array[p])):
                                     solid_last_position = p - 1
 
-                            country_code = get_detail_country_code(order_detail_array[11])
+                            country_code = get_detail_country_code(order_detail_array[12])
                             ## get term
                             for k in term_dict.keys():
                                 if re.search(country_code, str(k)) is not None or re.search(str(k),
@@ -805,8 +806,8 @@ if __name__ == '__main__':
                                     break
 
                             ##get artical NO & colourcode+colourname
-                            artical_list = re.findall(r'\d+.*\d+', order_detail_array[12])[0].split(' ')
-                            colourcode_list = re.findall(r'\d+-.*', order_detail_array[13])[0].split(' ')
+                            artical_list = re.findall(r'\d+.*\d+', order_detail_array[13])[0].split(' ')
+                            colourcode_list = re.findall(r'\d+-.*', order_detail_array[14])[0].split(' ')
                             # print(country_name)
                             for a in artical_list:
                                 artical_no = ''  # Column V
