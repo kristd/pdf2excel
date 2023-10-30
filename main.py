@@ -776,21 +776,31 @@ if __name__ == '__main__':
 
                             country_code = get_detail_country_code(order_detail_array[11])
                             ## get term
-
                             for k in term_dict.keys():
-                                if re.search(country_code, str(k)) is not None:
+                                if re.search(country_code, str(k)) is not None or re.search(str(k),
+                                                                                            country_code) is not None:
                                     country_name = k
                                     fright_term = term_dict[k]
                                     break
-                            ## get cost and currency
+                                ## get cost and currency
                             for k in price_dict.keys():
+                                if re.search('/', country_name) is not None:
+                                    if re.search(country_name.split('/')[0], str(k)) is not None:
+                                        cost = price_dict[k].split('-')[0]
+                                        currency = price_dict[k].split('-')[1]
+                                        break
                                 if re.search(country_code, str(k)) is not None:
                                     cost = price_dict[k].split('-')[0]
                                     currency = price_dict[k].split('-')[1]
                                     break
 
                             for k in time_delivery_dict.keys():
-                                if re.search(country_code, str(k)) is not None:
+                                if re.search('/', country_name) is not None:
+                                    if re.search(country_name.split('/')[0], str(k)) is not None:
+                                        TOD = time_delivery_dict[k]
+                                        break
+                                if re.search(country_code, str(k)) is not None or re.search(str(k),
+                                                                                            country_name) is not None:
                                     TOD = time_delivery_dict[k]
                                     break
 
