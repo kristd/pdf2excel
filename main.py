@@ -477,7 +477,10 @@ if __name__ == '__main__':
                             if (re.search(r'Total', order_detail_array[p])):
                                 solid_last_position = p - 1
 
-                        country_code = get_detail_country_code(order_detail_array[12])
+                        if re.search(r'Size / Colour breakdown', order_detail_array[11]) is None:
+                            country_code = get_detail_country_code(order_detail_array[11])
+                        else:
+                            country_code = get_detail_country_code(order_detail_array[12])
                         ## get term
 
                         for k in term_dict.keys():
@@ -505,10 +508,16 @@ if __name__ == '__main__':
                             if re.search(country_code, str(k)) is not None or re.search(str(k), country_name) is not None:
                                 TOD = time_delivery_dict[k]
                                 break
+                        artical_list = []
+                        colourcode_list =[]
 
                         ##get artical NO & colourcode+colourname
-                        artical_list = re.findall(r'\d+.*\d+', order_detail_array[13])[0].split(' ')
-                        colourcode_list = re.findall(r'\d+-.*', order_detail_array[14])[0].split(' ')
+                        if re.search(r'Size / Colour breakdown', order_detail_array[11]) is None:
+                            artical_list = re.findall(r'\d+.*\d+', order_detail_array[12])[0].split(' ')
+                            colourcode_list = re.findall(r'\d+-.*', order_detail_array[13])[0].split(' ')
+                        else:
+                            artical_list = re.findall(r'\d+.*\d+', order_detail_array[13])[0].split(' ')
+                            colourcode_list = re.findall(r'\d+-.*', order_detail_array[14])[0].split(' ')
                         # print(country_name)
                         for a in artical_list:
                             artical_no = ''  # Column U
@@ -775,7 +784,10 @@ if __name__ == '__main__':
                                 if (re.search(r'Total', order_detail_array[p])):
                                     solid_last_position = p - 1
 
-                            country_code = get_detail_country_code(order_detail_array[12])
+                            if re.search(r'Size / Colour breakdown', order_detail_array[11]) is None:
+                                country_code = get_detail_country_code(order_detail_array[11])
+                            else:
+                                country_code = get_detail_country_code(order_detail_array[12])
                             ## get term
                             for k in term_dict.keys():
                                 if re.search(country_code, str(k)) is not None or re.search(str(k),
@@ -805,9 +817,16 @@ if __name__ == '__main__':
                                     TOD = time_delivery_dict[k]
                                     break
 
+                            artical_list=[]
+                            colourcode_list=[]
+
                             ##get artical NO & colourcode+colourname
-                            artical_list = re.findall(r'\d+.*\d+', order_detail_array[13])[0].split(' ')
-                            colourcode_list = re.findall(r'\d+-.*', order_detail_array[14])[0].split(' ')
+                            if re.search(r'Size / Colour breakdown', order_detail_array[11]) is None:
+                                artical_list = re.findall(r'\d+.*\d+', order_detail_array[12])[0].split(' ')
+                                colourcode_list = re.findall(r'\d+-.*', order_detail_array[13])[0].split(' ')
+                            else:
+                                artical_list = re.findall(r'\d+.*\d+', order_detail_array[13])[0].split(' ')
+                                colourcode_list = re.findall(r'\d+-.*', order_detail_array[14])[0].split(' ')
                             # print(country_name)
                             for a in artical_list:
                                 artical_no = ''  # Column V
