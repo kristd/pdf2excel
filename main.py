@@ -99,6 +99,11 @@ def get_season(text):
 
 def get_order_no(text):
     return re.findall(r'\d+', text)[0]
+def get_country_of_production(text):
+    if text.split(' ')[3] == 'Vietnam':
+        return text.split(' ')[3]
+    else:
+        return text.split(' ')[3] + ' ' + text.split(' ')[4]
 
 
 def get_department_no(text):
@@ -225,7 +230,7 @@ def write_data_into_summary_excel(file_path, data, season):
     if not os.path.exists(file_path + file_name):
         workbook = openpyxl.Workbook()
         sheet = workbook.create_sheet('Summary', index=0)
-        header = ["品牌/Brands", "订单类型/Order Type", "季度/Season", "订单号/Order No", "部门号/Department No",
+        header = ["品牌/Brands", "生产国家/Country of Production","订单类型/Order Type", "季度/Season", "订单号/Order No", "部门号/Department No",
                   "生产货号/Product No", "下单日期/Date of Order", "产品名称/Product Name",
                   "开发货号/Development No",
                   "双/包/No of Pieces", "国家/Country", "运输方式/Terms of Delivery",
@@ -257,7 +262,7 @@ def write_data_into_excel(file_path, season, orderNum, data):
                 orderNum) + '_Single_Sheet.xlsx')):
             workbook = openpyxl.Workbook()
             sheet = workbook.create_sheet(orderNum, index=0)
-            header = ["品牌/Brands", "订单类型/Order Type", "季度/Season", "订单号/Order No", "部门号/Department No",
+            header = ["品牌/Brands","生产国家/Country of Production", "订单类型/Order Type", "季度/Season", "订单号/Order No", "部门号/Department No",
                       "生产货号/Product No", "下单日期/Date of Order", "产品名称/Product Name",
                       "开发货号/Development No",
                       "双/包/No of Pieces", "国家/Country", "运输方式/Terms of Delivery",
@@ -291,7 +296,7 @@ def write_data_into_excel(file_path, season, orderNum, data):
         if not os.path.exists(os.path.join(file_path,season,str(orderNum) + '_Single_Sheet.xlsx')):
             workbook = openpyxl.Workbook()
             sheet = workbook.create_sheet(orderNum, index=0)
-            header = ["品牌/Brands", "订单类型/Order Type", "季度/Season", "订单号/Order No", "部门号/Department No",
+            header = ["品牌/Brands", "生产国家/Country of Production","订单类型/Order Type", "季度/Season", "订单号/Order No", "部门号/Department No",
                       "生产货号/Product No", "下单日期/Date of Order", "产品名称/Product Name",
                       "开发货号/Development No",
                       "双/包/No of Pieces", "国家/Country", "运输方式/Terms of Delivery",
@@ -365,6 +370,7 @@ if __name__ == '__main__':
                     order_object = get_purchase_order_first_page_text(i)
                     order_text = order_object.pages[0].extract_text_simple()
                     order_info_array = split_lines(order_text)
+
                     brand = get_brand(order_info_array[1])  # Column A
                     order_type = get_order_type(order_info_array[0])  # Column B
                     season = get_season(order_info_array[6])  # Column C
@@ -376,6 +382,7 @@ if __name__ == '__main__':
                     development_no = get_development_no(order_info_array[9])  # Column I
                     no_of_pieces = get_no_of_pieces(order_info_array[12])  # Column J
                     download_date = datetime.date.today().strftime('%Y-%m-%d')  # Column W
+                    country_of_production = get_country_of_production(order_info_array[11])
 
                     ### create the price/country mapping information
                     terms_1st_position = 0
@@ -571,7 +578,7 @@ if __name__ == '__main__':
                                                     no_of_asst_list[artical_list.index(a)])
                                                 ####call write_data_into_excel()
                                                 ##prepare dataset
-                                                    data.append([brand, order_type, season, order_no, department_no, product_no,
+                                                    data.append([brand, country_of_production,order_type, season, order_no, department_no, product_no,
                                                         date_of_order, product_name, development_no, no_of_pieces,
                                                         country_name, fright_term.replace(',', '')
                                                     , colourcode_colourname, size, packing_type, l_assortment_qty, l_no_assortment_qty,qty_artical, cost,
@@ -602,7 +609,7 @@ if __name__ == '__main__':
                                                 #######write data into excel sheet
                                                 ##read excel file , if file not existed, create a new one.
                                                 # prepare dataset
-                                                    data.append([brand, order_type, season, order_no, department_no, product_no,
+                                                    data.append([brand, country_of_production,order_type, season, order_no, department_no, product_no,
                                                         date_of_order, product_name, development_no, no_of_pieces,
                                                         country_name, fright_term.replace(',', ''),
                                                         colourcode_colourname, size, packing_type,l_assortment_qty,l_no_assortment_qty, qty_artical, cost,
@@ -699,6 +706,7 @@ if __name__ == '__main__':
                         development_no = get_development_no(order_info_array[9])  # Column I
                         no_of_pieces = get_no_of_pieces(order_info_array[12])  # Column J
                         download_date = datetime.date.today().strftime('%Y-%m-%d')  # Column V
+                        country_of_production = get_country_of_production(order_info_array[11])
 
                         ### create the price/country mapping information
                         terms_1st_position = 0
@@ -881,7 +889,7 @@ if __name__ == '__main__':
                                                             no_of_asst_list[artical_list.index(a)])
                                                     ####call write_data_into_excel()
                                                     ##prepare dataset
-                                                        data.append([brand, order_type, season, order_no, department_no,
+                                                        data.append([brand, country_of_production,order_type, season, order_no, department_no,
                                                             product_no,
                                                             date_of_order, product_name, development_no, no_of_pieces,
                                                             country_name, fright_term.replace(',', ''), colourcode_colourname, size, packing_type, l_assortment_qty,l_no_assortment_qty,qty_artical, cost,
@@ -918,7 +926,7 @@ if __name__ == '__main__':
                                                     #######write data into excel sheet
                                                     ##read excel file , if file not existed, create a new one.
                                                     # prepare dataset
-                                                        data.append([brand, order_type, season, order_no, department_no,
+                                                        data.append([brand, country_of_production,order_type, season, order_no, department_no,
                                                             product_no,
                                                             date_of_order, product_name, development_no, no_of_pieces,
                                                             country_name, fright_term.replace(',', ''),
